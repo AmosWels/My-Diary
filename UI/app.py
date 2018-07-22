@@ -10,7 +10,6 @@ def contacts():
         return make_response(jsonify({"result": "Post Done"})), 200
         # pass
 
-
 @app.route('/profile/<username>')
 def profile(username):
     return 'Hello there %s' % username
@@ -48,16 +47,19 @@ entries = [
      'due_date': '02/september/2018'},
 ]
 
+# A route to modify an entry.
+@app.route('/api/v1/resources/entries/modify/<string:name>',methods=['PUT'])
+def modifyentry(name):
+    entrynew =[entry for entry in entries if entry['name'] == name]
+    entrynew[0]['name'] = request.JSON['name']
+    return jsonify({'entry' : entrynew[0] })
+
 # A route to fetch all entries.
-
-
 @app.route('/api/v1/resources/entries/all', methods=['GET'])
 def api_all():
     return jsonify(entries)
 
 # A route to fetch a single entry.
-
-
 @app.route('/api/v1/resources/entries', methods=['GET'])
 def api_id():
     # Check if an ID was provided as part of the URL.
@@ -86,6 +88,35 @@ def api_id():
     # Use the jsonify function from Flask to convert our list of
     # Python dictionaries to the JSON format.
     return jsonify(results)
+
+@app.route('/api/v1/resources/create', methods=['GET', 'POST']) #allow both GET and POST requests
+def api_postentry():
+    if request.method == 'POST':  #this block is only entered when the form is submitted
+        name = request.form.get('name')
+        datecreated = request.form['datecreated']
+        entry_type = request.form['entry_type']
+        purpose = request.form['purpose']
+        duedate = request.form['duedate']
+
+        return jsonify('''<h1>The Entry Name is: {}</h1>
+                  <h1>The Entry Date Created is: {}</h1>
+                  <h1>The Entry Type is: {}</h1>
+                  <h1>The Entry Purpose is: {}</h1>
+                  <h1>The Entry Due Date is: {}</h1>'''.format(name, datecreated,entry_type,purpose,duedate))
+
+    return '''<form method="POST" center>
+                <h3>Enter Diary details<h3><br>
+                  Name: <input type="text" name="name"><br><br>
+                  Date Created: <input type="text" name="datecreated"><br><br>
+                  Type: <select name="entry_type"><option value="">Choose...</option>
+                        <option value="office">Office</option>
+                        <option value="home">Home</option>
+                        <option value="sport">Sports</option>
+                        </select><br><br>
+                  Purpose: <input type="text" name="purpose"><br><br>
+                  Due Date: <input type="text" name="duedate"><br><br>
+                  <input type="submit" value="Submit"><br>
+              </form>'''
 
 
 if __name__ == '__main__':
