@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/AmosWels/My-Diary.svg?branch=master)](https://travis-ci.org/AmosWels/My-Diary)
+
 #### My Diary
 
 MyDiary is an online journal where users can pen down their thoughts and feelings.
