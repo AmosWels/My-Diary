@@ -15,7 +15,8 @@ body {
     background-color: #F4F4F4;
     overflow-y: auto!important;
     overflow-x: hidden;
-    
+    background-image: url("../images/body5.jpg");
+    background-size:cover;
 }
 
 a {

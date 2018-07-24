@@ -4,6 +4,8 @@
   margin: auto;
   text-align: center;
   font-family: arial;
+  background-image: url("../images/body5.jpg");
+  background-size:cover;
 }
 
 .title {

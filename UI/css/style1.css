@@ -2,6 +2,9 @@ body {font-family: Arial, Helvetica, sans-serif;
       width: 360px;
       padding: 8% 0 0;
       margin: auto;
+      background-image: url("../images/body5.jpg");
+      background-size:cover;
+      /* F:\Mine\mydiary\My-Diary\UI\images\body.jpg */
 }
 form {border: 3px solid #f1f1f1;}
 
