@@ -15,7 +15,7 @@ MyDiary is an online journal where users can pen down their thoughts and feeling
 4. PUT / entries /< entryId > Modify an entry
 
 ##### Requirements
-Requiremets to run this application
+Requiremets to run this My Diary
 
 1. Flask <framework>
 2. git
