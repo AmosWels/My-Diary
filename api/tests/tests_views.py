@@ -1,7 +1,7 @@
-from test_app import TestStartAll
+from api.tests.test_app import TestStartAll
 import unittest
 from flask import json
-from test_entries import entry1, entry2, entry3
+from api.tests.test_entries import entry1, entry2, entry3
 
 class TestDiaryEntries(TestStartAll):
     def setUp(self):
@@ -23,7 +23,7 @@ class TestDiaryEntries(TestStartAll):
     def test_to_get_single_entry(self):
         """test to get a single entry content"""
         response = self.client.get('/GET/entries/1', content_type="application/json")
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, 400)
 
     def test_forwrong_endpoint(self):
         """test for wrong endpoint """
