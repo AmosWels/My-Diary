@@ -1,6 +1,6 @@
 """ start tests module """
 import unittest
-from flask import json
+import json
 from apprun import app
 
 class TestStartAll(unittest.TestCase):
