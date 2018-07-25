@@ -1,4 +1,4 @@
-from App.views import app
+from api.App.views import app
 
 if __name__ == '__main__':
     app.run(debug=True, port=3000)

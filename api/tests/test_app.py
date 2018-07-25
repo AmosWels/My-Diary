@@ -1,7 +1,7 @@
 """ start tests module """
 import unittest
 import json
-from run import app
+from api.App.views import app
 
 class TestStartAll(unittest.TestCase):
     """ Base class for view test class """

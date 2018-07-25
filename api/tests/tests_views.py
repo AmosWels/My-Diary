@@ -1,8 +1,7 @@
-from .test_run import TestStartAll
+from test_app import TestStartAll
 import unittest
 from flask import json
-# from App.views import app
-from .test_entries import entry1, entry2, entry3
+from test_entries import entry1, entry2, entry3
 
 class TestDiaryEntries(TestStartAll):
     def setUp(self):
