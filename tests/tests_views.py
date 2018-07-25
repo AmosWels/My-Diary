@@ -25,7 +25,7 @@ class TestDiaryEntries(TestStartAll):
         """test to get a single entry content"""
         response = self.client.get('/GET/entries/1', content_type="application/json")
         self.assertEqual(response.status_code, 200)
-    
+
     def test_forwrong_endpoint(self):
         """test for wrong endpoint """
         response = self.client.get('/GET/entries/hhhhh', content_type="application/json")
