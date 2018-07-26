@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/AmosWels/My-Diary.svg?branch=integrate_travis)](https://travis-ci.org/AmosWels/My-Diary)
+[![Build Status](https://travis-ci.org/AmosWels/My-Diary.svg?branch=integrate_travis)](https://travis-ci.org/AmosWels/My-Diary)[![Coverage Status](https://coveralls.io/repos/github/AmosWels/My-Diary/badge.svg?branch=integrate_travis)](https://coveralls.io/github/AmosWels/My-Diary?branch=integrate_travis)
 
 #### My Diary
 
