@@ -3,15 +3,12 @@ MyDiary is an online journal where users can pen down their thoughts and feeling
 
 [![Build Status](https://travis-ci.org/AmosWels/My-Diary.svg?branch=develop)](https://travis-ci.org/AmosWels/My-Diary)
 
-#### [Visit my diario at Travis](https://travis-ci.org/AmosWels/My-Diary)
 
 [![Coverage Status](https://coveralls.io/repos/github/AmosWels/My-Diary/badge.svg?branch=develop)](https://coveralls.io/github/AmosWels/My-Diary?branch=develop)
 
-#### [Visit my diario at Coverall]( https://coveralls.io/github/AmosWels/My-Diary)
 
 [![Maintainability](https://api.codeclimate.com/v1/badges/911827d24f11c39cdf13/maintainability)](https://codeclimate.com/github/AmosWels/My-Diary/maintainability)
 
-#### [Visit my diario at code climate](https://codeclimate.com/github/AmosWels/My-Diary/badges#test-coverage-markdown)
 
 #### [Visit my diario at Heroku](https://my-diario.herokuapp.com/GET/entries)
 

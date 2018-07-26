@@ -9,6 +9,7 @@ class TestDiaryEntries(TestStartAll):
         pass
     
     def test_create_entry(self):
+        '''Test API to create an entry'''
         test = app.test_client(self)
         response = test.post('/POST/entries',
                                       content_type='application/json',

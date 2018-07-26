@@ -1,12 +1,21 @@
+''' specify language'''
 language: python
+
+''' specify language version to install and run'''
 python:
  - "3.6"
+
+ ''' specify prerequisites'''
 install:
  - pip install -r requirements.txt 
  - pip install pytest
  - pip install coveralls
+
+ ''' specify scripts'''
 script:
  - pytest
  - nosetests -v --with-coverage --cover-package=api
+
+ ''' start test coverage after travis continous integration'''
 after_success: 
  - coveralls
