@@ -1,5 +1,7 @@
 [![Build Status](https://travis-ci.org/AmosWels/My-Diary.svg?branch=develop)](https://travis-ci.org/AmosWels/My-Diary)
 
+[![Coverage Status](https://coveralls.io/repos/github/AmosWels/My-Diary/badge.svg?branch=develop)](https://coveralls.io/github/AmosWels/My-Diary?branch=develop)
+
 #### My Diary
 
 MyDiary is an online journal where users can pen down their thoughts and feelings.
