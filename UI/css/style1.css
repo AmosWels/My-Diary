@@ -125,14 +125,24 @@ hr {
 }
 /* Add a blue text color to links */
 a {
-    color: dodgerblue;
+    color: whitesmoke;
+}
+
+a:hover { 
+    background-color: blue;
 }
 
 /* Set a grey background color and center the text of the "sign in" section */
 .signin {
-    background-color: #f1f1f1;
+    background-color:aquamarine;
     text-align: center;
 }
+
+.signup {
+    text-decoration-color: #f1f1f1;
+    text-decoration-color:white;
+}
+
 .header {
   overflow: hidden;
   background-color: #f1f1f1;
