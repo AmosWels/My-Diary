@@ -39,4 +39,4 @@ class TestDiaryEntries(TestStartAll):
         """test to modify or update an entry"""
         test = app.test_client(self)
         response = test.put('/PUT/entries/1', data=json.dumps(dict(date_created="08/05/2004",purpose="Lorem Ipsum", type="Office")), content_type='application/json')
-        self.assertEqual(response.status_code,400)
+        self.assertEqual(response.status_code,500)
