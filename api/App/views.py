@@ -37,7 +37,7 @@ def create_entry():
         return make_response(jsonify({"result":"Empty Records Detected"})), 400
     return jsonify({'entry': entry}), 201
 
-'''modify an entry'''
+'''modify an entry using its id'''
 @app.route('/PUT/entries/<int:entry_id>', methods=['PUT'])
 def update_entry(entry_id):
     ent = [entry for entry in entries if (entry['id'] == entry_id)]
