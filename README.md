@@ -13,7 +13,7 @@ MyDiary is an online journal where users can pen down their thoughts and feeling
 
 #### [Visit my diario at code climate](https://codeclimate.com/github/AmosWels/My-Diary/badges#test-coverage-markdown)
 
-#### [Visit my diario at Heroku](https://my-diario.herokuapp.com)
+#### [Visit my diario at Heroku](https://my-diario.herokuapp.com/GET/entries)
 
 #### [Visit my diario at gh-pages](https://amoswels.github.io/My-Diary/UI/)
 
