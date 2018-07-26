@@ -27,3 +27,11 @@ Requiremets to run this My Diary
 2. git
 3. python3
 4. pip
+
+#### [Visit my diario at Heroku](https://my-diario.herokuapp.com)
+
+#### [Visit my diario at Travis](https://travis-ci.org/AmosWels/My-Diary)
+
+#### [Visit my diario at Coverall]( https://coveralls.io/github/AmosWels/My-Diary)
+
+#### [Visit my diario at gh-pages](https://amoswels.github.io/My-Diary/UI/)
