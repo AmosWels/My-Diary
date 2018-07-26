@@ -1,7 +1,7 @@
 from api.tests.test_app import TestStartAll
 import unittest
 import json
-from api.app.views import app
+from ..App.views import app
 from api.tests.test_entries import entry1, entry2, entry3
 
 class TestDiaryEntries(TestStartAll):
