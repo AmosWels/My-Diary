@@ -26,8 +26,8 @@ class TestDiaryEntries(TestStartAll):
     def test_to_get_single_entry(self):
         """test to get a single entry content"""
         test = app.test_client(self)
-        response = test.get('/GET/entries/1', content_type="application/json")
-        self.assertEqual(response.status_code, 400)
+        response = test.get('/GET/entries/1', content_type="application/json",data=json.dumps(entry1))
+        self.assertEqual(response.status_code, 200)
 
     def test_forwrong_endpoint(self):
         """test for wrong endpoint """
@@ -38,5 +38,5 @@ class TestDiaryEntries(TestStartAll):
     def test_to_update_entry(self):
         """test to modify or update an entry"""
         test = app.test_client(self)
-        response = test.put('/PUT/entries/1', data=json.dumps(dict(date_created="08/05/2004",purpose="Lorem Ipsum", type="Office")), content_type='application/json')
-        self.assertEqual(response.status_code,500)
+        response = test.put('/PUT/entries/1', content_type='application/json', data=json.dumps(entry1))
+        self.assertEqual(response.status_code,200)
