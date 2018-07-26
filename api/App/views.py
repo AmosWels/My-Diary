@@ -36,29 +36,13 @@ def create_entry():
 def update_entry(entry_id):
     ent = [entry for entry in entries if (entry['id'] == entry_id)]
     
-    if not 'name' in request.json:
-        return make_response(jsonify({"result":"Empty Name record update"})), 400
-    elif 'name' in request.json : 
+    if not 'name'and 'purpose' and 'date_created'and 'type'and 'due_date' in request.json:
+        return make_response(jsonify({"result":"Empty record update"})), 400
+    else: 
         ent[0]['name'] = request.json['name']
-
-    if not 'purpose' in request.json:
-        return make_response(jsonify({"result":"Empty purpose record update"})), 400
-    elif 'purpose' in request.json : 
-        ent[0]['purpose'] = request.json['purpose']  
-
-    if not 'date_created' in request.json:
-         return make_response(jsonify({"result":"Empty date_created record update"})), 400   
-    elif 'date_created' in request.json : 
+        ent[0]['purpose'] = request.json['purpose']
         ent[0]['date_created'] = request.json['date_created'] 
-    
-    if not 'type' in request.json:
-         return make_response(jsonify({"result":"Empty type record update"})), 400  
-    elif 'type' in request.json : 
-        ent[0]['type'] = request.json['type'] 
-
-    if not 'due_date' in request.json:
-         return make_response(jsonify({"result":"Empty due_date record update"})), 400
-    if 'due_date' in request.json : 
-        ent[0]['due_date'] = request.json['due_date'] 
+        ent[0]['type'] = request.json['type']
+        ent[0]['due_date'] = request.json['due_date']
 
     return jsonify({'entry': ent[0]}),200
