@@ -23,7 +23,7 @@ def create_entry():
         return make_response(jsonify({"result":"Empty Records Detected"})), 400
     else:
         entry = {
-            'id': request.json['id'],
+            'id': len(entries) + 1,
             'name': request.json['name'],
             'purpose': request.json.get('purpose', ""),
             'date_created': request.json['date_created'],
@@ -37,7 +37,7 @@ def create_entry():
 def update_entry(entry_id):
     ent = [entry for entry in entries if (entry['id'] == entry_id)]
     
-    if not 'name'and 'purpose' and 'date_created'and 'type'and 'due_date' in request.json:
+    if not 'name' and 'purpose' and 'date_created' and 'type'and 'due_date' in request.json:
         return make_response(jsonify({"result":"Empty record update"})), 400
     else: 
         ent[0]['name'] = request.json['name']
