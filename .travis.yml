@@ -6,6 +6,7 @@ install:
  - pip install pytest
  - pip install coveralls
 script:
- - pytest 
+ - pytest
+ - nosetests -v --with-coverage --cover-package=api
 after_success: 
  - coveralls
