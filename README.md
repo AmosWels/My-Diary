@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/AmosWels/My-Diary.svg?branch=master)](https://travis-ci.org/AmosWels/My-Diary)
+[![Build Status](https://travis-ci.org/AmosWels/My-Diary.svg?branch=integrate_travis)](https://travis-ci.org/AmosWels/My-Diary)
 
 #### My Diary
 
