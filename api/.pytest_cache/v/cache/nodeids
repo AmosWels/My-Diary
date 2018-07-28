@@ -1,7 +1,0 @@
-[
-  "tests/tests_views.py::TestDiaryEntries::test_create_entry",
-  "tests/tests_views.py::TestDiaryEntries::test_forwrong_endpoint",
-  "tests/tests_views.py::TestDiaryEntries::test_get_all_entries",
-  "tests/tests_views.py::TestDiaryEntries::test_to_get_single_entry",
-  "tests/tests_views.py::TestDiaryEntries::test_to_update_entry"
-]
