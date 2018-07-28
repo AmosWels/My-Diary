@@ -1,4 +1,5 @@
 from flask import Flask, request, jsonify, make_response
+from api.validate import Validate
 '''Initialising a flask application'''
 app = Flask(__name__)
 '''Initialising an empty dictionary'''
@@ -15,41 +16,65 @@ def api_all():
 ''' get single entry'''
 @app.route('/GET/entries/<int:entry_id>', methods=['GET'])
 def get_task(entry_id):
-    entry = [entry for entry in entries if entry['id'] == entry_id]
-    if len(entry) == 0:
-        return make_response(jsonify({"result": "No Entry with that id"})), 400
-    return jsonify({'entry': entry[0]}),200
+
+    data = "INVALID URL, OR RECORD DOESNT EXIST: TRY AGAIN!"
+    response = jsonify({"entries": data})
+    response.status_code = 404
+    for entry in entries:
+        if entry['id'] == entry_id:
+            response = jsonify({"entries": entry})
+            response.status_code = 200
+    return response
     
 '''post an entry'''
 @app.route('/POST/entries', methods=['POST'])
 def create_entry():
-    if 'name' and 'purpose' and 'id' and 'date_created' and 'type' and 'due_date' in request.json:
+    # if 'name' and 'purpose' and 'id' and 'date_created' and 'type' and 'due_date' in request.json:
+    data = request.get_json()
+    # valid = vali
+    valid = Validate(data["name"], data["purpose"])
+    info = valid.validate_entry()
+    entry = {}
+    if info is True:
         entry = {
-            'id': len(entries) + 1,
-            'name': request.json['name'],
-            'purpose': request.json.get('purpose', ""),
-            'date_created': now.strftime("%Y-%m-%d"),
-            'type': request.json['type'],
-            'due_date': request.json['due_date'],
-        }
+            "id": len(entries) + 1,
+            "name": data["name"],
+            "purpose": data["purpose"],
+            "date_created": now.strftime("%Y-%m-%d"),
+            "type": data["type"],
+            "due_date": data["due_date"],}
         entries.append(entry)
+        response = jsonify({"message": "Entry saved", "entry": entry})
+        response.status_code = 201
+        return response
     else:
-        return make_response(jsonify({"result":"Empty Records Detected"})), 400
-    return jsonify({'entry': entry}), 201
+        response = jsonify({"message": "INVALID OR MISSING DATA FIELDS, NAME AND PURPOSE SHOULD BE PROVIDED"})
+        response.status_code = 400
+        return response
+
 
 '''modify an entry using its id'''
 @app.route('/PUT/entries/<int:entry_id>', methods=['PUT'])
 def update_entry(entry_id):
-    ent = [entry for entry in entries if (entry['id'] == entry_id)]
-    
-    if 'name' and 'purpose' and 'date_created' and 'type'and 'due_date' in request.json:
-        
-        ent[0]['name'] = request.json['name']
-        ent[0]['purpose'] = request.json['purpose']
-        ent[0]['date_created'] = now.strftime("%Y-%m-%d") 
-        ent[0]['type'] = request.json['type']
-        ent[0]['due_date'] = request.json['due_date']
-    else:
-        return make_response(jsonify({"result":"Empty record update"})), 400
+    data = request.get_json()
+    valid = Validate(data["name"],data["purpose"])
+    info = valid.validate_entry()
 
-    return jsonify({'entry': ent[0]}),200
+    for entry in entries:
+        if info is True and entry['id'] == entry_id:
+        
+            entry['name'] = data['name']
+            entry['purpose'] = data['purpose']
+            entry['date_created'] = now.strftime("%Y-%m-%d") 
+            entry['type'] = data['type']
+            entry['due_date'] = data['due_date']
+
+            response = jsonify({"message": "RECORD UPATED","entry":entry})
+            response.status_code = 200
+            return response
+        else:
+            response = jsonify({"message": "INVALID OR MISSING DATA FIELDS, NAME AND PURPOSE SHOULD BE PROVIDED"})
+            response.status_code = 400
+            return response
+
+    
