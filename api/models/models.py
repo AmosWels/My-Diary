@@ -1,5 +1,7 @@
 import psycopg2
-import sys
+from flask import jsonify
+from api.validate import Validate
+
 class DiaryDatabase:
     def __init__(self):
         self.conn_string = "host='localhost' dbname='My-Diary' user='postgres' password='root'"
@@ -11,14 +13,24 @@ class DiaryDatabase:
         Entries="""create table IF NOT EXISTS tdiaryentries  (id serial primary key not null,name text not null,
                             due_date text not null, type text not null, purpose text not null, date_created text not null, user_id int)"""
 
-        cursor = self.conn.cursor()
+        self.cursor = self.conn.cursor()
         try:
-            cursor.execute(Users,)
-            cursor.execute(Entries,)
+            self.cursor.execute(Users,)
+            self.cursor.execute(Entries,)
             self.conn.commit()
-            print("Created Succesfuly\n")
+            # print("Created Succesfuly\n")
         except:
             print("Already Created\n")
 
-    if __name__ == "__main__":
-        DiaryDatabase()
+    def signup(self,username,password):
+        # Check if username, email and phone_number don't exist
+        valid = Validate(username, password)
+        if valid.validate_entry():
+            sql = "INSERT INTO tusers(username, password) VALUES (%s, %s)"
+            self.cursor.execute(sql, (username, password))
+            self.conn.commit()
+        else:
+            return jsonify({"message": "username, invalid "})
+        return jsonify({"message": "Account successfully created"})
+        # hash the password
+        # hashed_password = generate_password_hash(password, method="sha256")

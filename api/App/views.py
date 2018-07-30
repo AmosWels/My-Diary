@@ -7,14 +7,30 @@ app = Flask(__name__)
 import datetime
 
 now = datetime.datetime.now()
+db_connect = DiaryDatabase()
 
-# def __init__(self):
-#     DiaryDatabase.__init__(self)
-cursor = DiaryDatabase.conn.cursor
-
+def __init__(self):
+        DiaryDatabase.__init__(self)
+        
 @app.route('/api/v1/users/signup', methods=['POST'])
 def register():
     """ registering user """
+    data = request.get_json()
+    username = data["username"]
+    password = data["password"]
+    db_connect.cursor.execute("SELECT username FROM tusers where username =%s ", (username, ))
+    db_connect.conn.commit()
+    result = db_connect.cursor.rowcount
+    if result == 0:
+        db_connect.signup(username,password)
+        response = jsonify({"message":"Created "})
+        response.status_code = 201
+        return response
+    else:
+        response = jsonify({"message":"username is Invalid, or already taken up! Kindly Provide another username"})
+        response.status_code = 400
+        return response
+
                      
 # entries = []
 # ''' get all entries'''
