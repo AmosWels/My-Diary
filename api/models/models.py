@@ -1,37 +1,24 @@
 import psycopg2
 import sys
+class DiaryDatabase:
+    def __init__(self):
+        self.conn_string = "host='localhost' dbname='My-Diary' user='postgres' password='root'"
 
-def main():
-    # Define our connection string
-    conn_string = "host='localhost' dbname='My-Diary' user='postgres' password='root'"
+        self.conn = psycopg2.connect(self.conn_string)
 
-    # print the connection string we will use to connect
-    print("Connecting to database\n	->%s" % (conn_string))
+        Users="""create table IF NOT EXISTS tusers (id serial primary key not null,username text not null,
+                            password text not null)"""
+        Entries="""create table IF NOT EXISTS tdiaryentries  (id serial primary key not null,name text not null,
+                            due_date text not null, type text not null, purpose text not null, date_created text not null, user_id int)"""
 
-    # get a connection, if a connect cannot be made an exception will be raised here
-    conn = psycopg2.connect(conn_string)
+        cursor = self.conn.cursor()
+        try:
+            cursor.execute(Users,)
+            cursor.execute(Entries,)
+            self.conn.commit()
+            print("Created Succesfuly\n")
+        except:
+            print("Already Created\n")
 
-    # conn.cursor will return a cursor object, you can use this cursor to perform queries
-    cursor = conn.cursor()
-    # print ("Connected!\n")gg
-
-
-    sql= "INSERT INTO diaryentries(name, due_date, type, purpose) VALUES (%s, %s, %s, %s)"
-    val =  ("meet john hty", "2017-3-2", "office", "clear issues pending")
-
-    cursor.execute(sql, val)
-
-    conn.commit()
-
-    print(cursor.rowcount, "record inserted.")
-# execute our Query
-    cursor.execute("SELECT * FROM diaryentries")
-
-    # retrieve the records from the database
-    records = cursor.fetchall()
-
-    print(records)
-
-
-if __name__ == "__main__":
-    main()
+    if __name__ == "__main__":
+        DiaryDatabase()

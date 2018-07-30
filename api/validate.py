@@ -1,4 +1,4 @@
-"""validation class with regular expressions"""
+"""importing regular expressions class"""
 import re
 
 
@@ -9,7 +9,7 @@ class Validate():
         self.purpose = purpose
 
     def validate_entry(self):
-        """method to validate my input """
+        """method to validate inputs"""
         result = ""
         if(not re.search("[a-zA-Z0-9]", self.name) or not
                 re.search("[a-zA-Z0-9]", self.purpose)):
