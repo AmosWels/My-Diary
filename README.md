@@ -1,6 +1,8 @@
 ## My Diary 
 MyDiary is an online journal where users can pen down their thoughts and feelings.
 
+<a href="https://codeclimate.com/github/AmosWels/My-Diary/maintainability"><img src="https://api.codeclimate.com/v1/badges/911827d24f11c39cdf13/maintainability" /></a>
+
 #### Required Features
 1. Create user accounts that can signin/signout from the app. 
 2. Get all diary entries for a particular user.
