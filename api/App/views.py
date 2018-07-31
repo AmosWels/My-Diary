@@ -1,10 +1,15 @@
 from flask import Flask, request, jsonify, make_response
+from flask_jwt_extended import (create_access_token, jwt_required, jwt_manager)
 from api.models.models import DiaryDatabase
 from api.validate import Validate
+import jwt
+from functools import wraps
+
 '''Initialising a flask application'''
 app = Flask(__name__)
 '''Initialising an empty dictionary'''
 import datetime
+app.config['SECRET_KEY']='thisisasecretkey'
 
 now = datetime.datetime.now()
 db_connect = DiaryDatabase()
@@ -31,73 +36,28 @@ def register():
         response.status_code = 400
         return response
 
-                     
-# entries = []
-# ''' get all entries'''
-# @app.route('/api/v1/entries', methods=['GET'])
-# def api_all():
-#     return jsonify(entries),200
+@app.route('/api/v1/users/signin', methods=['POST'])
+def signin():
+    """user login"""
+    # data = request.get_json()
+    # Lpassword = data["password"]
+    # auth = request.authorization
 
-# ''' get single entry'''
-# @app.route('/api/v1/entries/<int:entry_id>', methods=['GET'])
-# def get_task(entry_id):
-
-#     data = "INVALID URL, OR RECORD DOESNT EXIST: TRY AGAIN!"
-#     response = jsonify({"entries": data})
-#     response.status_code = 404
-#     for entry in entries:
-#         if entry['id'] == entry_id:
-#             response = jsonify({"entries": entry})
-#             response.status_code = 200
-#     return response
-    
-# '''post an entry'''
-# @app.route('/api/v1/entries', methods=['POST'])
-# def create_entry():
-#     data = request.get_json()
-#     valid = Validate(data["name"], data["purpose"])
-#     info = valid.validate_entry()
-#     entry = {}
-#     if info is True:
-#         entry = {
-#             "id": len(entries) + 1,
-#             "name": data["name"],
-#             "purpose": data["purpose"],
-#             "date_created": now.strftime("%Y-%m-%d"),
-#             "type": data["type"],
-#             "due_date": data["due_date"],}
-#         entries.append(entry)
-#         response = jsonify({"message": "Entry saved", "entry": entry})
-#         response.status_code = 201
-#         return response
-#     else:
-#         response = jsonify({"message": "INVALID OR MISSING DATA FIELDS, NAME AND PURPOSE SHOULD BE PROVIDED"})
-#         response.status_code = 400
-#         return response
-
-
-# '''modify an entry using its id'''
-# @app.route('/api/v1/entries/<int:entry_id>', methods=['PUT'])
-# def update_entry(entry_id):
-#     data = request.get_json()
-#     valid = Validate(data["name"],data["purpose"])
-#     info = valid.validate_entry()
-
-#     for entry in entries:
-#         if info is True and entry['id'] == entry_id:
-        
-#             entry['name'] = data['name']
-#             entry['purpose'] = data['purpose']
-#             entry['date_created'] = now.strftime("%Y-%m-%d") 
-#             entry['type'] = data['type']
-#             entry['due_date'] = data['due_date']
-
-#             response = jsonify({"message": "RECORD UPATED","entry":entry})
-#             response.status_code = 200
-#             return response
-#         else:
-#             response = jsonify({"message": "INVALID OR MISSING DATA FIELDS, NAME AND PURPOSE SHOULD BE PROVIDED"})
-#             response.status_code = 400
-#             return response
-
-    
+    # if  auth and auth.password == 'password':
+    #     token = jwt.encode({'user':auth.username, 'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=30)}, app.config['SECRET_KEY'])
+    #     return jsonify({'token':token.decode('UTF-8')})
+    # else:
+    #     # response = ({"message":"Check data Fields"})
+    #     # response.status_code = 404
+    #     return make_response('couldnot verify',401,{'www-Authenticate':'Basic realm= "Login required"'})
+    data = request.get_json()
+    Lusername = data["username"]
+    Lpassword = data["password"]
+    valid = Validate(Lusername, Lpassword)
+    check = db_connect.signin(Lusername, Lpassword)
+    if valid.validate_entry() and check is True :
+        token = jwt.encode({data, app.config['SECRET_KEY'])
+        return jsonify({'token':token.decode('UTF-8')})
+    else:
+        return jsonify({"message":"Check data Fields"})
+                    

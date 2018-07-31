@@ -1,6 +1,9 @@
 import psycopg2
+import jwt
 from flask import jsonify
-from api.validate import Validate
+from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
+from api.validate import Validate 
+import datetime
 
 class DiaryDatabase:
     def __init__(self):
@@ -23,7 +26,6 @@ class DiaryDatabase:
             print("Already Created\n")
 
     def signup(self,username,password):
-        # Check if username, email and phone_number don't exist
         valid = Validate(username, password)
         if valid.validate_entry():
             sql = "INSERT INTO tusers(username, password) VALUES (%s, %s)"
@@ -32,5 +34,15 @@ class DiaryDatabase:
         else:
             return jsonify({"message": "username, invalid "})
         return jsonify({"message": "Account successfully created"})
-        # hash the password
         # hashed_password = generate_password_hash(password, method="sha256")
+    def signin(self, Lusername, Lpassword):
+        self.cursor.execute("SELECT * FROM  tusers where username = %s and password = %s", (Lusername, Lpassword))   
+        self.conn.commit()
+        count = self.cursor.rowcount
+        user = self.cursor.fetchone()
+        if count >= 0:
+            return True
+        else:
+            response = jsonify({"message":"wrong credentials"})
+            response.status_code = 403
+            return response  
