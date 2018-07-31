@@ -4,15 +4,16 @@ from api.models.models import DiaryDatabase
 from api.validate import Validate
 import jwt
 from functools import wraps
+# from App import app
 
+import datetime
+# app.config['SECRET_KEY']='thisisasecretkey'
 '''Initialising a flask application'''
 app = Flask(__name__)
 '''Initialising an empty dictionary'''
-import datetime
-app.config['SECRET_KEY']='thisisasecretkey'
-
 now = datetime.datetime.now()
 db_connect = DiaryDatabase()
+app.config['SECRET_KEY']='thisisasecretkey'
 
 def __init__(self):
         DiaryDatabase.__init__(self)
@@ -50,14 +51,21 @@ def signin():
     #     # response = ({"message":"Check data Fields"})
     #     # response.status_code = 404
     #     return make_response('couldnot verify',401,{'www-Authenticate':'Basic realm= "Login required"'})
+
     data = request.get_json()
     Lusername = data["username"]
     Lpassword = data["password"]
     valid = Validate(Lusername, Lpassword)
     check = db_connect.signin(Lusername, Lpassword)
+    # user = db_connect.query.filter_by(username=Lusername).first()
     if valid.validate_entry() and check is True :
-        token = jwt.encode({data, app.config['SECRET_KEY'])
+        token = jwt.encode({'user':Lusername,'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=30)}, app.config['SECRET_KEY']})
         return jsonify({'token':token.decode('UTF-8')})
+        # access_token = db_connect.generate_token(Lusername)
+        # import pdb; pdb.set_trace()
+        # response = {'message': 'You logged in successfully.','access_token': db_connect.decode_token(access_token)}
+        # return make_response(jsonify(response)), 200
+
     else:
-        return jsonify({"message":"Check data Fields"})
+        return jsonify({"message":"Check data Fields, Wrong Credentials"})
                     
