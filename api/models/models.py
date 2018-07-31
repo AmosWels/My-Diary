@@ -2,7 +2,7 @@ from flask import Flask
 import psycopg2
 import jwt
 from flask import jsonify
-from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
+from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity, jwt_manager
 from api.validate import Validate 
 from datetime import datetime, timedelta
 from api.App import views
@@ -43,42 +43,18 @@ class DiaryDatabase:
         self.cursor.execute("SELECT * FROM  tusers where username = %s and password = %s", (Lusername, Lpassword))   
         self.conn.commit()
         count = self.cursor.rowcount
+        result = self.cursor.fetchone()
         if count == 1:
-            return True
+            expires = timedelta(minutes=120)
+            loggedin_user=dict(user_id=result[0],username=result[1],password=result[2])
+            access_token = create_access_token(identity=loggedin_user, expires_delta=expires)
+            print(result)
+            response = jsonify({"MESSAGE":"WELCOME, YOU HAVE SUCCESFULLY LOGGED IN!!!", "YOUR TOKEN":access_token})
+            response.status_code = 201
+            return response 
         else:
             response = jsonify({"message":"wrong credentials"})
             response.status_code = 403
             return response  
             
-    def generate_token(self,username):
-        try:
-            # set up a payload with an expiration time
-            payload = {
-                'exp': datetime.utcnow() + timedelta(minutes=30),
-                'iat': datetime.utcnow(),
-                'sub': username
-            }
-            # create the byte string token using the payload and the SECRET key
-            jwt_string = jwt.encode(
-                payload,
-                views.app.config.get('SECRET'),
-                algorithm='HS256'
-            )
-            return jwt_string
-        except Exception as e:
-            # return an error in string format if an exception occurs
-            return str(e)
-
-    @staticmethod
-    def decode_token(token):
-        """Decodes the access token from the Authorization header."""
-        try:
-            # try to decode the token using our SECRET variable
-            payload = jwt.decode(token, views.app.config.get('SECRET'))
-            return payload['sub']
-        except jwt.ExpiredSignatureError:
-            # the token is expired, return an error string
-            return "Expired token. Please login to get a new token"
-        except jwt.InvalidTokenError:
-            # the token is invalid, return an error string
-            return "Invalid token. Please register or login"
+   

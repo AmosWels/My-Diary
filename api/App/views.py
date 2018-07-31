@@ -1,5 +1,6 @@
 from flask import Flask, request, jsonify, make_response
-from flask_jwt_extended import (create_access_token, jwt_required, jwt_manager)
+from flask_jwt_extended import create_access_token, jwt_required, JWTManager
+# from flask_jwt_extended import JWTManager
 from api.models.models import DiaryDatabase
 from api.validate import Validate
 import jwt
@@ -11,9 +12,10 @@ import datetime
 '''Initialising a flask application'''
 app = Flask(__name__)
 '''Initialising an empty dictionary'''
+jwt = JWTManager(app)
+app.config['SECRET_KEY'] = 'thisisasecretkey'
 now = datetime.datetime.now()
 db_connect = DiaryDatabase()
-app.config['SECRET_KEY']='thisisasecretkey'
 
 def __init__(self):
         DiaryDatabase.__init__(self)
@@ -58,13 +60,16 @@ def signin():
     valid = Validate(Lusername, Lpassword)
     check = db_connect.signin(Lusername, Lpassword)
     # user = db_connect.query.filter_by(username=Lusername).first()
-    if valid.validate_entry() and check is True :
-        token = jwt.encode({'user':Lusername,'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=30)}, app.config['SECRET_KEY']})
-        return jsonify({'token':token.decode('UTF-8')})
+    print (check)
+    print (Lusername)
+    print(db_connect.signin(Lusername, Lpassword))
+    # print (db_connect.generate_token(Lusername))
+    if valid.validate_entry():
+        info = db_connect.signin(Lusername, Lpassword)
+        return info
         # access_token = db_connect.generate_token(Lusername)
-        # import pdb; pdb.set_trace()
         # response = {'message': 'You logged in successfully.','access_token': db_connect.decode_token(access_token)}
-        # return make_response(jsonify(response)), 200
+        return make_response(jsonify(response)), 200
 
     else:
         return jsonify({"message":"Check data Fields, Wrong Credentials"})
