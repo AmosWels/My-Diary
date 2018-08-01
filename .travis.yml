@@ -1,5 +1,6 @@
 ''' specify language'''
-language: python
+language: 
+ - python
 
 ''' specify language version to install and run'''
 python:

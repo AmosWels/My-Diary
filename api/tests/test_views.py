@@ -7,10 +7,13 @@ from api.tests.test_entries import user1, user2, user3, userlogin, entry1, entry
 class TestDiaryEntries(TestStartAll):
     def setUp(self):
         test = app.test_client(self)
-        response = test.post('/api/v1/users/signup', content_type='application/json', data=json.dumps(user2))
-        self.access_token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE1MzMwNTMyNjgsIm5iZiI6MTUzMzA1MzI2OCwianRpIjoiOGUzYTNmNzMtNTM1Yy00M2VmLWE2OGUtOTgwYmRhMzA2MTU1IiwiZXhwIjoxNTMzMDYwNDY4LCJpZGVudGl0eSI6eyJ1c2VyX2lkIjoxMywidXNlcm5hbWUiOiJ0b20iLCJwYXNzd29yZCI6InRvbTEyMyJ9LCJmcmVzaCI6ZmFsc2UsInR5cGUiOiJhY2Nlc3MifQ.LoD6T53ocdMetPdOfS8RthQ7cocvwjaI85uYjV2VWlk'
-        self.access = {'Authorization':'Bearer {}'.format(self.access_token)}
-
+        test.post('/api/v1/users/signup', content_type='application/json', data=json.dumps(user2))
+        response2 = test.post('/api/v1/users/signin',
+                                  data=json.dumps(userlogin),
+                                  content_type='application/json')
+        # self.access_token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE1MzMwNTMyNjgsIm5iZiI6MTUzMzA1MzI2OCwianRpIjoiOGUzYTNmNzMtNTM1Yy00M2VmLWE2OGUtOTgwYmRhMzA2MTU1IiwiZXhwIjoxNTMzMDYwNDY4LCJpZGVudGl0eSI6eyJ1c2VyX2lkIjoxMywidXNlcm5hbWUiOiJ0b20iLCJwYXNzd29yZCI6InRvbTEyMyJ9LCJmcmVzaCI6ZmFsc2UsInR5cGUiOiJhY2Nlc3MifQ.LoD6T53ocdMetPdOfS8RthQ7cocvwjaI85uYjV2VWlk'
+        # self.access = {'Authorization':'Bearer {}'.format(self.access_token)}
+        self.access = response2.json
     def test_userSignup(self):
         """Creating a user supply right data"""
         test = app.test_client(self)
