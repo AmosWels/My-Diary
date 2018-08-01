@@ -84,8 +84,8 @@ class DiaryDatabase():
         # sql = "SELECT * FROM tdiaryentries where user_id = %s",(user_id)
         self.cursor.execute("SELECT * FROM tdiaryentries where user_id = %s and id = %s ",[user_id,entry_id])
         self.conn.commit()
-        entries =self.cursor.rowcount
-        if entries > 0: 
+        entries1 =self.cursor.rowcount
+        if entries1 > 0: 
             all_entry = self.cursor.fetchall()
             user_entry=[]
             for ent in all_entry:
