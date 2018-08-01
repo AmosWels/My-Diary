@@ -26,7 +26,7 @@ def register():
     data = request.get_json()
     username = data["username"]
     password = data["password"]
-    db_connect.cursor.execute("SELECT username FROM tusers where username =%s ", (username, ))
+    db_connect.cursor.execute("SELECT username FROM tusers where username =%s ", (username,))
     db_connect.conn.commit()
     result = db_connect.cursor.rowcount
     if result == 0:
