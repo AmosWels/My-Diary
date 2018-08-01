@@ -44,3 +44,10 @@ entry3= {
     # "purpose": "Lorem Ipsum ",
     # "type": "sports"
 }
+entry4= {
+    "user_id": 1
+}
+
+entry5= {
+    "id": 11
+}
