@@ -1,5 +1,6 @@
 [
   "api/tests/test_views.py::TestDiaryEntries::test_create_user_entry",
+  "api/tests/test_views.py::TestDiaryEntries::test_duplicate_create_user_entry",
   "api/tests/test_views.py::TestDiaryEntries::test_duplicate_username",
   "api/tests/test_views.py::TestDiaryEntries::test_entry_data",
   "api/tests/test_views.py::TestDiaryEntries::test_forwrongsingle_entry_endpoint",
