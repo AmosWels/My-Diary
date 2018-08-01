@@ -13,7 +13,7 @@ now = datetime.datetime.now()
 
 class DiaryDatabase():
     def __init__(self):
-        self.conn_string = "host='localhost' dbname='My-Diary' user='postgres' password='root'"
+        self.conn_string = "host='localhost' dbname='mydiary' user='postgres' password='root'"
 
         self.conn = psycopg2.connect(self.conn_string)
 
