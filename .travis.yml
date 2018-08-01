@@ -1,22 +1,30 @@
-''' specify language'''
-language: 
- - python
-
-''' specify language version to install and run'''
+language: python
 python:
- - "3.6"
+  - "3.6"
+cache: pip
+# command to install dependencies
 
- ''' specify prerequisites'''
+before_script:
+  - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+  - chmod +x ./cc-test-reporter
+  - psql -c 'create database diarydb;' -U postgres
 install:
- - pip install -r requirements.txt 
- - pip install pytest
- - pip install coveralls
+  - pip install -r requirements.txt
+  - pip install coverage
+  - pip install coveralls
+  - pip install nose
 
- ''' specify scripts'''
+# for codecoverage on codeclimate.com
+# env:
+#   global:
+#     - GIT_COMMITTED_AT=$(if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then git log -1 --pretty=format:%ct; else git log -1 --skip 1 --pretty=format:%ct; fi)
+#     - CC_TEST_REPORTER_ID=[c70a88ababb59bd727db7c8b91dcbc30e7c9fd5f74d599761a3d361dd6aea563]
+  
+# command to run tests
 script:
- - pytest
- - nosetests -v --with-coverage --cover-package=api
+  - pytest 
+  - nosetests -v --with-coverage --cover-package=api
 
- ''' start test coverage after travis continous integration'''
-after_success: 
- - coveralls
+#for coveralls
+after_success:
+  - coveralls
