@@ -1,11 +1,9 @@
 [
   "api/tests/test_views.py::TestDiaryEntries::test_create_user_entry",
-  "api/tests/test_views.py::TestDiaryEntries::test_duplicate_create_user_entry",
   "api/tests/test_views.py::TestDiaryEntries::test_duplicate_username",
   "api/tests/test_views.py::TestDiaryEntries::test_entry_data",
   "api/tests/test_views.py::TestDiaryEntries::test_forwrongsingle_entry_endpoint",
   "api/tests/test_views.py::TestDiaryEntries::test_forwrongupdate_entry_endpoint",
-  "api/tests/test_views.py::TestDiaryEntries::test_get_all_entries",
   "api/tests/test_views.py::TestDiaryEntries::test_to_get_single_entry",
   "api/tests/test_views.py::TestDiaryEntries::test_to_update_entry",
   "api/tests/test_views.py::TestDiaryEntries::test_unique_username",
