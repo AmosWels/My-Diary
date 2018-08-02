@@ -1,0 +1,7 @@
+[run]
+
+[report]
+omit = */__init__py
+        test_app.py
+        test_entries.py
+        test_views.py

@@ -9,7 +9,6 @@ from api.App import views
 import datetime
 
 now = datetime.datetime.now()
-# app = Flask(__name__)
 
 class DiaryDatabase():
     def __init__(self):
@@ -40,8 +39,8 @@ class DiaryDatabase():
             self.cursor.execute(sql, (username, password))
             self.conn.commit()
         else:
-            return jsonify({"message": "username, invalid "})
-        return jsonify({"message": "Account successfully created"})
+            return jsonify({"Message": "username, invalid"})
+        return jsonify({"Message": "account succesfuly created"})
         # hashed_password = generate_password_hash(password, method="sha256")
     # @jwt_refresh_token_required
     def signin(self, Lusername,Lpassword):
@@ -54,7 +53,7 @@ class DiaryDatabase():
             loggedin_user=dict(user_id=result[0],username=result[1],password=result[2])
             access_token = create_access_token(identity=loggedin_user, expires_delta=expires)
             # print(result)
-            response = jsonify({"MESSAGE":"WELCOME, YOU HAVE SUCCESFULLY LOGGED IN !!!", "YOUR TOKEN":access_token})
+            response = jsonify({"Message":"welcome, you have succesfully logged in !!!", "your token":access_token})
             response.status_code = 201
             return response 
         else:
@@ -69,14 +68,14 @@ class DiaryDatabase():
         self.conn.commit()
         result=self.cursor.rowcount
         if result>0:
-            response = jsonify({"MESSAGE":"DUPLICATE ENTRY:> YOU HAVE PREVIOUSLY CREATED ENTRY WITH THAT SAME **TYPE** AND **NAME**!!"})
+            response = jsonify({"Message":"duplicate entry:> you have previously created entry with that same **type** and **name**!!"})
             response.status_code = 409
             return response
         else:   
             sql = "INSERT INTO tdiaryentries(name,due_date,type,purpose,date_created,user_id) VALUES (%s,%s,%s,%s,%s,%s)"
             self.cursor.execute(sql, (name,due_date,type1,purpose,today_date,user_id))
             self.conn.commit()
-            response = jsonify({"MESSAGE":"YOUR HAS ENTRY HAS BEEN SUCCESFULLY CREATED!"})
+            response = jsonify({"Message":"your has entry has been succesfully created!"})
             response.status_code = 201
             return response
     
@@ -98,9 +97,9 @@ class DiaryDatabase():
                 result["date_created"]=ent[5]
                 result["user_id"]=ent[6]
                 user_entry.append(result)
-            return jsonify({"YOUR SINGLE ID SPECIFIC ENTRY!": user_entry})
+            return jsonify({"Your single id specific entry!": user_entry})
         else:
-            response = jsonify({"YOUR DONT HAVE A SPECIFIC ENTRY WITH THAT ID!"})
+            response = jsonify({"Your dont have a specific entry with that id!"})
             response.status_code = 400
             return response 
 
@@ -137,18 +136,18 @@ class DiaryDatabase():
             if valid.validate_entry():
                 self.cursor.execute("UPDATE tdiaryentries SET name = %s, due_date = %s, type = %s, purpose = %s WHERE id = %s", [name, due_date, type1,purpose, update_entry_id])
                 self.conn.commit()
-                response = jsonify({"MESSAGE": "MODIFIED YOUR ENTRY SUCCESFULLY!"})
+                response = jsonify({"Message": "modified your entry succesfully!"})
                 response.status_code = 200
                 return response
             else:
-                response = jsonify({"MESSAGE": "SHOULD PROVIDE VALID NAME AND PURPOSE OF ENTRY!"})
+                response = jsonify({"Message": "should provide valid name and purpose of entry!"})
                 response.status_code = 400
                 return response
             # else:
             #     response = jsonify({"MESSAGE": "YOU CAN ONLY MODIFY TODAY'S ENTRIES!"})
             #     response.status_code = 400
         else:
-            response = jsonify({"MESSAGE": "YOUR DONT HAVE A SPECIFIC ENTRY WITH THAT ID TO BE **MODIFIED**!"})
+            response = jsonify({"Message": "your dont have a specific entry with that id to be **modified**!"})
             response.status_code = 400
             return response
 

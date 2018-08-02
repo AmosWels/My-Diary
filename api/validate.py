@@ -17,3 +17,11 @@ class Validate():
         else:
             result = True
         return result
+
+    def validate_field(data,required_fields):
+        for field in required_fields:
+            if field not in data:
+                return {
+                    "success":False,
+                    "message": '*' + field + '*' +' is required before operation' }
+            

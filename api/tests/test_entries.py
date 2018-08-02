@@ -1,12 +1,12 @@
 '''sample user data'''
 
 user1 = {
-    "username": "xlxlxlxlxlxxlxl",
-    "password": "xlxlxlxlxlxlxxl"
+    "username": "amos",
+    "password": "amos123"
 }
 userlogin = {
-    "username": "xlxlxlxlxlxxlxl",
-    "password": "xlxlxlxlxlxlxxl"
+    "username": "welike",
+    "password": "welike123"
 }
 
 user2 = {
@@ -14,35 +14,32 @@ user2 = {
     "password": "kaguta@hindu"
 }
 user3 = {
-    "user_id":3,   
-    "username": "Kaguta",
-    "password": "janet@hindu"
+    "user_id":1,   
+    "username": "amos",
+    "password": "amos123"
 }
 
 entry1= {
-    "due_date": "02-sep-2001",
+    "due_date": "2001-03-03",
     "name": "Meet Peter",
     "purpose": "Lorem Ipsum ",
     "type": "sports"
 }
 
 entry2= {
-    "due_date": "02/sep/2001",
-    "name": "",
-    "purpose": "",
-    "type": ""
+    "due_date": "2018-08-02",
+    "name": "home",
+    "purpose": "home",
+    "type": "home"
 }
 
 entry3= {
+    "id" : 1,
     "name": "cancel all flight plans",
-    "due_date": "02-sep-2018",
+    "due_date": "2018-08-02",
     "type": "office",
     "purpose": "Lorem Ipsum",
     "user_id": 3
-    # "due_date": "02-sep-2001",
-    # "name": "Meet Peter",
-    # "purpose": "Lorem Ipsum ",
-    # "type": "sports"
 }
 entry4= {
     "user_id": 1
