@@ -6,7 +6,10 @@ MyDiary is an online journal where users can pen down their thoughts and feeling
 
 <a href="https://codeclimate.com/github/AmosWels/My-Diary/maintainability"><img src="https://api.codeclimate.com/v1/badges/911827d24f11c39cdf13/maintainability" /></a>
 
-<a href='https://coveralls.io/github/AmosWels/My-Diary?branch=database'><img src='https://coveralls.io/repos/github/AmosWels/My-Diary/badge.svg?branch=database' alt='Coverage Status' /></a>
+[Coveralls]
+  (https://coveralls.io/repos/github/AmosWels/My-Diary/badge.svg?branch=database
+  :target: https://coveralls.io/github/AmosWels/My-Diary?branch=database)
+
 
 
 
