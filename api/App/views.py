@@ -50,17 +50,21 @@ def register():
 def signin():
     """user login"""
     data = request.get_json()
-    username = data["username"]
-    password = data["password"]
-    valid = Validate(username, password)
-    check = db_connect.signin(username, password)
-    if valid.validate_entry():
-        user = db_connect.signin(username, password)
-        return user
-        return make_response(jsonify(response)), 200
+    required_fields={"username","password"}
+    checkfield = Validate.validate_field(data,required_fields)
+    if not checkfield:
+        username = data["username"]
+        password = data["password"]
+        valid = Validate(username, password)
+        check = db_connect.signin(username, password)
+        if valid.validate_entry():
+            user = db_connect.signin(username, password)
+            return user
+        else:
+            return jsonify({"Message":"your credentials are wrong! Please check your data field."})
     else:
-        return jsonify({"Message":"your credentials are wrong! Please check your data field."})
-    
+        return jsonify (checkfield),400
+
 @app.route('/entries', methods=['POST'])
 @jwt_required
 def create_user_entry():
@@ -76,15 +80,15 @@ def create_user_entry():
             date_format = "%Y-%m-%d"
             date_obj = datetime.datetime.strptime(entrydata["due_date"], date_format)
             info = valid.validate_entry()
-            if info is True and entrydata["name"].isalpha() and entrydata["type"].isalpha and entrydata["purpose"].isalpha:
+            if info is True and entrydata["name"].isalpha() and entrydata["type"].isalpha():
                 info = db_connect.create_user_entries(entrydata["name"], entrydata["due_date"], entrydata["type"], entrydata["purpose"],entrydata["user_id"])
                 return info
             else:
-                response = jsonify({"Message": "should provide a valid *name* and *purpose* of entry!"})
+                response = jsonify({"Message": "Please provide a *name* and *purpose* of entry and ensure that all entries are in their valid format!"})
                 response.status_code = 400
                 return response 
         except ValueError:
-            response = jsonify({"Message":"Check date format to be (YYYY-MM-DD)"})
+            response = jsonify({"Message":"Please Check that your date format suits this format (YYYY-MM-DD)"})
             response.status_code = 400
             return response
     else:
@@ -103,7 +107,7 @@ def get_single_entries(entry_id):
         entry = db_connect.get_single_user_entry(entryUSER,entry_id)
         return entry
     else:
-        response = jsonify({"Message": "your dont have a specific entry with that *id*!"})
+        response = jsonify({"Message": "You dont have a specific entry with that *id*!"})
         response.status_code = 400
         return response 
 
@@ -138,7 +142,7 @@ def update_user_entry(entry_id):
         try:
             date_format = "%Y-%m-%d"
             date_obj = datetime.datetime.strptime(entrydata["due_date"], date_format)
-            if check is True and entrydata["name"].isalpha() and entrydata["type"].isalpha and entrydata["purpose"].isalpha:
+            if check is True and entrydata["name"].isalpha() and entrydata["type"].isalpha():
                 db_connect.cursor.execute("SELECT * FROM tdiaryentries where user_id = %s and id = %s ", (entryUSER, entry_id))
                 db_connect.conn.commit()
                 result = db_connect.cursor.rowcount
@@ -146,15 +150,15 @@ def update_user_entry(entry_id):
                     entry = db_connect.update_user_entryid(entryUSER, entry_id, entrydata["name"], entrydata["due_date"], entrydata["type"], entrydata["purpose"])
                     return entry
                 else:
-                    response = jsonify({"Message": "your dont have a specific entry with that id!"})
+                    response = jsonify({"Message": "You dont have a specific entry with that id!"})
                     response.status_code = 400
                     return response 
             else:
-                response = jsonify({"Message": "should provide a valid *name* and *purpose* of entry!"})
+                response = jsonify({"Message": "Please provide a *name* and *purpose* of entry and ensure that all entries are in their valid format!"})
                 response.status_code = 400
                 return response 
         except ValueError:
-            response = jsonify({"Message":"Check date format to be (YYYY-MM-DD)"})
+            response = jsonify({"Message":"Please Check that your date format suits this format (YYYY-MM-DD)"})
             response.status_code = 400
             return response
     else:
