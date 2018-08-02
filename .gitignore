@@ -1,6 +1,5 @@
 env/
 .idea/
-.coverage
 __pycache__/
 app/__pycache__/
 instance/__pycache
