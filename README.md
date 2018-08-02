@@ -7,6 +7,7 @@ MyDiary is an online journal where users can pen down their thoughts and feeling
 
 [![Coverage Status](https://coveralls.io/repos/github/AmosWels/My-Diary/badge.svg?branch=database)](https://coveralls.io/github/AmosWels/My-Diary?branch=database)
 
+
 #### Required Features
 1. Create user accounts that can signin/signout from the app. 
 2. Get all diary entries for a particular user.

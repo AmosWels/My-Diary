@@ -13,7 +13,9 @@ now = datetime.datetime.now()
 
 class DiaryDatabase():
     def __init__(self):
-        self.conn_string = "host='localhost' dbname='mydiary' user='postgres' password='root'"
+        # self.conn_string = "host='localhost' dbname='mydiary' user='postgres' password='root'"
+        DATABASE_URL = os.environ["DATABASE_URL"]
+        self.conn_string = psycopg2.connect(DATABASE_URL, sslmode='require')
 
         self.conn = psycopg2.connect(self.conn_string)
 
