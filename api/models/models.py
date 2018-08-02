@@ -43,8 +43,8 @@ class DiaryDatabase():
         return jsonify({"Message": "account succesfuly created"})
         # hashed_password = generate_password_hash(password, method="sha256")
     # @jwt_refresh_token_required
-    def signin(self, Lusername,Lpassword):
-        self.cursor.execute("SELECT * FROM  tusers where username = %s and password = %s", (Lusername, Lpassword))   
+    def signin(self, username,password):
+        self.cursor.execute("SELECT * FROM  tusers where username = %s and password = %s", (username, password))   
         self.conn.commit()
         count = self.cursor.rowcount
         result = self.cursor.fetchone()

@@ -19,7 +19,6 @@ def __init__(self):
 @app.route('/auth/signup', methods=['POST'])
 def register():
     """ registering user """
-    
     data = request.get_json()
     required_fields={"username","password"}
     checkfield = Validate.validate_field(data,required_fields)
