@@ -1,0 +1,3 @@
+{
+  "api/tests/test_views.py::TestDiaryEntries::test_duplicate_create_user_entry": true
+}

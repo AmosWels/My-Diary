@@ -1,80 +1,167 @@
 from flask import Flask, request, jsonify, make_response
+from flask_jwt_extended import create_access_token, jwt_required, JWTManager, get_jwt_identity
+from api.models.models import DiaryDatabase
 from api.validate import Validate
+import jwt
+import datetime
+
 '''Initialising a flask application'''
 app = Flask(__name__)
 '''Initialising an empty dictionary'''
-import datetime
-
+jwt = JWTManager(app)
+app.config['SECRET_KEY'] = 'thisisasecretkey'
 now = datetime.datetime.now()
+db_connect = DiaryDatabase()
 
-entries = []
-''' get all entries'''
-@app.route('/GET/entries', methods=['GET'])
-def api_all():
-    return jsonify(entries),200
-
-''' get single entry'''
-@app.route('/GET/entries/<int:entry_id>', methods=['GET'])
-def get_task(entry_id):
-
-    data = "INVALID URL, OR RECORD DOESNT EXIST: TRY AGAIN!"
-    response = jsonify({"entries": data})
-    response.status_code = 404
-    for entry in entries:
-        if entry['id'] == entry_id:
-            response = jsonify({"entries": entry})
-            response.status_code = 200
-    return response
-    
-'''post an entry'''
-@app.route('/POST/entries', methods=['POST'])
-def create_entry():
-    # if 'name' and 'purpose' and 'id' and 'date_created' and 'type' and 'due_date' in request.json:
-    data = request.get_json()
-    # valid = vali
-    valid = Validate(data["name"], data["purpose"])
-    info = valid.validate_entry()
-    entry = {}
-    if info is True:
-        entry = {
-            "id": len(entries) + 1,
-            "name": data["name"],
-            "purpose": data["purpose"],
-            "date_created": now.strftime("%Y-%m-%d"),
-            "type": data["type"],
-            "due_date": data["due_date"],}
-        entries.append(entry)
-        response = jsonify({"message": "Entry saved", "entry": entry})
-        response.status_code = 201
-        return response
-    else:
-        response = jsonify({"message": "INVALID OR MISSING DATA FIELDS, NAME AND PURPOSE SHOULD BE PROVIDED"})
-        response.status_code = 400
-        return response
-
-
-'''modify an entry using its id'''
-@app.route('/PUT/entries/<int:entry_id>', methods=['PUT'])
-def update_entry(entry_id):
-    data = request.get_json()
-    valid = Validate(data["name"],data["purpose"])
-    info = valid.validate_entry()
-
-    for entry in entries:
-        if info is True and entry['id'] == entry_id:
+def __init__(self):
+        DiaryDatabase.__init__(self)
         
-            entry['name'] = data['name']
-            entry['purpose'] = data['purpose']
-            entry['date_created'] = now.strftime("%Y-%m-%d") 
-            entry['type'] = data['type']
-            entry['due_date'] = data['due_date']
-
-            response = jsonify({"message": "RECORD UPATED","entry":entry})
-            response.status_code = 200
-            return response
+@app.route('/auth/signup', methods=['POST'])
+def register():
+    """ registering user """
+    data = request.get_json()
+    required_fields={"username","password"}
+    checkfield = Validate.validate_field(data,required_fields)
+    if not checkfield:
+        username = data["username"]
+        password = data["password"]
+        valid = Validate(username, password)
+        if username.isalpha() and username.strip() and password.strip() != '' and len(username) >=5 and len(password)>=5 and valid.validate_entry():
+            db_connect.cursor.execute("SELECT username FROM tusers where username =%s ", (username,))
+            db_connect.conn.commit()
+            result = db_connect.cursor.rowcount
+            if result == 0:
+                db_connect.signup(username,password)
+                response = jsonify({"Message":"Created Succesfully"})
+                response.status_code = 201
+                return response
+            else:
+                response = jsonify({"Message":"username is invalid, or already taken up! Kindly provide another username"})
+                response.status_code = 400
+                return response
         else:
-            response = jsonify({"message": "INVALID OR MISSING DATA FIELDS, NAME AND PURPOSE SHOULD BE PROVIDED"})
+            response = jsonify({"Message":"username and password should be provided and *WITH NOT* less than 5 values *EACH*!. Please Avoid such ^{\\s|\\S}*{\\S}+{\\s|\\S}*$ in your username"})
             response.status_code = 400
             return response
+    else:
+        return jsonify (checkfield),400
 
-    
+@app.route('/auth/login', methods=['POST'])
+def signin():
+    """user login"""
+    data = request.get_json()
+    required_fields={"username","password"}
+    checkfield = Validate.validate_field(data,required_fields)
+    if not checkfield:
+        username = data["username"]
+        password = data["password"]
+        valid = Validate(username, password)
+        check = db_connect.signin(username, password)
+        if valid.validate_entry():
+            user = db_connect.signin(username, password)
+            return user
+        else:
+            return jsonify({"Message":"your credentials are wrong! Please check your data field."})
+    else:
+        return jsonify (checkfield),400
+
+@app.route('/entries', methods=['POST'])
+@jwt_required
+def create_user_entry():
+    """create user entries """
+    entrydata = request.get_json()
+    required_fields={"due_date","name","purpose","type"}
+    checkfield = Validate.validate_field(entrydata,required_fields)
+    if not checkfield:
+        authuser = get_jwt_identity()
+        entrydata["user_id"] = authuser["user_id"]
+        valid = Validate(entrydata["name"], entrydata["purpose"])
+        try:
+            date_format = "%Y-%m-%d"
+            date_obj = datetime.datetime.strptime(entrydata["due_date"], date_format)
+            info = valid.validate_entry()
+            if info is True and entrydata["name"].isalpha() and entrydata["type"].isalpha():
+                info = db_connect.create_user_entries(entrydata["name"], entrydata["due_date"], entrydata["type"], entrydata["purpose"],entrydata["user_id"])
+                return info
+            else:
+                response = jsonify({"Message": "Please provide a *name* and *purpose* of entry and ensure that all entries are in their valid format!"})
+                response.status_code = 400
+                return response 
+        except ValueError:
+            response = jsonify({"Message":"Please Check that your date format suits this format (YYYY-MM-DD)"})
+            response.status_code = 400
+            return response
+    else:
+        return jsonify (checkfield),400
+
+@app.route('/entries/<entry_id>', methods=['GET'])
+@jwt_required
+def get_single_entries(entry_id):
+    """get all user entries"""
+    authuser = get_jwt_identity()
+    entryUSER = authuser["user_id"]
+    db_connect.cursor.execute("SELECT * FROM tdiaryentries where user_id = %s and id = %s ", (entryUSER, entry_id))
+    db_connect.conn.commit()
+    result = db_connect.cursor.rowcount
+    if result > 0:
+        entry = db_connect.get_single_user_entry(entryUSER,entry_id)
+        return entry
+    else:
+        response = jsonify({"Message": "You dont have a specific entry with that *id*!"})
+        response.status_code = 400
+        return response 
+
+@app.route('/entries', methods=['GET'])
+@jwt_required
+def get_user_entries():
+    """get all user entries"""
+    authuser = get_jwt_identity()
+    entryUSER = authuser["user_id"]
+    db_connect.cursor.execute("SELECT * FROM tdiaryentries where user_id = %s", [entryUSER])
+    db_connect.conn.commit()
+    result = db_connect.cursor.rowcount
+    if result > 0:
+        entries = db_connect.get_all_user_entries(entryUSER)
+        return entries
+    else:
+        response = jsonify({"Message": "You haven't created any entries yet. Please create first."})
+        response.status_code = 200
+        return response 
+
+@app.route('/entries/<entry_id>', methods=['PUT'])
+@jwt_required
+def update_user_entry(entry_id):
+    entrydata = request.get_json()
+    required_fields={"due_date","name","purpose","type"}
+    checkfield = Validate.validate_field(entrydata,required_fields)
+    if not checkfield:
+        authuser = get_jwt_identity()
+        entryUSER = authuser["user_id"]
+        valid = Validate(entrydata["name"], entrydata["purpose"])
+        check = valid.validate_entry()
+        try:
+            date_format = "%Y-%m-%d"
+            date_obj = datetime.datetime.strptime(entrydata["due_date"], date_format)
+            if check is True and entrydata["name"].isalpha() and entrydata["type"].isalpha():
+                db_connect.cursor.execute("SELECT * FROM tdiaryentries where user_id = %s and id = %s ", (entryUSER, entry_id))
+                db_connect.conn.commit()
+                result = db_connect.cursor.rowcount
+                if result > 0:
+                    entry = db_connect.update_user_entryid(entryUSER, entry_id, entrydata["name"], entrydata["due_date"], entrydata["type"], entrydata["purpose"])
+                    return entry
+                else:
+                    response = jsonify({"Message": "You dont have a specific entry with that id!"})
+                    response.status_code = 400
+                    return response 
+            else:
+                response = jsonify({"Message": "Please provide a *name* and *purpose* of entry and ensure that all entries are in their valid format!"})
+                response.status_code = 400
+                return response 
+        except ValueError:
+            response = jsonify({"Message":"Please Check that your date format suits this format (YYYY-MM-DD)"})
+            response.status_code = 400
+            return response
+    else:
+        return jsonify (checkfield),400 
+
+

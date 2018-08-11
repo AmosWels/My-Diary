@@ -1,3 +1,6 @@
-/nbproject/private/
-*.pyc
-*__pycache__
+env/
+.idea/
+__pycache__/
+app/__pycache__/
+instance/__pycache
+tests/__pycache__/

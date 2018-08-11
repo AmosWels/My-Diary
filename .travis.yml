@@ -1,21 +1,22 @@
-''' specify language'''
 language: python
-
-''' specify language version to install and run'''
 python:
- - "3.6"
+  - "3.6"
+cache: pip
+# command to install dependencies
 
- ''' specify prerequisites'''
+before_script:
+  - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+  - chmod +x ./cc-test-reporter
+  - psql -c 'create database mydiary;' -U postgres
 install:
- - pip install -r requirements.txt 
- - pip install pytest
- - pip install coveralls
+  - pip install -r requirements.txt
+  - pip install coverage
+  - pip install coveralls
+  - pip install nose
 
- ''' specify scripts'''
 script:
- - pytest
- - nosetests -v --with-coverage --cover-package=api
+  - pytest 
+  - nosetests -v --with-coverage --cover-package=api
 
- ''' start test coverage after travis continous integration'''
-after_success: 
- - coveralls
+after_success:
+  - coveralls
