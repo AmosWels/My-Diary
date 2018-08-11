@@ -69,19 +69,19 @@ def signin():
 @jwt_required
 def create_user_entry():
     """create user entries """
-    entrydata = request.get_json()
+    entry_data = request.get_json()
     required_fields={"due_date","name","purpose","type"}
-    checkfield = Validate.validate_field(entrydata,required_fields)
+    checkfield = Validate.validate_field(entry_data,required_fields)
     if not checkfield:
-        authuser = get_jwt_identity()
-        entrydata["user_id"] = authuser["user_id"]
-        valid = Validate(entrydata["name"], entrydata["purpose"])
+        auth_user = get_jwt_identity()
+        entry_data["user_id"] = auth_user["user_id"]
+        valid = Validate(entry_data["name"], entry_data["purpose"])
         try:
             date_format = "%Y-%m-%d"
-            date_obj = datetime.datetime.strptime(entrydata["due_date"], date_format)
+            date_obj = datetime.datetime.strptime(entry_data["due_date"], date_format)
             info = valid.validate_entry()
-            if info is True and entrydata["name"].isalpha() and entrydata["type"].isalpha():
-                info = db_connect.create_user_entries(entrydata["name"], entrydata["due_date"], entrydata["type"], entrydata["purpose"],entrydata["user_id"])
+            if info is True and entry_data["name"].isalpha() and entry_data["type"].isalpha():
+                info = db_connect.create_user_entries(entry_data["name"], entry_data["due_date"], entry_data["type"], entry_data["purpose"],entry_data["user_id"])
                 return info
             else:
                 response = jsonify({"Message": "Please provide a *name* and *purpose* of entry and ensure that all entries are in their valid format!"})
@@ -98,13 +98,13 @@ def create_user_entry():
 @jwt_required
 def get_single_entries(entry_id):
     """get all user entries"""
-    authuser = get_jwt_identity()
-    entryUSER = authuser["user_id"]
-    db_connect.cursor.execute("SELECT * FROM tdiaryentries where user_id = %s and id = %s ", (entryUSER, entry_id))
+    auth_user = get_jwt_identity()
+    entry_USER = auth_user["user_id"]
+    db_connect.cursor.execute("SELECT * FROM tdiaryentries where user_id = %s and id = %s ", (entry_USER, entry_id))
     db_connect.conn.commit()
     result = db_connect.cursor.rowcount
     if result > 0:
-        entry = db_connect.get_single_user_entry(entryUSER,entry_id)
+        entry = db_connect.get_single_user_entry(entry_USER,entry_id)
         return entry
     else:
         response = jsonify({"Message": "You dont have a specific entry with that *id*!"})
@@ -115,13 +115,13 @@ def get_single_entries(entry_id):
 @jwt_required
 def get_user_entries():
     """get all user entries"""
-    authuser = get_jwt_identity()
-    entryUSER = authuser["user_id"]
-    db_connect.cursor.execute("SELECT * FROM tdiaryentries where user_id = %s", [entryUSER])
+    auth_user = get_jwt_identity()
+    entry_USER = auth_user["user_id"]
+    db_connect.cursor.execute("SELECT * FROM tdiaryentries where user_id = %s", [entry_USER])
     db_connect.conn.commit()
     result = db_connect.cursor.rowcount
     if result > 0:
-        entries = db_connect.get_all_user_entries(entryUSER)
+        entries = db_connect.get_all_user_entries(entry_USER)
         return entries
     else:
         response = jsonify({"Message": "You haven't created any entries yet. Please create first."})
@@ -131,23 +131,23 @@ def get_user_entries():
 @app.route('/entries/<entry_id>', methods=['PUT'])
 @jwt_required
 def update_user_entry(entry_id):
-    entrydata = request.get_json()
+    entry_data = request.get_json()
     required_fields={"due_date","name","purpose","type"}
-    checkfield = Validate.validate_field(entrydata,required_fields)
+    checkfield = Validate.validate_field(entry_data,required_fields)
     if not checkfield:
-        authuser = get_jwt_identity()
-        entryUSER = authuser["user_id"]
-        valid = Validate(entrydata["name"], entrydata["purpose"])
+        auth_user = get_jwt_identity()
+        entry_USER = auth_user["user_id"]
+        valid = Validate(entry_data["name"], entry_data["purpose"])
         check = valid.validate_entry()
         try:
             date_format = "%Y-%m-%d"
-            date_obj = datetime.datetime.strptime(entrydata["due_date"], date_format)
-            if check is True and entrydata["name"].isalpha() and entrydata["type"].isalpha():
-                db_connect.cursor.execute("SELECT * FROM tdiaryentries where user_id = %s and id = %s ", (entryUSER, entry_id))
+            date_obj = datetime.datetime.strptime(entry_data["due_date"], date_format)
+            if check is True and entry_data["name"].isalpha() and entry_data["type"].isalpha():
+                db_connect.cursor.execute("SELECT * FROM tdiaryentries where user_id = %s and id = %s ", (entry_USER, entry_id))
                 db_connect.conn.commit()
                 result = db_connect.cursor.rowcount
                 if result > 0:
-                    entry = db_connect.update_user_entryid(entryUSER, entry_id, entrydata["name"], entrydata["due_date"], entrydata["type"], entrydata["purpose"])
+                    entry = db_connect.update_user_entryid(entry_USER, entry_id, entry_data["name"], entry_data["due_date"], entry_data["type"], entry_data["purpose"])
                     return entry
                 else:
                     response = jsonify({"Message": "You dont have a specific entry with that id!"})

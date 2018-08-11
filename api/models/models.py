@@ -28,7 +28,6 @@ class DiaryDatabase():
             self.cursor.execute(Entries,)
             self.cursor.execute(Userstest,)
             self.conn.commit()
-            # print("Created Succesfuly\n")
         except:
             print("Already Created\n")
 
@@ -41,8 +40,7 @@ class DiaryDatabase():
         else:
             return jsonify({"Message": "username, invalid"})
         return jsonify({"Message": "account succesfuly created"})
-        # hashed_password = generate_password_hash(password, method="sha256")
-    # @jwt_refresh_token_required
+
     def signin(self, username,password):
         self.cursor.execute("SELECT * FROM  tusers where username = %s and password = %s", (username, password))   
         self.conn.commit()
@@ -52,7 +50,6 @@ class DiaryDatabase():
             expires = timedelta(minutes=120)
             loggedin_user=dict(user_id=result[0],username=result[1],password=result[2])
             access_token = create_access_token(identity=loggedin_user, expires_delta=expires)
-            # print(result)
             response = jsonify({"Message":"welcome, you have succesfully logged in !!!", "your token":access_token})
             response.status_code = 201
             return response 
@@ -80,7 +77,6 @@ class DiaryDatabase():
             return response
     
     def get_single_user_entry(self,user_id,entry_id):
-        # sql = "SELECT * FROM tdiaryentries where user_id = %s",(user_id)
         self.cursor.execute("SELECT * FROM tdiaryentries where user_id = %s and id = %s ",[user_id,entry_id])
         self.conn.commit()
         entries =self.cursor.rowcount
@@ -104,7 +100,6 @@ class DiaryDatabase():
             return response 
 
     def get_all_user_entries(self,user_id):
-        # sql = "SELECT * FROM tdiaryentries where user_id = %s",(user_id)
         self.cursor.execute("SELECT * FROM tdiaryentries where user_id = %s",[user_id])
         self.conn.commit()
         entries =self.cursor.rowcount
@@ -130,8 +125,6 @@ class DiaryDatabase():
         entries = self.cursor.rowcount
         if entries > 0: 
             all_entry_column = self.cursor.fetchone()
-            # for column in all_entry_column:
-            # if all_entry_column["date_created"] == today_date: 
             valid = Validate(name, purpose)
             if valid.validate_entry():
                 self.cursor.execute("UPDATE tdiaryentries SET name = %s, due_date = %s, type = %s, purpose = %s WHERE id = %s", [name, due_date, type1,purpose, update_entry_id])
@@ -143,9 +136,6 @@ class DiaryDatabase():
                 response = jsonify({"Message": "should provide valid name and purpose of entry!"})
                 response.status_code = 400
                 return response
-            # else:
-            #     response = jsonify({"MESSAGE": "YOU CAN ONLY MODIFY TODAY'S ENTRIES!"})
-            #     response.status_code = 400
         else:
             response = jsonify({"Message": "your dont have a specific entry with that id to be **modified**!"})
             response.status_code = 400
