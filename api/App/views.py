@@ -1,4 +1,5 @@
 from flask import Flask, request, jsonify, make_response
+from flask_cors import CORS
 from flask_jwt_extended import create_access_token, jwt_required, JWTManager, get_jwt_identity
 from api.models.models import DiaryDatabase
 from api.validate import Validate
@@ -8,6 +9,7 @@ import datetime
 '''Initialising a flask application'''
 app = Flask(__name__)
 '''Initialising an empty dictionary'''
+CORS(app, resources=r'/api/*')
 jwt = JWTManager(app)
 app.config['SECRET_KEY'] = 'thisisasecretkey'
 now = datetime.datetime.now()
@@ -16,7 +18,7 @@ db_connect = DiaryDatabase()
 def __init__(self):
         DiaryDatabase.__init__(self)
         
-@app.route('/auth/signup', methods=['POST'])
+@app.route('/api/v1/auth/signup', methods=['POST'])
 def register():
     """ registering user """
     data = request.get_json()
@@ -46,7 +48,7 @@ def register():
     else:
         return jsonify (checkfield),400
 
-@app.route('/auth/login', methods=['POST'])
+@app.route('/api/v1/auth/login', methods=['POST'])
 def signin():
     """user login"""
     data = request.get_json()
@@ -65,7 +67,7 @@ def signin():
     else:
         return jsonify (checkfield),400
 
-@app.route('/entries', methods=['POST'])
+@app.route('/api/v1/entries', methods=['POST'])
 @jwt_required
 def create_user_entry():
     """create user entries """
@@ -94,7 +96,7 @@ def create_user_entry():
     else:
         return jsonify (checkfield),400
 
-@app.route('/entries/<entry_id>', methods=['GET'])
+@app.route('/api/v1/entries/<entry_id>', methods=['GET'])
 @jwt_required
 def get_single_entries(entry_id):
     """get all user entries"""
@@ -111,7 +113,7 @@ def get_single_entries(entry_id):
         response.status_code = 400
         return response 
 
-@app.route('/entries', methods=['GET'])
+@app.route('/api/v1/entries', methods=['GET'])
 @jwt_required
 def get_user_entries():
     """get all user entries"""
@@ -128,7 +130,7 @@ def get_user_entries():
         response.status_code = 200
         return response 
 
-@app.route('/entries/<entry_id>', methods=['PUT'])
+@app.route('/api/v1/entries/<entry_id>', methods=['PUT'])
 @jwt_required
 def update_user_entry(entry_id):
     entrydata = request.get_json()
