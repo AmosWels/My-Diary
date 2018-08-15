@@ -15,11 +15,13 @@
     <ul class="breadcrumb">
         <li>Home</li>
         <!--<li><a href="viewdiaries.html">view Diaries</a></li>-->
-        <li>view Diary Entries</li>
+        <li>View Diary Entries</li>
     </ul>
     <div class="header">
         <!-- <h3>Welcome, </h3> -->
-        <a href="#default" class="logo">Entries</a>
+        <form id="getData" method="POST">
+            <button type="submit" id="view">Click to view Entries</button>
+        </form>
         <div class="header-right">
             <a class="" href="userprofile.html">View My Profile</a> &nbsp;&nbsp;&sol;&nbsp;&nbsp;&nbsp;
             <a class="" href="creatediary.html">Create Diary Entry</a>
@@ -35,8 +37,9 @@
                 <th>Purpose</th>
                 <th>Due Date</th>
             </tr>
-            <div id="call"></div>
+
         </table>
+        <p id="result"></p>
         <br>
         <div class="divider"></div>
     </div>

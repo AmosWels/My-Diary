@@ -53,7 +53,7 @@ class DiaryDatabase():
             loggedin_user=dict(user_id=result[0],username=result[1],password=result[2])
             access_token = create_access_token(identity=loggedin_user, expires_delta=expires)
             # print(result)
-            response = jsonify({"Message":"welcome, you have succesfully logged in !!!", "your token":access_token})
+            response = jsonify({"Message":"welcome, you have succesfully logged in !!!", "token":access_token})
             response.status_code = 201
             return response 
         else:
@@ -75,7 +75,7 @@ class DiaryDatabase():
             sql = "INSERT INTO tdiaryentries(name,due_date,type,purpose,date_created,user_id) VALUES (%s,%s,%s,%s,%s,%s)"
             self.cursor.execute(sql, (name,due_date,type1,purpose,today_date,user_id))
             self.conn.commit()
-            response = jsonify({"Message":"your has entry has been succesfully created!"})
+            response = jsonify({"Message":"your entry has been succesfully created!"})
             response.status_code = 201
             return response
     
@@ -121,7 +121,7 @@ class DiaryDatabase():
                 result["date_created"]=ent[5]
                 result["user_id"]=ent[6]
                 user_entry_list.append(result)
-            return jsonify({"YOUR ENTRIES SO FAR!": user_entry_list})
+            return jsonify({"entries": user_entry_list})
     
     def update_user_entryid(self,user_id,update_entry_id,name,due_date,type1,purpose):
         today_date = now.strftime("%Y-%m-%d")

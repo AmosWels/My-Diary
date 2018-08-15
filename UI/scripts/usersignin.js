@@ -20,8 +20,9 @@ function login(e) {
     .then(function (data) {
         if (data.Message === "welcome, you have succesfully logged in !!!") {
             window.location.href = './viewdiaries.html';
-            window.localStorage.setItem('token', data.token);
-            alert("welcome, you have succesfully logged in !!!");
+            // window.localStorage.setItem('token', data.token);
+            sessionStorage.setItem('token', data.token);
+            alert("welcome, you have succesfully logged in !!!"+ data.token);
         } else {
             document.getElementById("call").innerHTML = "Fail : wrong credentials";
         }
