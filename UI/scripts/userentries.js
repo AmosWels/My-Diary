@@ -2,12 +2,10 @@ document.getElementById('getData').addEventListener('submit', getentries);
 function getentries(e) {
     e.preventDefault();
     var Token = sessionStorage.getItem('token');
-    // var Token = Window.getItem('Token');
-    // var Token = window.localStorage.getItem('token');
-
     var url = 'http://127.0.0.1:5000/api/v1/entries';
+    
     fetch(url, {
-        method:'GET',
+        method: 'GET',
         headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${Token}`
@@ -18,37 +16,26 @@ function getentries(e) {
         })
         .then(function (data) {
             if (data.Message === "You haven't created any entries yet. Please create first.") {
-                document.getElementById('result').innerHTML = "Success :" + data.Message; }
-            if (data.entries != ""){
-                // document.getElementById('result').innerHTML = "Success :" + data.entries;
-            // } else{
-            //     document.getElementById('result').innerHTML = "Success :" + data.Message;
-                let result;
-                data.forEach((entry) => {
-                    const { id, name, due_date, type, purpose, date_created } = entry
-                    result +=
-                        `<div>
-                    <h5> User ID: ${id} </h5>
-                        <ul>
-                            <li> User Full Name : ${name}</li>
-                            <li> User Email : ${due_date} </li>
-                            <li> User Address : ${type} </li>
-                            <li> User Address : ${purpose} </li>
-                            <li> User Address : ${date_created} </li>
-                        </ul>
-                    </div>`;
-                    document.getElementById('result').innerHTML = result;
-                });
+                document.getElementById('result').innerHTML = "Success :" + data.Message;
             }
-        })
+            if (data.entries != "") {
+                var object = data.entries;
+                var objectlength = object.length;
+                var table = document.getElementById("customers");
+                for (var i = 0; i < objectlength; i++) {
+                    var record = document.createElement("tr");
+                    var name = object[i].name;
+                    var due_date = object[i].due_date;
+                    var type = object[i].type;
+                    var purpose = object[i].purpose;
+                    var date_created = object[i].date_created;
+
+                    document.getElementById("name").innerHTML = name;
+                    document.getElementById("datecreated").innerHTML = date_created;
+                    document.getElementById("type").innerHTML = type;
+                    document.getElementById("purpose").innerHTML = purpose;
+                    document.getElementById("duedate").innerHTML = due_date;
+                }
+            };
+        });
 }
- //     result +=
-                //         `<tr onclick="location.href = './viewdiarycontent.html'">
-                //                 <td style="width: 300px;">${name}</td>
-                //                 <td>${date_created}</td>
-                //                 <td>${type}</td>
-                //                 <td>${purpose}</td>
-                //                 <td>${due_date}</td>
-                //             </tr> `;
-                //     document.getElementById('result').innerHTML = result;
-                // });
