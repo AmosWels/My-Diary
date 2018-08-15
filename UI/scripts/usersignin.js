@@ -21,6 +21,7 @@ function login(e) {
         if (data.Message === "welcome, you have succesfully logged in !!!") {
             window.location.href = './viewdiaries.html';
             window.localStorage.setItem('token', data.token);
+            alert("welcome, you have succesfully logged in !!!");
         } else {
             document.getElementById("call").innerHTML = "Fail : wrong credentials";
         }
