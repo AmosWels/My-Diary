@@ -8,7 +8,8 @@ import datetime
 
 '''Initialising a flask application'''
 app = Flask(__name__)
-'''Initialising an empty dictionary'''
+'''Initialising cors in flask app'''
+# CORS(app)
 CORS(app, resources=r'/api/*')
 jwt = JWTManager(app)
 app.config['SECRET_KEY'] = 'thisisasecretkey'
@@ -16,7 +17,7 @@ now = datetime.datetime.now()
 db_connect = DiaryDatabase()
 
 def __init__(self):
-        DiaryDatabase.__init__(self)
+    DiaryDatabase.__init__(self)
         
 @app.route('/api/v1/auth/signup', methods=['POST'])
 def register():
