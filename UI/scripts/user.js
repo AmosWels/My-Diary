@@ -1,4 +1,4 @@
-document.getElementById('register').addEventListener('submit', signup)
+document.getElementById('register').addEventListener('submit', signup);
 function signup(e) {
     e.preventDefault();
     var url = 'http://127.0.0.1:5000/api/v1/auth/signup';
@@ -33,4 +33,3 @@ function signup(e) {
         document.getElementById("call").innerHTML = "Fail : Your passwords Don't match";
     }
 }
-function signin() {}
