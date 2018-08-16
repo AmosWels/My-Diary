@@ -19,7 +19,7 @@
     </ul>
     <div class="header">
         <!-- <h3>Welcome, </h3> -->
-        <form id="getData" method="POST">
+        <form id="getData" method="GET">
             <button type="submit" id="view">Click to view Entries</button>
         </form>
         <div class="header-right">
@@ -31,19 +31,14 @@
     <div class="container">
         <table id="customers">
             <tr>
+                <th>No. </th>
                 <th>Name </th>
-                <th>Date Created</th>
+                <th>Due Date</th>
                 <th>Type</th>
                 <th>Purpose</th>
-                <th>Due Date</th>
+                <th>Date Created</th>
             </tr>
-            <tr>
-                <td id="name"></td>
-                <td id="datecreated"></td>
-                <td id="type"></td>
-                <td id="purpose"></td>
-                <td id="duedate"></td>
-            </tr>
+            <tr style="color: red;" id="result"></tr>
         </table>
         
         <br>
