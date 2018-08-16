@@ -20,11 +20,10 @@ function login(e) {
     .then(function (data) {
         if (data.Message === "welcome, you have succesfully logged in !!!") {
             window.location.href = './viewdiaries.html';
-            // window.localStorage.setItem('token', data.token);
-            sessionStorage.setItem('token', data.token);
-            alert("welcome, you have succesfully logged in !!!"+ data.token);
+            localStorage.setItem('token', data.token);
+            alert("Message : "+ data.Message);
         } else {
-            document.getElementById("call").innerHTML = "Fail : wrong credentials";
+            document.getElementById("call").innerHTML = "Fail : " + data.Message;
         }
     })
     .catch(function (error) {
