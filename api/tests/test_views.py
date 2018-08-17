@@ -10,10 +10,10 @@ from api.tests.test_entries import user1, user2, user3, user4, user5, user6, use
 class TestDiaryEntries(TestStartAll):
     def setUp(self):
         """Define test variables and initialize app."""
-        app.config['TESTING']=True
+        
         self.app = app                     
         with app.test_request_context():
-            self.loggedin_user=dict(user_id=1,username='amos',password='amos123')
+            self.loggedin_user=dict(user_id=1,username='amoswelss',password='amos123')
             self.access_token=create_access_token(self.loggedin_user)
             self.access={'Authorization':'Bearer {}'.format(self.access_token)}
             

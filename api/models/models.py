@@ -7,30 +7,37 @@ from api.validate import Validate
 from datetime import datetime, timedelta
 from api.App import views
 import datetime
+# from config import config
 
 now = datetime.datetime.now()
 
 class DiaryDatabase():
     def __init__(self):
-        self.conn_string = "host='localhost' dbname='mydiary' user='postgres' password='root'"
-
-        self.conn = psycopg2.connect(self.conn_string)
-
         Users="""create table IF NOT EXISTS tusers (id serial primary key not null,username text not null,
                             password text not null)"""
         Entries="""create table IF NOT EXISTS tdiaryentries  (id serial primary key not null,name text not null,
                             due_date text not null, type text not null, purpose text not null, date_created text not null, user_id int)"""
-        Userstest="""create table IF NOT EXISTS tusersTest (id serial primary key not null,username text not null,
-                            password text not null)"""
-        self.cursor = self.conn.cursor()
-        try:
-            self.cursor.execute(Users,)
-            self.cursor.execute(Entries,)
-            self.cursor.execute(Userstest,)
-            self.conn.commit()
-            # print("Created Succesfuly\n")
-        except:
-            print("Already Created\n")
+
+        if not views.app.config['TESTING']:
+            self.conn_string = "host='localhost' dbname='mydiary' user='postgres' password='root'"
+            self.conn = psycopg2.connect(self.conn_string)
+            self.cursor = self.conn.cursor()
+            try:
+                self.cursor.execute(Users,)
+                self.cursor.execute(Entries,)
+                self.conn.commit()
+            except:
+                print("\n Tables Already Created!!\n")
+        else:
+            self.conn_string = "host='localhost' dbname='diarytestdb' user='postgres' password='root'"
+            self.conn = psycopg2.connect(self.conn_string)
+            self.cursor = self.conn.cursor()
+            try:
+                self.cursor.execute(Users,)
+                self.cursor.execute(Entries,)
+                self.conn.commit()
+            except:
+                print("\n Tables Already Created!!\n")
 
     def signup(self,username,password):
         valid = Validate(username, password)
@@ -57,7 +64,7 @@ class DiaryDatabase():
             response.status_code = 201
             return response 
         else:
-            response = jsonify({"message":"wrong credentials"})
+            response = jsonify({"Message":"wrong credentials, Please check your credentials and Try again!!!"})
             response.status_code = 403
             return response  
     

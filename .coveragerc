@@ -28,4 +28,4 @@ omit =
         */decimal.py/*
         */env/*
         */psycopg2/*
-        */models/*
+        
