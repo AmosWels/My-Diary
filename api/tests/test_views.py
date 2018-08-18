@@ -2,15 +2,16 @@ from flask_jwt_extended import create_access_token
 from api.tests.test_app import TestStartAll
 import unittest
 import json
+import psycopg2
 from api.App.views import app, db_connect
 import jwt
 from api.tests.test_entries import user1, user2, user3, user4, user5, user6, user7, user8, user9, userlogin, entry1, entry2, entry3, entry4, entry5,entry6, entry7,entry8,entry9,entry10
 
-
 class TestDiaryEntries(TestStartAll):
     def setUp(self):
         """Define test variables and initialize app."""
-        
+        app.config['TESTING'] = True
+        # db_connect
         self.app = app                     
         with app.test_request_context():
             self.loggedin_user=dict(user_id=1,username='amoswelss',password='amos123')
@@ -178,8 +179,17 @@ class TestDiaryEntries(TestStartAll):
         self.assertEqual(response.status_code, 400)
     
     def tearDown(self):
-            users_table="""DELETE FROM tusers"""
-            entries_table="""DELETE FROM tdiaryentries"""
-            db_connect.cursor.execute(users_table)
-            db_connect.cursor.execute(entries_table)
-            db_connect.conn.commit()
+        # users_table="""DELETE FROM tusers"""
+        # entries_table="""DELETE FROM tdiaryentries"""
+        # conn = db_connect.db_teardown()
+        # cursor = conn.cursor()
+        # cursor.execute(users_table,)
+        # conn.commit()
+        # cursor.execute(entries_table,)
+        # conn.commit()
+        
+        users_table="""DELETE FROM tusers"""
+        entries_table="""DELETE FROM tdiaryentries"""
+        db_connect.cursor.execute(users_table)
+        db_connect.cursor.execute(entries_table)
+        db_connect.conn.commit()

@@ -16,8 +16,8 @@ app.config['SECRET_KEY'] = 'thisisasecretkey'
 now = datetime.datetime.now()
 db_connect = DiaryDatabase()
 
-def __init__(self):
-    DiaryDatabase.__init__(self)
+# def __init__(self):
+#     DiaryDatabase.__init__(self)
         
 @app.route('/api/v1/auth/signup', methods=['POST'])
 def register():
@@ -64,7 +64,7 @@ def signin():
             user = db_connect.signin(username, password)
             return user
         else:
-            return jsonify({"Message":"your credentials are wrong! Please check your data field."})
+            return jsonify({"Message":"your credentials are wrong! Please check your data field."}),400
     else:
         return jsonify (checkfield),400
 

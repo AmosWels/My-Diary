@@ -25,7 +25,7 @@ function create(e) {
             if (data.Message === "your entry has been succesfully created!") {
                 // sessionStorage.setItem('token', data.token);
                 alert("Message : "+ data.Message);
-                document.getElementById("call").innerHTML = "Success :" + data.Message;
+                // document.getElementById("call").innerHTML = "Success :" + data.Message;
                 window.location.href = './viewdiaries.html';
             } else {
                 document.getElementById("call").innerHTML = "Fail : " + data.Message;
