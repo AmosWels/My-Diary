@@ -124,10 +124,9 @@ class DiaryDatabase():
                 result["date_created"] = ent[5]
                 result["user_id"] = ent[6]
                 user_entry.append(result)
-            return jsonify({"Your single id specific entry!": user_entry})
+            return jsonify({"entry": user_entry})
         else:
-            response = jsonify(
-                {"Your dont have a specific entry with that id!"})
+            response = jsonify({"Your dont have a specific entry with that id!"})
             response.status_code = 400
             return response
 

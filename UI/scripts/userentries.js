@@ -25,14 +25,14 @@ function getentries(e) {
                 var i = 0;
                 var j = 1;
                 var objectlength = object.length;
-                for (i, j; i < objectlength, j<=objectlength; i++, j++) {
+                for (i, j; i < objectlength, j <= objectlength; i++ , j++) {
                     var id = object[i].id;
                     var name = object[i].name;
                     var due_date = object[i].due_date;
                     var type = object[i].type;
                     var purpose = object[i].purpose;
                     var date_created = object[i].date_created;
-
+                    
                     var newRow = table.insertRow(table.rows.length);
                     var cel1 = newRow.insertCell(0);
                     var cel2 = newRow.insertCell(1);
@@ -40,6 +40,7 @@ function getentries(e) {
                     var cel4 = newRow.insertCell(3);
                     var cel5 = newRow.insertCell(4);
                     var cel6 = newRow.insertCell(5);
+                    var cel7 = newRow.insertCell(6);
 
                     cel1.innerHTML = j;
                     cel2.innerHTML = name;
@@ -47,9 +48,58 @@ function getentries(e) {
                     cel4.innerHTML = type;
                     cel5.innerHTML = purpose;
                     cel6.innerHTML = date_created;
+                    cel7.innerHTML = "<a href='./modifydiary.html'>Modify</a> &nbsp; &nbsp; &nbsp; <button type='submit' class='btn'>View</button>"
+                    sessionStorage.setItem('id', id);
+                    // localStorage.setItem('ent_id',id)
+                    // newRow.onclick(DoNav("./viewdiarycontent.html"))
                 }
             } else {
                 document.getElementById("result").innerHTML = "Message : " + data.Msg;
             };
         });
 }
+
+// function DoNav(theUrl) {
+//     window.location.href = theUrl;
+// }
+// function getoneEntry(entryid) {
+//     document.getElementById("modify").value;
+//     var Token = localStorage.getItem('token');
+//     var url = '/api/v1/entries/' + entryid;
+
+//     fetch(url, {
+//         method: 'GET',
+//         headers: {
+//             'Content-Type': 'application/json',
+//             'Authorization': `Bearer ${Token}`
+//         }
+//     })
+//         .then(function (response) {
+//             return response.json();
+//         })
+//         .then(function (data) {
+//             if (data.Message !="You dont have a specific entry with that *id*!") {
+//                 document.getElementById("call").innerHTML = "Fail : " + data.Message;
+//             } else if (data.entry != "") {
+//                 // var id = object[i].id;
+//                 // var name = object[i].name;
+//                 // var due_date = object[i].due_date;
+//                 // var type = object[i].type;
+//                 // var purpose = object[i].purpose;
+//                 // var date_created = object[i].date_created;
+//                 // modal.style.display = 'block';
+//                 document.getElementById('mname').innerHTML = name;
+//                 document.getElementById('mduedate').innerHTML = due_date;
+//                 document.getElementById('mtype').innerHTML = type;
+//                 document.getElementById('mpurpose').innerHTML = purpose;
+//                 document.getElementById('mdatecreated').innerHTML = date_created;
+//                 // sessionStorage.setItem('token', data.token);
+//                 // alert("Message : "+ data.Message);
+//                 // document.getElementById("call").innerHTML = "Success :" + data.Message;
+//                 // window.location.href = './viewdiaries.html';
+//             }
+//         })
+//         .catch(function (error) {
+//             console.log('Request failure: ', error);
+//         });
+// }

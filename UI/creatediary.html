@@ -12,7 +12,6 @@
     </head>
     <body>
         <ul class="breadcrumb">
-            <!--<li><a href="index.html">Home</a></li>-->
             <li><a href="viewdiaries.html">View Diaries</a></li>
             <li>Create New Diary Entry</li>
         </ul>
@@ -24,16 +23,13 @@
 
                 <label for="duedate">Due Date</label>
                 <input type="text" id="eduedate" name="duedate" placeholder="YYYY-MM-DD" required>
-                <!-- <input type="text" id="eduedate" name="duedate" placeholder="YYYY-MM-DD" required pattern="(?:19|20)[0-9]{2}-(?:(?:0[1-9]|1[0-2])/(?:0[1-9]|1[0-9]|2[0-9])|(?:(?!02)(?:0[1-9]|1[0-2])/(?:30))|(?:(?:0[13578]|1[02])-31))" title="Enter a date in this format YYYY/MM/DD"/> -->
 
                 <label for="type">Type</label>
                 <input type="text" id="etype" name="type" placeholder="Diary Entry Type.." required>
 
                 <label for="purpose">Purpose</label>
                 <input type="text" id="epurpose" name="purpose" placeholder="Diary Entry Type.." required>
-                <!-- <textarea id="epurpose" name="purpose" placeholder="Provide Purpose.." style="height:200px" required></textarea><br> -->
                 <input  style="margin-left: 87%;" type="submit" id="createbutton" value="Create">
-                <!-- <button style="margin-left: 87%;" type="submit" id="createbutton">Create</button> -->
                 <script src="scripts/usercreateEntries.js"></script>
             </form>
         </div>
