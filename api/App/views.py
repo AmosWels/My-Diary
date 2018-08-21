@@ -157,7 +157,7 @@ def update_user_entry(entry_id):
                     response.status_code = 400
                     return response 
             else:
-                response = jsonify({"Message": "Please provide a *name* and *purpose* of entry and ensure that all entries are in their valid format!"})
+                response = jsonify({"Message": "Please provide a *name* || *type* of entry. Ensure that all entries are in their valid format with no Spaces[ ] !"})
                 response.status_code = 400
                 return response 
         except ValueError:

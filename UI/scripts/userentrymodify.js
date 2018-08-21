@@ -5,6 +5,7 @@ function updateentry(e) {
     var id = sessionStorage.getItem('id');
     var url = 'http://127.0.0.1:5000/api/v1/entries/'+id;
 
+    // var newname = document.getElementById("nid").value;
     var newname = document.getElementById("nname").value;
     var newduedate = document.getElementById("nduedate").value;
     var newtype = document.getElementById("ntype").value;

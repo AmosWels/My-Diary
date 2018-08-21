@@ -2,7 +2,8 @@ document.getElementById('getentryData').addEventListener('submit', getentry);
 function getentry(e) {
     e.preventDefault();
     var Token = localStorage.getItem('token');
-    var id = sessionStorage.getItem('id');
+    // let id = sessionStorage.getItem('id');
+    var id = document.getElementById("eid").value;
     var url = 'http://127.0.0.1:5000/api/v1/entries/'+id;
 
     fetch(url, {
@@ -17,7 +18,9 @@ function getentry(e) {
         })
         .then(function (data) {
             if (data.Message === "You dont have a specific entry with that *id*!") {
-                document.getElementById("result").innerHTML = "Message : " + data.Message;
+                // document.getElementById("result").innerHTML = "Message : " + data.Message;
+                alert("Message : "+ data.Message +"\n Entry id : "+ id);
+                window.location.href = './modifydiary.html';
             } else if (data.entry != "") {
                 var object = data.entry;
                 var i = 0;
@@ -36,6 +39,7 @@ function getentry(e) {
                 oFormObject.elements["type"].value = type;
                 oFormObject.elements["purpose"].value = purpose;
                 oFormObject.elements["datecreated"].value = date_created;
+                sessionStorage.setItem('id',id);
                 }
             } else {
                 document.getElementById("result").innerHTML = "Message : " + data.Msg;

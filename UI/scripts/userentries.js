@@ -1,4 +1,5 @@
 document.getElementById('getData').addEventListener('submit', getentries);
+
 function getentries(e) {
     e.preventDefault();
     var Token = localStorage.getItem('token');
@@ -32,7 +33,7 @@ function getentries(e) {
                     var type = object[i].type;
                     var purpose = object[i].purpose;
                     var date_created = object[i].date_created;
-                    
+
                     var newRow = table.insertRow(table.rows.length);
                     var cel1 = newRow.insertCell(0);
                     var cel2 = newRow.insertCell(1);
@@ -41,24 +42,50 @@ function getentries(e) {
                     var cel5 = newRow.insertCell(4);
                     var cel6 = newRow.insertCell(5);
                     var cel7 = newRow.insertCell(6);
+                    var cel8 = newRow.insertCell(7);
 
-                    cel1.innerHTML = j;
-                    cel2.innerHTML = name;
-                    cel3.innerHTML = due_date;
-                    cel4.innerHTML = type;
-                    cel5.innerHTML = purpose;
-                    cel6.innerHTML = date_created;
-                    cel7.innerHTML = "<a href='./modifydiary.html'>Modify</a> &nbsp; &nbsp; &nbsp; <button type='submit' class='btn'>View</button>"
-                    sessionStorage.setItem('id', id);
+                    cel1.innerHTML = j + '.';
+                    cel2.innerHTML = '[ '+id+' ]';
+                    cel3.innerHTML = name;
+                    cel4.innerHTML = due_date;
+                    cel5.innerHTML = type;
+                    cel6.innerHTML = purpose;
+                    cel7.innerHTML = date_created;
+                    // cel7.innerHTML = window.location.href = './modifydiary.html';
+                    cel8.innerHTML = "<a href='./modifydiary.html'>Actions</a>"
+                    // sessionStorage.setItem('id', id);
+                    // alert(id);
+                    
                     // localStorage.setItem('ent_id',id)
                     // newRow.onclick(DoNav("./viewdiarycontent.html"))
+                    // for (var k = 0; k < objectlength; k++) {
+                    //     newRow[k].onclick =  alert(id);
+                    //         // Do more stuff with this id.
+                    // }
                 }
+
+                    
+
+
             } else {
                 document.getElementById("result").innerHTML = "Message : " + data.Msg;
             };
         });
 }
 
+function getrow() {
+    var table1 = document.getElementById("customers");
+    var rows = table1.rows;
+    var length = rows.length;
+    for (var k = 0; k < length; k++) {
+        rows[k].onclick =  alert(k);
+            // Do more stuff with this id.
+    }
+}
+// jQuery:
+// $("#table-one tr").bind("click", function() {
+//     alert(this.id);
+// });
 // function DoNav(theUrl) {
 //     window.location.href = theUrl;
 // }
