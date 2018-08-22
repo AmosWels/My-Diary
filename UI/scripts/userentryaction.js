@@ -18,7 +18,7 @@ function getentry() {
     // let id = sessionStorage.getItem('id');
     let id =extractid();
     if(id==='wrong URL'){
-        console.log(id);
+        
         return(id);
 
     }

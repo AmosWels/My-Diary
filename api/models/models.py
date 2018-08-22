@@ -17,12 +17,13 @@ class DiaryDatabase():
                             password text not null)"""
         Entries = """create table IF NOT EXISTS tdiaryentries  (id serial primary key not null,name text not null,
                             due_date text not null, type text not null, purpose text not null, date_created text not null, user_id int)"""
-        
         app_env = os.environ.get('app_env', None)
         if app_env == 'TESTING':
             self.conn_string = "host='localhost' dbname='diarytestdb' user='postgres' password='root'"
         else:
-            self.conn_string = "host='localhost' dbname='mydiary' user='postgres' password='root'"
+            DATABASE_URL = "postgres://gdwgfivypxzysg:f187f82e8b91e6282c9a57b1032acf0d8a27f5d4832aa3f620c533807e38ed26@ec2-54-163-227-253.compute-1.amazonaws.com:5432/d1fk1artp266bb"
+            self.conn_string = DATABASE_URL
+            # self.conn_string = "host='localhost' dbname='mydiary' user='postgres' password='root'"
 
         # if not views.app.config['TESTING']:
         #     self.conn_string = "host='localhost' dbname='mydiary' user='postgres' password='root'"
