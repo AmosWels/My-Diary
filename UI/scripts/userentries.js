@@ -1,7 +1,6 @@
-document.getElementById('getData').addEventListener('submit', getentries);
-
-function getentries(e) {
-    e.preventDefault();
+// document.getElementById('getData').addEventListener('submit', getentries);
+function getentries() {
+    // e.preventDefault();
     var Token = localStorage.getItem('token');
     var url = 'http://127.0.0.1:5000/api/v1/entries';
 
@@ -52,7 +51,13 @@ function getentries(e) {
                     cel6.innerHTML = purpose;
                     cel7.innerHTML = date_created;
                     // cel7.innerHTML = window.location.href = './modifydiary.html';
-                    cel8.innerHTML = "<a href='./modifydiary.html'>Actions</a>"
+                    // cel8.innerHTML = "<a href='./modifydiary.html/&id=$(id)'>Actions</a>"
+                    // cel8.setAttribute('a')
+                    let link=document.createElement('a');
+                    let url='./modifydiary.html?id='+id;
+                    link.setAttribute('href',url);
+                    link.innerHTML='Actions';
+                    cel8.appendChild(link);
                     // sessionStorage.setItem('id', id);
                     // alert(id);
                     

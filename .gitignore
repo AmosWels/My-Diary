@@ -1,6 +1,9 @@
 env/
+chal3/
 .idea/
 __pycache__/
 app/__pycache__/
 instance/__pycache
 tests/__pycache__/
+*.__pycache
+*.pyc 

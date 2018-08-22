@@ -1,9 +1,27 @@
 document.getElementById('getentryData').addEventListener('submit', getentry);
-function getentry(e) {
-    e.preventDefault();
+
+function extractid(){
+    let url=window.location.search.substring(1);
+    let variables=url.split('&');
+    for(var i=0;i<variables.length;i++){
+        var parname=variables[i].split('=');
+        if(parname[0]=='id'){
+            return parname[1];
+        }
+    }
+    return('wrong URL');
+}
+getentry();
+function getentry() {
+    // e.preventDefault();
     var Token = localStorage.getItem('token');
     // let id = sessionStorage.getItem('id');
-    var id = document.getElementById("eid").value;
+    let id =extractid();
+    if(id==='wrong URL'){
+        console.log(id);
+        return(id);
+
+    }
     var url = 'http://127.0.0.1:5000/api/v1/entries/'+id;
 
     fetch(url, {
