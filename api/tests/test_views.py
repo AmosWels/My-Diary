@@ -29,7 +29,7 @@ class TestDiaryEntries(TestStartAll):
         test = app.test_client(self)
         response = test.post('/api/v1/auth/signup', content_type='application/json', data=json.dumps(user6))
         self.assertNotIn('Not added',response.data.decode())
-        self.assertEqual(response.status_code,400) 
+        self.assertEqual(response.status_code,201) 
 
     def test_short_userSignup(self):
         """Creating a user supply right data"""
