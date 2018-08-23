@@ -15,7 +15,6 @@ getentry();
 function getentry() {
     // e.preventDefault();
     var Token = localStorage.getItem('token');
-    // let id = sessionStorage.getItem('id');
     let id =extractid();
     if(id==='wrong URL'){
         
@@ -59,8 +58,10 @@ function getentry() {
                 oFormObject.elements["datecreated"].value = date_created;
                 sessionStorage.setItem('id',id);
                 }
-            } else {
-                document.getElementById("result").innerHTML = "Message : " + data.Msg;
+            } else if(data.msg === "Token has expired") {
+                // document.getElementById("result").innerHTML = "Message : " + data.msg;
+                alert("Message : "+ data.msg +"\n Please Login again");
+                window.location.href = './index.html';
             };
         });
 }

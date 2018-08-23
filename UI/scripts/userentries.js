@@ -1,8 +1,8 @@
 // document.getElementById('getData').addEventListener('submit', getentries);
 function getentries() {
     // e.preventDefault();
-    var Token = localStorage.getItem('token');
-    var url = 'http://127.0.0.1:5000/api/v1/entries';
+    let Token = localStorage.getItem('token');
+    let url = 'http://127.0.0.1:5000/api/v1/entries';
 
     fetch(url, {
         method: 'GET',
@@ -17,9 +17,7 @@ function getentries() {
         .then(function (data) {
             if (data.Message === "You haven't created any entries yet. Please create first.") {
                 document.getElementById("result").innerHTML = "Message : " + data.Message;
-                // sessionStorage.setItem('token', data.token);
             } else if (data.entries != "") {
-                // sessionStorage.setItem('token', data.token);
                 var object = data.entries;
                 var table = document.getElementsByTagName("table")[0];
                 var i = 0;
@@ -32,6 +30,10 @@ function getentries() {
                     var type = object[i].type;
                     var purpose = object[i].purpose;
                     var date_created = object[i].date_created;
+                    
+                    dt2 = new Date(due_date);
+                    dt1 = new Date(date_created);
+                    var days = Math.floor((Date.UTC(dt2.getFullYear(), dt2.getMonth(), dt2.getDate()) - Date.UTC(dt1.getFullYear(), dt1.getMonth(), dt1.getDate()) ) /(1000 * 60 * 60 * 24));
 
                     var newRow = table.insertRow(table.rows.length);
                     var cel1 = newRow.insertCell(0);
@@ -42,96 +44,61 @@ function getentries() {
                     var cel6 = newRow.insertCell(5);
                     var cel7 = newRow.insertCell(6);
                     var cel8 = newRow.insertCell(7);
+                    var cel9 = newRow.insertCell(8);
 
                     cel1.innerHTML = j + '.';
-                    cel2.innerHTML = '[ '+id+' ]';
-                    cel3.innerHTML = name;
-                    cel4.innerHTML = due_date;
-                    cel5.innerHTML = type;
-                    cel6.innerHTML = purpose;
-                    cel7.innerHTML = date_created;
-                    // cel7.innerHTML = window.location.href = './modifydiary.html';
-                    // cel8.innerHTML = "<a href='./modifydiary.html/&id=$(id)'>Actions</a>"
-                    // cel8.setAttribute('a')
+                    cel2.innerHTML = name;
+                    cel3.innerHTML = due_date;
+                    cel4.innerHTML = type;
+                    cel5.innerHTML = purpose;
+                    cel6.innerHTML = date_created;
+                    cel7.innerHTML = days;
                     let link=document.createElement('a');
                     let url='./modifydiary.html?id='+id;
                     link.setAttribute('href',url);
                     link.innerHTML='Actions';
                     cel8.appendChild(link);
-                    // sessionStorage.setItem('id', id);
-                    // alert(id);
+                    cel9.innerHTML = '<a href="" onclick"deleteentry();">Delete</a>';
                     
-                    // localStorage.setItem('ent_id',id)
-                    // newRow.onclick(DoNav("./viewdiarycontent.html"))
-                    // for (var k = 0; k < objectlength; k++) {
-                    //     newRow[k].onclick =  alert(id);
-                    //         // Do more stuff with this id.
-                    // }
+
                 }
-
-                    
-
-
-            } else {
-                document.getElementById("result").innerHTML = "Message : " + data.Msg;
+            } else if(data.msg === "Token has expired") {
+                alert("Message : "+ data.msg +"\n Please Login again");
+                window.location.href = './index.html';
             };
         });
 }
 
-function getrow() {
-    var table1 = document.getElementById("customers");
-    var rows = table1.rows;
-    var length = rows.length;
-    for (var k = 0; k < length; k++) {
-        rows[k].onclick =  alert(k);
-            // Do more stuff with this id.
-    }
-}
-// jQuery:
-// $("#table-one tr").bind("click", function() {
-//     alert(this.id);
-// });
-// function DoNav(theUrl) {
-//     window.location.href = theUrl;
-// }
-// function getoneEntry(entryid) {
-//     document.getElementById("modify").value;
-//     var Token = localStorage.getItem('token');
-//     var url = '/api/v1/entries/' + entryid;
-
+// function deleteentry(id) {
+//     let Token = localStorage.getItem('token');
+//     let url = 'http://127.0.0.1:5000/api/v1/entries/'+id;
 //     fetch(url, {
-//         method: 'GET',
+//         method: 'DELETE',
 //         headers: {
 //             'Content-Type': 'application/json',
 //             'Authorization': `Bearer ${Token}`
-//         }
+//         },
+//         // body: JSON.stringify({
+//         //     due_date: newduedate, name: newname, purpose: newpurpose, type: newtype
+//         // })
 //     })
 //         .then(function (response) {
 //             return response.json();
 //         })
 //         .then(function (data) {
-//             if (data.Message !="You dont have a specific entry with that *id*!") {
+//             if (data.Message === "Deleted your entry succesfully!") {
+//                 alert("Message : " + data.Message);
+//                 window.location.href = './viewdiaries.html';
+//             } else if (data.msg === "Token has expired") {
+//                 // document.getElementById("result").innerHTML = "Message : " + data.msg;
+//                 alert("Message : " + data.msg + "\n Please Login again");
+//                 window.location.href = './index.html';
+//             } else {
 //                 document.getElementById("call").innerHTML = "Fail : " + data.Message;
-//             } else if (data.entry != "") {
-//                 // var id = object[i].id;
-//                 // var name = object[i].name;
-//                 // var due_date = object[i].due_date;
-//                 // var type = object[i].type;
-//                 // var purpose = object[i].purpose;
-//                 // var date_created = object[i].date_created;
-//                 // modal.style.display = 'block';
-//                 document.getElementById('mname').innerHTML = name;
-//                 document.getElementById('mduedate').innerHTML = due_date;
-//                 document.getElementById('mtype').innerHTML = type;
-//                 document.getElementById('mpurpose').innerHTML = purpose;
-//                 document.getElementById('mdatecreated').innerHTML = date_created;
-//                 // sessionStorage.setItem('token', data.token);
-//                 // alert("Message : "+ data.Message);
-//                 // document.getElementById("call").innerHTML = "Success :" + data.Message;
-//                 // window.location.href = './viewdiaries.html';
 //             }
 //         })
 //         .catch(function (error) {
-//             console.log('Request failure: ', error);
+//             console.log('Request failure: ', error)
 //         });
+
 // }

@@ -25,7 +25,12 @@ function create(e) {
             if (data.Message === "your entry has been succesfully created!") {
                 alert("Message : "+ data.Message);
                 window.location.href = './viewdiaries.html';
-            } else {
+            } else if(data.msg === "Token has expired") {
+                // document.getElementById("result").innerHTML = "Message : " + data.msg;
+                alert("Message : "+ data.msg +"\n Please Login again");
+                window.location.href = './index.html';
+            }
+            else {
                 document.getElementById("call").innerHTML = "Fail : " + data.Message;
             }
         })

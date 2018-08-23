@@ -17,13 +17,12 @@ class DiaryDatabase():
                             password text not null)"""
         Entries = """create table IF NOT EXISTS tdiaryentries  (id serial primary key not null,name text not null,
                             due_date text not null, type text not null, purpose text not null, date_created text not null, user_id int)"""
+        
         app_env = os.environ.get('app_env', None)
         if app_env == 'TESTING':
             self.conn_string = "host='localhost' dbname='diarytestdb' user='postgres' password='root'"
         else:
-            DATABASE_URL = "postgres://gdwgfivypxzysg:f187f82e8b91e6282c9a57b1032acf0d8a27f5d4832aa3f620c533807e38ed26@ec2-54-163-227-253.compute-1.amazonaws.com:5432/d1fk1artp266bb"
-            self.conn_string = DATABASE_URL
-            # self.conn_string = "host='localhost' dbname='mydiary' user='postgres' password='root'"
+            self.conn_string = "host='localhost' dbname='mydiary' user='postgres' password='root'"
 
         # if not views.app.config['TESTING']:
         #     self.conn_string = "host='localhost' dbname='mydiary' user='postgres' password='root'"
@@ -50,14 +49,14 @@ class DiaryDatabase():
     #     return conn
 
     def signup(self, username, password):
-        valid = Validate(username, password)
-        if valid.validate_entry():
-            sql = "INSERT INTO tusers(username, password) VALUES (%s, %s)"
-            self.cursor.execute(sql, (username, password))
-            self.conn.commit()
+        # valid = Validate(username, password)
+        # if valid.validate_entry():
+        sql = "INSERT INTO tusers(username, password) VALUES (%s, %s)"
+        self.cursor.execute(sql, (username, password))
+        self.conn.commit()
         # else:
             # return jsonify({"Message": "username, invalid"})
-        return jsonify({"Message": "account succesfuly created"})
+        # return jsonify({"Message": "account succesfuly created"})
         # hashed_password = generate_password_hash(password, method="sha256")
     # @jwt_refresh_token_required
 
@@ -68,12 +67,11 @@ class DiaryDatabase():
         count = self.cursor.rowcount
         result = self.cursor.fetchone()
         if count == 1:
-            expires = timedelta(minutes=120)
+            expires = timedelta(minutes=60)
             loggedin_user = dict(
                 user_id=result[0], username=result[1], password=result[2])
             access_token = create_access_token(
                 identity=loggedin_user, expires_delta=expires)
-            # print(result)
             response = jsonify(
                 {"Message": "welcome, you have succesfully logged in !!!", "token": access_token})
             response.status_code = 201
@@ -111,25 +109,19 @@ class DiaryDatabase():
         self.cursor.execute(
             "SELECT * FROM tdiaryentries where user_id = %s and id = %s ", [user_id, entry_id])
         self.conn.commit()
-        entries = self.cursor.rowcount
-        if entries > 0:
-            all_entry = self.cursor.fetchall()
-            user_entry = []
-            for ent in all_entry:
-                result = {}
-                result["id"] = ent[0]
-                result["name"] = ent[1]
-                result["due_date"] = ent[2]
-                result["type"] = ent[3]
-                result["purpose"] = ent[4]
-                result["date_created"] = ent[5]
-                result["user_id"] = ent[6]
-                user_entry.append(result)
-            return jsonify({"entry": user_entry})
-        else:
-            response = jsonify({"Your dont have a specific entry with that id!"})
-            response.status_code = 400
-            return response
+        all_entry = self.cursor.fetchall()
+        user_entry = []
+        for ent in all_entry:
+            result = {}
+            result["id"] = ent[0]
+            result["name"] = ent[1]
+            result["due_date"] = ent[2]
+            result["type"] = ent[3]
+            result["purpose"] = ent[4]
+            result["date_created"] = ent[5]
+            result["user_id"] = ent[6]
+            user_entry.append(result)
+        return jsonify({"entry": user_entry})
 
     def get_all_user_entries(self, user_id):
         # sql = "SELECT * FROM tdiaryentries where user_id = %s",(user_id)
@@ -153,34 +145,19 @@ class DiaryDatabase():
             return jsonify({"entries": user_entry_list})
 
     def update_user_entryid(self, user_id, update_entry_id, name, due_date, type1, purpose):
-        today_date = now.strftime("%Y-%m-%d")
-        self.cursor.execute("SELECT  FROM tdiaryentries where user_id = %s and id = %s ", [
-                            user_id, update_entry_id])
+        self.cursor.execute("UPDATE tdiaryentries SET name = %s, due_date = %s, type = %s, purpose = %s WHERE id = %s", [
+                            name, due_date, type1, purpose, update_entry_id])
         self.conn.commit()
-        entries = self.cursor.rowcount
-        if entries > 0:
-            all_entry_column = self.cursor.fetchone()
-            # for column in all_entry_column:
-            # if all_entry_column["date_created"] == today_date:
-            valid = Validate(name, purpose)
-            if valid.validate_entry():
-                self.cursor.execute("UPDATE tdiaryentries SET name = %s, due_date = %s, type = %s, purpose = %s WHERE id = %s", [
-                                    name, due_date, type1, purpose, update_entry_id])
-                self.conn.commit()
-                response = jsonify(
-                    {"Message": "modified your entry succesfully!"})
-                response.status_code = 200
-                return response
-            else:
-                response = jsonify(
-                    {"Message": "should provide valid name and purpose of entry!"})
-                response.status_code = 400
-                return response
-            # else:
-            #     response = jsonify({"MESSAGE": "YOU CAN ONLY MODIFY TODAY'S ENTRIES!"})
-            #     response.status_code = 400
-        else:
-            response = jsonify(
-                {"Message": "your dont have a specific entry with that id to be **modified**!"})
-            response.status_code = 400
-            return response
+        response = jsonify(
+            {"Message": "modified your entry succesfully!"})
+        response.status_code = 200
+        return response
+    
+    def delete_user_entryid(self, user_id, delete_entry_id):
+        self.cursor.execute("DELETE FROM tdiaryentries where user_id = %s and id = %s", [
+                            user_id, delete_entry_id])
+        self.conn.commit()
+        response = jsonify(
+            {"Message": "Deleted your entry succesfully!"})
+        response.status_code = 200
+        return response

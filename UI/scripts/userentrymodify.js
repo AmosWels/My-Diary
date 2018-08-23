@@ -3,9 +3,8 @@ function updateentry(e) {
     e.preventDefault();
     var Token = localStorage.getItem('token');
     var id = sessionStorage.getItem('id');
-    var url = 'http://127.0.0.1:5000/api/v1/entries/'+id;
+    var url = 'http://127.0.0.1:5000/api/v1/entries/' + id;
 
-    // var newname = document.getElementById("nid").value;
     var newname = document.getElementById("nname").value;
     var newduedate = document.getElementById("nduedate").value;
     var newtype = document.getElementById("ntype").value;
@@ -28,12 +27,15 @@ function updateentry(e) {
             if (data.Message === "modified your entry succesfully!") {
                 alert("Message : " + data.Message);
                 window.location.href = './viewdiaries.html';
+            } else if (data.msg === "Token has expired") {
+                // document.getElementById("result").innerHTML = "Message : " + data.msg;
+                alert("Message : " + data.msg + "\n Please Login again");
+                window.location.href = './index.html';
             } else {
                 document.getElementById("call").innerHTML = "Fail : " + data.Message;
             }
         })
         .catch(function (error) {
-            console.log('Request failure: ', error);
+            console.log('Request failure: ', error)
         });
 }
-
