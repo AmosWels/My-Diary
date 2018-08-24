@@ -200,3 +200,37 @@ def delete_user_entry(entry_id):
             {"Message": "You dont have a specific entry with that id to be **Deleted**!"})
         response.status_code = 400
         return response
+
+@app.route('/api/v1/authuser', methods=['GET'])
+@jwt_required
+def get_user():
+    authuser = get_jwt_identity()
+    user = authuser["user_id"]
+    db_connect.cursor.execute("SELECT * FROM tusers where id = %s ", (user,))
+    db_connect.conn.commit()
+    result = db_connect.cursor.rowcount
+    if result > 0:
+        result = db_connect.get_user(user)
+        return result
+    else:
+        response = jsonify(
+            {"Message": "No user found"})
+        response.status_code = 400
+        return response
+
+@app.route('/api/v1/authuser/countentry', methods=['GET'])
+@jwt_required
+def get_user_count():
+    authuser = get_jwt_identity()
+    user = authuser["user_id"]
+    db_connect.cursor.execute("SELECT * FROM tusers where id = %s ", (user,))
+    db_connect.conn.commit()
+    result = db_connect.cursor.rowcount
+    if result > 0:
+        result = db_connect.get_entry_count(user)
+        return result
+    else:
+        response = jsonify(
+            {"Message": "No user found"})
+        response.status_code = 400
+        return response

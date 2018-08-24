@@ -49,16 +49,9 @@ class DiaryDatabase():
     #     return conn
 
     def signup(self, username, password):
-        # valid = Validate(username, password)
-        # if valid.validate_entry():
         sql = "INSERT INTO tusers(username, password) VALUES (%s, %s)"
         self.cursor.execute(sql, (username, password))
         self.conn.commit()
-        # else:
-            # return jsonify({"Message": "username, invalid"})
-        # return jsonify({"Message": "account succesfuly created"})
-        # hashed_password = generate_password_hash(password, method="sha256")
-    # @jwt_refresh_token_required
 
     def signin(self, username, password):
         self.cursor.execute(
@@ -159,5 +152,39 @@ class DiaryDatabase():
         self.conn.commit()
         response = jsonify(
             {"Message": "Deleted your entry succesfully!"})
+        response.status_code = 200
+        return response
+    # entries = self.cursor.rowcount
+    def get_user(self,userid):
+        self.cursor.execute("SELECT * FROM tusers where id = %s ", (userid,))
+        # self.cursor.execute("SELECT * FROM tusers join tdiaryentries on 
+        #             tusers.id = tdiaryentries.user_id where user_id = %s",(userid,))
+        self.conn.commit()
+        
+        info = self.cursor.fetchall()
+        entries = self.cursor.rowcount
+        # counts  = count(entries)
+        user_lst = []
+        for data in info:
+            details = {}
+            details["id"] = data[0]
+            details["username"] = data[1]
+            details["password"] = data[2]
+            # details["entries"] = entries
+
+            user_lst.append(details)
+            response = jsonify({"user": user_lst})
+            response.status_code = 200
+        return response
+    
+    def get_entry_count(self,userid):
+        self.cursor.execute("SELECT * FROM tusers join tdiaryentries on \
+                    tusers.id = tdiaryentries.user_id where user_id = %s",(userid,))
+        self.conn.commit()
+        info = self.cursor.fetchall()
+        entries = self.cursor.rowcount
+        userentry_lst = [{"number" : entries}]
+        
+        response = jsonify({"entries" : userentry_lst})
         response.status_code = 200
         return response

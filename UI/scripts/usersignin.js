@@ -21,7 +21,6 @@ function login(e) {
         if (data.Message === "welcome, you have succesfully logged in !!!") {
             window.location.href = './viewdiaries.html';
             localStorage.setItem('token', data.token);
-            alert("Message : "+ data.Message);
         } else {
             document.getElementById("call").innerHTML = "Fail : " + data.Message;
         }
