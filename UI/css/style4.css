@@ -4,7 +4,6 @@ body {font-family: Arial, Helvetica, sans-serif;
   margin: auto; */
   background-image: url("../images/body5.jpg");
   background-size:cover;
-  /* F:\Mine\mydiary\My-Diary\UI\images\body.jpg */
 }
 .card {
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
@@ -12,8 +11,6 @@ body {font-family: Arial, Helvetica, sans-serif;
   margin: auto;
   text-align: center;
   font-family: arial;
-  /* background-image: url("../images/body5.jpg"); */
-  /* background-image: url("../images/body5.jpg"); */
   background-size:cover;
 }
 
@@ -110,7 +107,7 @@ a {
   padding: 20px;
   background: #fff;
   border-radius: 5px;
-  width: 30%;
+  width: 40%;
   position: relative;
   transition: all 5s ease-in-out;
 }

@@ -15,14 +15,6 @@ input[type=text], select, textarea {
     margin-top: 6px;
     margin-bottom: 16px;
     resize: vertical;
-    
-/*      width: 100%;
-    padding: 12px 20px;
-    margin: 8px 0;
-    margin: 8px 0;
-    display: inline-block;
-    border: 1px solid #ccc;
-    box-sizing: border-box;*/
 }
 
 input[type=submit] {
@@ -74,4 +66,18 @@ ul.breadcrumb li a {
 ul.breadcrumb li a:hover {
     color: #01447e;
     text-decoration: underline;
+}
+.page-footer {
+    /*margin-top: 25px;*/
+    border-top: 1px solid #E0E0E0;
+    clear: left;
+    height: 96px;
+    margin: auto;
+    padding-left: 40px;
+    position: relative;
+    width: 100%;
+    z-index: 0;
+    -webkit-transition: padding-left 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    -moz-transition: padding-left 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: padding-left 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }

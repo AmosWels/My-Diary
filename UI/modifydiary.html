@@ -10,6 +10,7 @@
     <link rel="shortcut icon" href="images/favicon.ico">
     <title>My Diario</title>
     <link rel="stylesheet" href="./css/style3.css">
+    <link rel="stylesheet" href="./css/style4.css">
 </head>
 
 <body>
@@ -17,11 +18,12 @@
         <li>
             <a href="viewdiaries.html">view Diaries</a>
         </li>
-        <li>Meet Susan</li>
+        <li id="nname1"></li>
         <form id="getentryData" method="GET">
             <!-- <input type="number" id="eid" name="name" placeholder="Enter Entry id" required> -->
             <!-- <button type="submit" style="align-self: center;" id="view">Click to view Entry Detail</button> -->
         </form>
+        
     </ul>
     <div style="color: whitesmoke;" id="call"></div>
     <div class="container">
@@ -40,9 +42,21 @@
             <label for="datecreated">Date Created</label>
             <input type="text" id="mdatecreated" name="datecreated" required readonly>
 
-            <input style="margin-left: 87%;" type="submit" id="updatebutton" value="Update">
-            <script src="scripts/userentrymodify.js"></script>
+            <input  style="color: red;" onclick="location.href='#popup1'" type="button" id="updatebutton" value="Delete Entry">
+            <input style="margin-left: 70%;"  type="submit" id="updatebutton" value="Update">
         </form>
+    </div>
+    <div id="popup1" class="overlay">
+        <div class="popup">
+            <h2>Delete Entry</h2>
+            <a class="close" href="#">&times;</a>
+            <div class="content">
+                Are you sure you want to delete Entry with name
+                <a id="nname2"></a> ?
+                <br>
+                    <input type="submit"  style="margin-left: 80%; background-color: #f44336;" onclick="deleteentry();" id="deletebutton" value="Yes">
+            </div>
+        </div>
     </div>
     <div class="footer">
         <ul>
@@ -53,7 +67,7 @@
         </ul>
     </div>
     <script src="scripts/userentryaction.js"></script>
-
+    <script src="scripts/userentrymodify.js"></script>
 </body>
 
 </html>

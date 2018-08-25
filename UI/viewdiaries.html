@@ -12,16 +12,16 @@
     <link rel="stylesheet" href="./css/style.css">
 </head>
 
-<body onload='getentries();'>
+<body onload='getentries(), getuser();'>
     <ul class="breadcrumb">
         <li>Home</li>
-        <!--<li><a href="viewdiaries.html">view Diaries</a></li>-->
         <li>View Diary Entries</li>
     </ul>
     <div class="header">
-        <!-- <h3>Welcome, </h3> -->
+        <!-- <h3 id=""> xxxxxx</h3> -->
         <form id="getData" method="GET">
-            <button >Welcome, You are Logged In!</button>
+            <button >Welcome, <span style="color: blue;" id="name"></span> , You are Logged In!</button>
+            <!-- <a style="color: red;" id="username"></a> -->
         </form>
         <div class="header-right">
             <a class="" href="userprofile.html">View My Profile</a> &nbsp;&nbsp;&sol;&nbsp;&nbsp;&nbsp;
@@ -40,7 +40,6 @@
                 <th>Date Created</th>
                 <th>Remaining Days</th>
                 <th>Entry Action</th>
-                <th>Entry Delete</th>
             </tr>
             <tr style="color: red;" id="result"></tr>
         </table>

@@ -17,9 +17,7 @@ function getentry() {
     var Token = localStorage.getItem('token');
     let id =extractid();
     if(id==='wrong URL'){
-        
         return(id);
-
     }
     var url = 'http://127.0.0.1:5000/api/v1/entries/'+id;
 
@@ -56,6 +54,8 @@ function getentry() {
                 oFormObject.elements["type"].value = type;
                 oFormObject.elements["purpose"].value = purpose;
                 oFormObject.elements["datecreated"].value = date_created;
+                document.getElementById("nname1").innerHTML = name;
+                document.getElementById("nname2").innerHTML = name;
                 sessionStorage.setItem('id',id);
                 }
             } else if(data.msg === "Token has expired") {

@@ -44,7 +44,6 @@ function getentries() {
                     var cel6 = newRow.insertCell(5);
                     var cel7 = newRow.insertCell(6);
                     var cel8 = newRow.insertCell(7);
-                    var cel9 = newRow.insertCell(8);
 
                     cel1.innerHTML = j + '.';
                     cel2.innerHTML = name;
@@ -58,9 +57,6 @@ function getentries() {
                     link.setAttribute('href', url);
                     link.innerHTML = 'Actions';
                     cel8.appendChild(link);
-                    cel9.innerHTML = '<a href="" onclick"deleteentry();">Delete</a>';
-
-
                 }
             } else if (data.msg === "Token has expired") {
                 alert("Message : " + data.msg + "\n Please Login again");
@@ -70,7 +66,6 @@ function getentries() {
 }
 
 function getuser() {
-    // e.preventDefault();
     let Token = localStorage.getItem('token');
     let url = 'http://127.0.0.1:5000/api/v1/authuser';
 
@@ -102,7 +97,6 @@ function getuser() {
 }
 
 function getentrycount() {
-    // e.preventDefault();
     let Token = localStorage.getItem('token');
     let url = 'http://127.0.0.1:5000/api/v1/authuser/countentry';
 
@@ -118,10 +112,8 @@ function getentrycount() {
         })
         .then(function (data) {
             if (data.entries != "") {
-                 object = data.entries;
-                 number = object[0].number
-                // var id = object[i].id;
-                // var name = object[i].username;
+                object = data.entries;
+                number = object[0].number;
                 document.getElementById("entrycount").innerHTML = "Diary Entries : " + number;
             } else if (data.msg === "Token has expired") {
                 alert("Message : " + data.msg + "\n Please Login again");

@@ -1,9 +1,10 @@
 document.getElementById('viewEntry').addEventListener('submit', updateentry);
+// document.getElementById('deleteentryData').addEventListener('submit', deleteentry);
 function updateentry(e) {
     e.preventDefault();
-    var Token = localStorage.getItem('token');
-    var id = sessionStorage.getItem('id');
-    var url = 'http://127.0.0.1:5000/api/v1/entries/' + id;
+    let Token = localStorage.getItem('token');
+    let id = sessionStorage.getItem('id');
+    let url = 'http://127.0.0.1:5000/api/v1/entries/' + id;
 
     var newname = document.getElementById("nname").value;
     var newduedate = document.getElementById("nduedate").value;
@@ -29,6 +30,37 @@ function updateentry(e) {
                 window.location.href = './viewdiaries.html';
             } else if (data.msg === "Token has expired") {
                 // document.getElementById("result").innerHTML = "Message : " + data.msg;
+                alert("Message : " + data.msg + "\n Please Login again");
+                window.location.href = './index.html';
+            } else {
+                document.getElementById("call").innerHTML = "Fail : " + data.Message;
+            }
+        })
+        .catch(function (error) {
+            console.log('Request failure: ', error)
+        });
+}
+
+function deleteentry(){
+    // e.preventDefault();
+    let Token = localStorage.getItem('token');
+    let id = sessionStorage.getItem('id');
+    let url = 'http://127.0.0.1:5000/api/v1/entries/' + id;
+
+    fetch(url, {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${Token}`
+        },
+    })
+        .then(function (response) {
+            return response.json();
+        })
+        .then(function (data) {
+            if (data.Message === "Deleted your entry succesfully!") {
+                window.location.href = './viewdiaries.html';
+            } else if (data.msg === "Token has expired") {
                 alert("Message : " + data.msg + "\n Please Login again");
                 window.location.href = './index.html';
             } else {
