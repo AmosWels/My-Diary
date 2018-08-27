@@ -17,7 +17,8 @@ class DiaryDatabase():
                             password text not null)"""
         Entries = """create table IF NOT EXISTS tdiaryentries  (id serial primary key not null,name text not null,
                             due_date text not null, type text not null, purpose text not null, date_created text not null, user_id int)"""
-        
+        Userprofile = """create table IF NOT EXISTS tuserprofile  (id serial primary key not null,surname text not null,
+                           given_name text not null, email text not null, phone_number text not null, date_created text not null, user_id int)"""
         app_env = os.environ.get('app_env', None)
         if app_env == 'TESTING':
             self.conn_string = "host='localhost' dbname='diarytestdb' user='postgres' password='root'"
@@ -35,6 +36,7 @@ class DiaryDatabase():
         try:
             self.cursor.execute(Users,)
             self.cursor.execute(Entries,)
+            self.cursor.execute(Userprofile,)
             self.conn.commit()
         except:
             print("\n Tables Already Created!!\n")
@@ -98,7 +100,6 @@ class DiaryDatabase():
             return response
 
     def get_single_user_entry(self, user_id, entry_id):
-        # sql = "SELECT * FROM tdiaryentries where user_id = %s",(user_id)
         self.cursor.execute(
             "SELECT * FROM tdiaryentries where user_id = %s and id = %s ", [user_id, entry_id])
         self.conn.commit()
@@ -154,24 +155,18 @@ class DiaryDatabase():
             {"Message": "Deleted your entry succesfully!"})
         response.status_code = 200
         return response
-    # entries = self.cursor.rowcount
+
     def get_user(self,userid):
         self.cursor.execute("SELECT * FROM tusers where id = %s ", (userid,))
-        # self.cursor.execute("SELECT * FROM tusers join tdiaryentries on 
-        #             tusers.id = tdiaryentries.user_id where user_id = %s",(userid,))
         self.conn.commit()
         
         info = self.cursor.fetchall()
-        entries = self.cursor.rowcount
-        # counts  = count(entries)
         user_lst = []
         for data in info:
             details = {}
             details["id"] = data[0]
             details["username"] = data[1]
             details["password"] = data[2]
-            # details["entries"] = entries
-
             user_lst.append(details)
             response = jsonify({"user": user_lst})
             response.status_code = 200
@@ -187,4 +182,67 @@ class DiaryDatabase():
         
         response = jsonify({"entries" : userentry_lst})
         response.status_code = 200
+        return response
+    
+    def create_user_prof(self, surname, given, email, phonenumber, user_id):
+        today_date = now.strftime("%Y-%m-%d")
+        self.cursor = self.conn.cursor()
+        self.cursor.execute(
+            "SELECT * FROM tuserprofile where user_id = %s", (user_id,))
+        self.conn.commit()
+        result = self.cursor.rowcount
+        if result > 0:
+            response = jsonify(
+                {"Message": "You have already added your profile!!"})
+            response.status_code = 409
+            return response
+        else:
+            sql = "INSERT INTO tuserprofile(surname,given_name,email,phone_number,date_created,user_id) VALUES (%s,%s,%s,%s,%s,%s)"
+            self.cursor.execute(
+                sql, (surname, given, email, phonenumber,today_date, user_id))
+            self.conn.commit()
+            response = jsonify(
+                {"Message": "your Profile has been succesfully Added!"})
+            response.status_code = 201
+            return response
+    
+    def update_user_prof(self, surname, given, email, phonenumber, user_id):
+        self.cursor = self.conn.cursor()
+        self.cursor.execute(
+            "SELECT * FROM tuserprofile where user_id = %s", (user_id,))
+        self.conn.commit()
+        result = self.cursor.rowcount
+        if result > 0:
+            self.cursor.execute("UPDATE tuserprofile SET surname = %s, given_name = %s, email = %s, phone_number = %s WHERE user_id = %s", [
+                            surname, given, email, phonenumber,user_id])
+            self.conn.commit()
+            response = jsonify(
+                {"Message": "your Profile has been succesfully modified!"})
+            response.status_code = 201
+            return response
+        else:
+            response = jsonify(
+                {"Message": "You dont have an entry with that id!!"})
+            response.status_code = 400
+            return response
+            
+
+    def get_user_profile(self,user):
+        self.cursor.execute("SELECT * FROM tuserprofile where user_id = %s ", (user,))
+        self.conn.commit()
+        
+        info = self.cursor.fetchall()
+        user_lst = []
+        for data in info:
+            details = {}
+            details["id"] = data[0]
+            details["surname"] = data[1]
+            details["given_name"] = data[2]
+            details["email"] = data[3]
+            details["phone_number"] = data[4]
+            details["date_created"] = data[5]
+            
+            user_lst.append(details)
+            response = jsonify({"user": user_lst})
+            response.status_code = 200
         return response

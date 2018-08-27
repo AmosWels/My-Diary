@@ -1,5 +1,4 @@
 document.getElementById('viewEntry').addEventListener('submit', updateentry);
-// document.getElementById('deleteentryData').addEventListener('submit', deleteentry);
 function updateentry(e) {
     e.preventDefault();
     let Token = localStorage.getItem('token');
@@ -29,7 +28,6 @@ function updateentry(e) {
                 alert("Message : " + data.Message);
                 window.location.href = './viewdiaries.html';
             } else if (data.msg === "Token has expired") {
-                // document.getElementById("result").innerHTML = "Message : " + data.msg;
                 alert("Message : " + data.msg + "\n Please Login again");
                 window.location.href = './index.html';
             } else {
@@ -42,7 +40,6 @@ function updateentry(e) {
 }
 
 function deleteentry(){
-    // e.preventDefault();
     let Token = localStorage.getItem('token');
     let id = sessionStorage.getItem('id');
     let url = 'http://127.0.0.1:5000/api/v1/entries/' + id;

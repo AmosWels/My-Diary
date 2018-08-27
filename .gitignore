@@ -7,3 +7,6 @@ instance/__pycache
 tests/__pycache__/
 *.__pycache
 *.pyc 
+UI/scripts/node_modules/
+UI/scripts/package-lock.json
+UI/scripts/package.json

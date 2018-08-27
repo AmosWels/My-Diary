@@ -23,6 +23,6 @@ class Validate():
             if field not in data:
                 return {
                     "success":False,
-                    "message": '*' + field + '*' +' is required before operation' }
+                    "Message": '*' + field + '*' +' is required before operation' }
             
             

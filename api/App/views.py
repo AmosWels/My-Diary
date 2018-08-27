@@ -1,5 +1,6 @@
 from flask import Flask, request, jsonify, make_response
 from flask_cors import CORS
+from pyisemail import is_email
 from flask_jwt_extended import create_access_token, jwt_required, JWTManager, get_jwt_identity
 from api.models.models import DiaryDatabase
 from api.validate import Validate
@@ -153,6 +154,7 @@ def update_user_entry(entry_id):
         entryUSER = authuser["user_id"]
         valid = Validate(entrydata["name"], entrydata["purpose"])
         check = valid.validate_entry()
+        today_date = now.strftime("%Y-%m-%d")
         try:
             date_format = "%Y-%m-%d"
             date_obj = datetime.datetime.strptime(
@@ -162,13 +164,14 @@ def update_user_entry(entry_id):
                     "SELECT * FROM tdiaryentries where user_id = %s and id = %s ", (entryUSER, entry_id))
                 db_connect.conn.commit()
                 result = db_connect.cursor.rowcount
-                if result > 0:
+                resultdata = db_connect.cursor.fetchone()
+                if result > 0 and resultdata[5] == today_date:
                     entry = db_connect.update_user_entryid(
                         entryUSER, entry_id, entrydata["name"], entrydata["due_date"], entrydata["type"], entrydata["purpose"])
                     return entry
                 else:
                     response = jsonify(
-                        {"Message": "You dont have a specific entry with that id!"})
+                        {"Message": "You can only modify Today's entries! Otherwise, you dont have a specific entry with that id!"})
                     response.status_code = 400
                     return response
             else:
@@ -218,6 +221,23 @@ def get_user():
         response.status_code = 400
         return response
 
+@app.route('/api/v1/authuser/profile', methods=['GET'])
+@jwt_required
+def get_user_profile():
+    authuser = get_jwt_identity()
+    user = authuser["user_id"]
+    db_connect.cursor.execute("SELECT * FROM tuserprofile where user_id = %s ", (user,))
+    db_connect.conn.commit()
+    result = db_connect.cursor.rowcount
+    if result > 0:
+        userinfo = db_connect.get_user_profile(user)
+        return userinfo
+    else:
+        response = jsonify(
+            {"Message": "No user found"})
+        response.status_code = 400
+        return response
+
 @app.route('/api/v1/authuser/countentry', methods=['GET'])
 @jwt_required
 def get_user_count():
@@ -234,3 +254,51 @@ def get_user_count():
             {"Message": "No user found"})
         response.status_code = 400
         return response
+
+@app.route('/api/v1/authuser/profile', methods=['POST'])
+@jwt_required
+def create_user_profile():
+    """create user profile """
+    entrydata = request.get_json()
+    required_fields = {"surname", "givenname", "email", "phonenumber"}
+    checkfield = Validate.validate_field(entrydata, required_fields)
+    if not checkfield:
+        authuser = get_jwt_identity()
+        entrydata["user_id"] = authuser["user_id"]
+        valid = Validate(entrydata["surname"], entrydata["givenname"])
+        info = valid.validate_entry()
+        if info is True and entrydata["surname"].isalpha() and entrydata["givenname"].isalpha() and is_email(entrydata["email"]):
+            info = db_connect.create_user_prof(
+                entrydata["surname"],entrydata["givenname"], entrydata["email"], entrydata["phonenumber"], entrydata["user_id"])
+            return info
+        else:
+            response = jsonify(
+                {"Message": "Please provide a valid *names* and *email* of profile!"})
+            response.status_code = 400
+            return response
+    else:
+        return jsonify(checkfield), 400
+    
+@app.route('/api/v1/authuser/profile', methods=['PUT'])
+@jwt_required
+def update_user_profile():
+    """create user profile """
+    entrydata = request.get_json()
+    required_fields = {"surname", "givenname", "email", "phonenumber"}
+    checkfield = Validate.validate_field(entrydata, required_fields)
+    if not checkfield:
+        authuser = get_jwt_identity()
+        entrydata["user_id"] = authuser["user_id"]
+        valid = Validate(entrydata["surname"], entrydata["givenname"])
+        info = valid.validate_entry()
+        if info is True and entrydata["surname"].isalpha() and entrydata["givenname"].isalpha() and is_email(entrydata["email"]):
+            info = db_connect.update_user_prof(
+                entrydata["surname"],entrydata["givenname"], entrydata["email"], entrydata["phonenumber"], entrydata["user_id"])
+            return info
+        else:
+            response = jsonify(
+                {"Message": "Please provide a valid *names* and *email* of profile!"})
+            response.status_code = 400
+            return response
+    else:
+        return jsonify(checkfield), 400

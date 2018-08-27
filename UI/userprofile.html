@@ -9,33 +9,62 @@
         <link rel="shortcut icon" href="images/favicon.ico">
         <title>My Diario</title>
         <link rel="stylesheet" href="./css/style4.css">
+        
     </head>
 
     <body onload='getuser(), getentrycount();'>
         <ul class="breadcrumb">
-            <!--<li><a href="index.html">Home</a></li>-->
             <li><a href="viewdiaries.html">view Diaries</a></li>
             <li>User Profile</li>
-            <a style="margin-left: 60%; font-size: 16px;" href="#popup1">View Notification Settings</a>
+            <a style="margin-left: 50%; font-size: 16px;" href="#profile" id='profileheader'></a> 
+            || <a style="font-size: 16px;" href="#popup1">View Notification Settings</a>
         </ul>
         
         <div class="card">
             <img src="./images/img3.jpg" alt="John" style="width:100%">
-            <h2 style="color: whitesmoke;" id="name"></h2>
-            <h2 style="color: whitesmoke;" id="entrycount" ></h2>
-           
-            <!--<p><a href=""></a></p>-->
+            <table border="1">
+                <tr><td><span style="color: whitesmoke;" id="name"></span></td>
+                    <td><span style="color: whitesmoke;" id="entrycount" ></span></td></tr>
+            </table>
+            <table id="dataprofile" border="1" style="display: none">
+                    <tr><td><span style="color: whitesmoke;" id="usurname" ></span></td>
+                        <td><span style="color: whitesmoke;" id="ugiven" ></span></td></tr>
+                    <tr><td><span style="color: whitesmoke;" id="uemail" ></span></td>
+                        <td><span style="color: whitesmoke;" id="unumber" ></span></td></tr>
+                </table>
+            <!-- <br>
+            <br>
+            <br> -->
         </div>
-        <!-- <div class="box">
-            <a class="" href="#popup1">View Reminder Settings</a>
-        </div> -->
-        <!--<p><button>Contact</button></p>-->
         <div id="popup1" class="overlay">
             <div class="popup">
                 <h2>Reminder Settings</h2>
                 <a class="close" href="#">&times;</a>
                 <div class="content">
-                    You don't have any reminder settings activated, please enable this feature in your main settings Area
+                    You don't have any reminder settings activated, please Add Your profile Data to Enable this feature</div>
+            </div>
+        </div>
+        <div id="profile" class="overlay">
+            <div class="popup">
+                <h2>Profile Data</h2>
+                <a class="close" href="#">&times;</a>
+                <div class="content">
+                    <form id="addprofile">
+                        <span style="color: red;" id="prof"></span><br>
+                        <label for="sur">Surname:</label>
+                        <input type="text" id="surname" name="sur" placeholder="enter surname" required><br><br>
+                        
+                        <label for="given">Given name:</label>
+                        <input type="text" id="givenname" name="given" placeholder="enter given name(s)" required><br><br>
+
+                        <label for="mail">Email:</label>
+                        <input type="email" id="email" name="mail" placeholder="enter email" required><br><br>
+        
+                        <label for="phone">Phone Number:</label>
+                        <input type="number" id="number" name="phone" placeholder="enter phone number" required><br><br>
+                        <input  style="margin-left: 70%;" type="submit" id="editbutton" value="Add">
+                        
+                    </form>
                 </div>
             </div>
         </div>
@@ -46,5 +75,6 @@
             </ul>
         </div>
         <script src="scripts/userentries.js"></script>
+        <!-- <script src="scripts/usercreateEntries.js"></script> -->
     </body>
 </html>
