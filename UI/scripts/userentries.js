@@ -56,20 +56,24 @@ function inserttabledata(i, j, objectlength, object, table) {
         var cel6 = newRow.insertCell(5);
         var cel7 = newRow.insertCell(6);
         var cel8 = newRow.insertCell(7);
-        cel1.innerHTML = j + ".";
-        cel2.innerHTML = name;
-        cel3.innerHTML = due_date;
-        cel4.innerHTML = type;
-        cel5.innerHTML = purpose;
-        cel6.innerHTML = date_created;
-        cel7.innerHTML = days;
-        let link = document.createElement("a");
-        let url = "./modifydiary.html?id=" + id;
-        link.setAttribute("href", url);
-        link.innerHTML = "Actions";
-        cel8.appendChild(link);
+        inserttablecells(cel1, j, cel2, name, cel3, due_date, cel4, type, cel5, purpose, cel6, date_created, cel7, days, id, cel8);
     }
     return { i, j };
+}
+
+function inserttablecells(cel1, j, cel2, name, cel3, due_date, cel4, type, cel5, purpose, cel6, date_created, cel7, days, id, cel8) {
+    cel1.innerHTML = j + ".";
+    cel2.innerHTML = name;
+    cel3.innerHTML = due_date;
+    cel4.innerHTML = type;
+    cel5.innerHTML = purpose;
+    cel6.innerHTML = date_created;
+    cel7.innerHTML = days;
+    let link = document.createElement("a");
+    let url = "./modifydiary.html?id=" + id;
+    link.setAttribute("href", url);
+    link.innerHTML = "Actions";
+    cel8.appendChild(link);
 }
 
 function getuser() {
@@ -147,8 +151,9 @@ function fetchuserprofile(url, Token, surname, givenname, email, number) {
 function updateprofile() {
     let Token = localStorage.getItem('token');
     let url = 'http://127.0.0.1:5000/api/v1/authuser/profile';
-    let { surname1, givenname1, email1, number1 } = getupdateinput();
-    fetchprofileupdate(url, Token, surname1, givenname1, email1, number1)
+    // let { surname1, givenname1, email1, number1 } = getupdateinput();
+    let { surname, givenname, email, number } = getprofileinput();
+    fetchuserprofile(url, Token, surname, givenname, email, number)
         .then(function (data) {
             if (data.Message === "your Profile has been succesfully modified!") {
                 alert("Message : " + data.Message);
@@ -166,29 +171,29 @@ function updateprofile() {
     return false;
 }
 
-function getupdateinput() {
-    let surname1 = document.getElementById("surname").value;
-    let givenname1 = document.getElementById("givenname").value;
-    let email1 = document.getElementById("email").value;
-    let number1 = document.getElementById("number").value;
-    return { surname1, givenname1, email1, number1 };
-}
+// function getupdateinput() {
+//     let surname1 = document.getElementById("surname").value;
+//     let givenname1 = document.getElementById("givenname").value;
+//     let email1 = document.getElementById("email").value;
+//     let number1 = document.getElementById("number").value;
+//     return { surname1, givenname1, email1, number1 };
+// }
 
-function fetchprofileupdate(url, Token, surname1, givenname1, email1, number1) {
-    return fetch(url, {
-        method: 'PUT',
-        headers: {
-            'Content-type': 'application/json',
-            'Authorization': `Bearer ${Token}`
-        },
-        body: JSON.stringify({
-            surname: surname1, givenname: givenname1, email: email1, phonenumber: number1
-        })
-    })
-        .then(function (response) {
-            return response.json();
-        });
-}
+// function fetchprofileupdate(url, Token, surname1, givenname1, email1, number1) {
+//     return fetch(url, {
+//         method: 'PUT',
+//         headers: {
+//             'Content-type': 'application/json',
+//             'Authorization': `Bearer ${Token}`
+//         },
+//         body: JSON.stringify({
+//             surname: surname1, givenname: givenname1, email: email1, phonenumber: number1
+//         })
+//     })
+//         .then(function (response) {
+//             return response.json();
+//         });
+// }
 
 getfullprofile()
 function getfullprofile() {

@@ -85,10 +85,7 @@ class DiaryDatabase():
         self.conn.commit()
         result = self.cursor.rowcount
         if result > 0:
-            response = jsonify(
-                {"Message": "duplicate entry:> you have previously created entry with that same **type** and **name**!!"})
-            response.status_code = 409
-            return response
+            return self.duplicateEntryMessage()
         else:
             sql = "INSERT INTO tdiaryentries(name,due_date,type,purpose,date_created,user_id) VALUES (%s,%s,%s,%s,%s,%s)"
             self.cursor.execute(
@@ -186,10 +183,7 @@ class DiaryDatabase():
         self.conn.commit()
         result = self.cursor.rowcount
         if result > 0:
-            response = jsonify(
-                {"Message": "You have already added your profile!!"})
-            response.status_code = 409
-            return response
+            return self.duplicateEntryMessage()
         else:
             sql = "INSERT INTO tuserprofile(surname,given_name,email,phone_number,date_created,user_id) VALUES (%s,%s,%s,%s,%s,%s)"
             self.cursor.execute(
@@ -199,6 +193,12 @@ class DiaryDatabase():
                 {"Message": "your Profile has been succesfully Added!"})
             response.status_code = 201
             return response
+
+    def duplicateEntryMessage(self):
+        response = jsonify(
+            {"Message": "duplicate entry:> you have previously created entry with the app!!"})
+        response.status_code = 409
+        return response
     
     def update_user_prof(self, surname, given, email, phonenumber, user_id):
         self.cursor = self.conn.cursor()

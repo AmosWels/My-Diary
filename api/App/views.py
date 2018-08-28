@@ -206,18 +206,19 @@ def delete_user_entry(entry_id):
 @app.route('/api/v1/authuser', methods=['GET'])
 @jwt_required
 def get_user():
-    user = extractuser()
-    db_connect.cursor.execute("SELECT * FROM tusers where id = %s ", (user,))
-    db_connect.conn.commit()
-    result = db_connect.cursor.rowcount
+    result, user = getuser_count()
     if result > 0:
         userresult = db_connect.get_user(user)
         return userresult
     else:
-        response = jsonify(
-            {"Message": "No user found"})
-        response.status_code = 400
-        return response
+        return userprofileerror()
+
+def getuser_count():
+    user = extractuser()
+    db_connect.cursor.execute("SELECT * FROM tusers where id = %s ", (user,))
+    db_connect.conn.commit()
+    result = db_connect.cursor.rowcount
+    return result, user
 
 @app.route('/api/v1/authuser/profile', methods=['GET'])
 @jwt_required
@@ -230,26 +231,23 @@ def get_user_profile():
         userinfo = db_connect.get_user_profile(user)
         return userinfo
     else:
-        response = jsonify(
-            {"Message": "No user found"})
-        response.status_code = 400
-        return response
+        return userprofileerror()
+
+def userprofileerror():
+    response = jsonify(
+        {"Message": "No user found"})
+    response.status_code = 400
+    return response
 
 @app.route('/api/v1/authuser/countentry', methods=['GET'])
 @jwt_required
 def get_user_count():
-    user = extractuser()
-    db_connect.cursor.execute("SELECT * FROM tusers where id = %s ", (user,))
-    db_connect.conn.commit()
-    result = db_connect.cursor.rowcount
+    result, user = getuser_count()
     if result > 0:
         result = db_connect.get_entry_count(user)
         return result
     else:
-        response = jsonify(
-            {"Message": "No user found"})
-        response.status_code = 400
-        return response
+        return userprofileerror()
 
 @app.route('/api/v1/authuser/profile', methods=['POST'])
 @jwt_required
@@ -259,20 +257,27 @@ def create_user_profile():
     required_fields = {"surname", "givenname", "email", "phonenumber"}
     checkfield = Validate.validate_field(entrydata, required_fields)
     if not checkfield:
-        entrydata["user_id"] = extractuser()
-        valid = Validate(entrydata["surname"], entrydata["givenname"])
-        info = valid.validate_entry()
+        info = getuservalidateentry(entrydata)
         if info is True and entrydata["surname"].isalpha() and entrydata["givenname"].isalpha() and is_email(entrydata["email"]):
             info = db_connect.create_user_prof(
                 entrydata["surname"],entrydata["givenname"], entrydata["email"], entrydata["phonenumber"], entrydata["user_id"])
             return info
         else:
-            response = jsonify(
-                {"Message": "Please provide a valid *names* and *email* of profile!"})
-            response.status_code = 400
-            return response
+            return usererrorinput()
     else:
         return jsonify(checkfield), 400
+
+def getuservalidateentry(entrydata):
+    entrydata["user_id"] = extractuser()
+    valid = Validate(entrydata["surname"], entrydata["givenname"])
+    info = valid.validate_entry()
+    return info
+
+def usererrorinput():
+    response = jsonify(
+        {"Message": "Please provide a valid *names* and *email* of profile!"})
+    response.status_code = 400
+    return response
 
 def getjsondata():
     entrydata = request.get_json()
@@ -285,17 +290,12 @@ def update_user_profile():
     required_fields = {"surname", "givenname", "email", "phonenumber"}
     checkfield = Validate.validate_field(entrydata, required_fields)
     if not checkfield:
-        entrydata["user_id"] = extractuser()
-        valid = Validate(entrydata["surname"], entrydata["givenname"])
-        info = valid.validate_entry()
+        info = getuservalidateentry(entrydata)
         if info is True and entrydata["surname"].isalpha() and entrydata["givenname"].isalpha() and is_email(entrydata["email"]):
             info = db_connect.update_user_prof(
                 entrydata["surname"],entrydata["givenname"], entrydata["email"], entrydata["phonenumber"], entrydata["user_id"])
             return info
         else:
-            response = jsonify(
-                {"Message": "Please provide a valid *names* and *email* of profile!"})
-            response.status_code = 400
-            return response
+            return usererrorinput()
     else:
         return jsonify(checkfield), 400
