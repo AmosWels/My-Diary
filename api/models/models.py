@@ -19,9 +19,12 @@ class DiaryDatabase():
                             due_date text not null, type text not null, purpose text not null, date_created text not null, user_id int)"""
         Userprofile = """create table IF NOT EXISTS tuserprofile  (id serial primary key not null,surname text not null,
                            given_name text not null, email text not null, phone_number text not null, date_created text not null, user_id int)"""
-        app_env = os.environ.get('app_env', None)
+        app_env = os.environ.get('app_env', default=None)
         if app_env == 'TESTING':
             self.conn_string = "host='localhost' dbname='diarytestdb' user='postgres' password='root'"
+        elif app_env == 'heroku':
+            DATABASE_URL = os.getenv('DATABASE_URL', default=None)
+            self.conn_string = DATABASE_URL
         else:
             self.conn_string = "host='localhost' dbname='mydiary' user='postgres' password='root'"
 

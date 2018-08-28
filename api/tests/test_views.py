@@ -1,16 +1,23 @@
-from flask_jwt_extended import create_access_token
-from api.tests.test_app import TestStartAll
-import unittest
 import json
-import psycopg2
-from api.App.views import app, db_connect
+import os
+import unittest
+
 import jwt
-from api.tests.test_entries import user1, user2, user3, user4, user5, user6, user7, user8, user9, userlogin, entry1, entry2, entry3, entry4, entry5,entry6, entry7,entry8,entry9,entry10
+import psycopg2
+from flask_jwt_extended import create_access_token
+
+from api.App.views import app, db_connect
+from api.tests.test_app import TestStartAll
+from api.tests.test_entries import (entry1, entry2, entry3, entry4, entry5,
+                                    entry6, entry7, entry8, entry9, entry10,
+                                    user1, user2, user3, user4, user5, user6,
+                                    user7, user8, user9, userlogin)
+
 
 class TestDiaryEntries(TestStartAll):
     def setUp(self):
         """Define test variables and initialize app."""
-        app.config['TESTING'] = True
+        os.environ['app_env'] = 'TESTING'
         # db_connect
         self.app = app                     
         with app.test_request_context():
