@@ -17,7 +17,7 @@ function getentry() {
     if(id==='wrong URL'){
         return(id);
     }
-    let url = 'http://127.0.0.1:5000/api/v1/entries/'+id;
+    let url = baseurl + '/api/v1/entries/'+id;
     fetchentry(url, Token)
         .then(function (data) {
             if (data.Message === "You dont have a specific entry with that *id*!") {
@@ -56,7 +56,7 @@ function displayuserentry(object, i) {
     var type = object[i].type;
     var purpose = object[i].purpose;
     var date_created = object[i].date_created;
-    
+
     oFormObject = document.forms['viewEntry'];
     oFormObject.elements["name"].value = name;
     oFormObject.elements["duedate"].value = due_date;

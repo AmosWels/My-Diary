@@ -1,7 +1,7 @@
 document.getElementById('register').addEventListener('submit', signup);
 function signup(e) {
     e.preventDefault();
-    let url = 'http://127.0.0.1:5000/api/v1/auth/signup';
+    let url = baseurl + '/api/v1/auth/signup';
     let { Ppassword, Ppassword2, Pusername } = getuserinput();
     if (Ppassword == Ppassword2){
         fetchuserdata(url, Pusername, Ppassword)

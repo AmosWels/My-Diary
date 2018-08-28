@@ -2,7 +2,7 @@ document.getElementById("createEntry").addEventListener("submit", create);
 function create(e) {
     e.preventDefault();
     let Token = localStorage.getItem('token');
-    let url = 'http://127.0.0.1:5000/api/v1/entries';
+    let url = baseurl + '/api/v1/entries';
     var { eduedate, ename, epurpose, etype } = getuserinput();
     fetchcreateentry(url, Token, eduedate, ename, epurpose, etype)
         .then(function (data) {

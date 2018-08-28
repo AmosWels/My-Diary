@@ -1,7 +1,7 @@
 document.getElementById('userlogin').addEventListener('submit', login);
 function login(e) {
     e.preventDefault();
-    let url = 'http://127.0.0.1:5000/api/v1/auth/login';
+    let url = baseurl + '/api/v1/auth/login';
     let { Pusername, Ppassword } = getlogininput();
     fetchuserlogin(url, Pusername, Ppassword)
     .then(function (data) {

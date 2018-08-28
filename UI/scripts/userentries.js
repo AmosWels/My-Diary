@@ -1,6 +1,6 @@
 function getentries() {
     let Token = localStorage.getItem("token");
-    let url = "http://127.0.0.1:5000/api/v1/entries";
+    let url = baseurl + '/api/v1/entries';
 
     fetchfunction(url, Token)
         .then(function (data) {
@@ -83,7 +83,7 @@ function getdbentries(object, i) {
 
 function getuser() {
     let Token = localStorage.getItem("token");
-    let url = "http://127.0.0.1:5000/api/v1/authuser";
+    let url = baseurl + '/api/v1/authuser';
 
     fetchfunction(url, Token)
         .then(function (data) {
@@ -109,7 +109,7 @@ function getuser() {
 
 function createprofile() {
     let Token = localStorage.getItem('token');
-    let url = 'http://127.0.0.1:5000/api/v1/authuser/profile';
+    let url = baseurl + '/api/v1/authuser/profile';
     let { surname, givenname, email, number } = getprofileinput();
     fetchuserprofile(url, Token, surname, givenname, email, number)
         .then(function (data) {
@@ -147,7 +147,7 @@ function fetchuserprofile(url, Token, surname, givenname, email, number) {
 
 function updateprofile() {
     let Token = localStorage.getItem('token');
-    let url = 'http://127.0.0.1:5000/api/v1/authuser/profile';
+    let url = baseurl + '/api/v1/authuser/profile';
     let { surname1, givenname1, email1, number1 } = getupdateinput();
     // let { surname, givenname, email, number } = getprofileinput();
     fetchprofileupdate(url, Token, surname1, givenname1, email1, number1)
@@ -201,7 +201,7 @@ function profile_add_edit_response(data) {
 
 function getfullprofile() {
     let Token = localStorage.getItem('token');
-    let url = 'http://127.0.0.1:5000/api/v1/authuser/profile';
+    let url = baseurl + '/api/v1/authuser/profile';
     fetchfunction(url, Token)
         .then(function (data) {
             if (data.Message != "No user found") {
@@ -243,7 +243,7 @@ function getuserprofile(surname, givenname, email, number) {
 
 function getentrycount() {
     let Token = localStorage.getItem("token");
-    let url = "http://127.0.0.1:5000/api/v1/authuser/countentry";
+    let url = baseurl + '/api/v1/authuser/countentry';
 
     fetch(url, {
         method: "GET",
