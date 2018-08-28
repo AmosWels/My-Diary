@@ -3,7 +3,7 @@ function updateentry(e) {
     e.preventDefault();
     let Token = localStorage.getItem('token');
     let id = sessionStorage.getItem('id');
-    let url = 'http://127.0.0.1:5000/api/v1/entries/' + id;
+    let url = baseurl + '/api/v1/entries/' + id;
     var { newduedate, newname, newpurpose, newtype } = getupdateinput();
     fetchupdate(url, Token, newduedate, newname, newpurpose, newtype)
         .then(function (data) {
@@ -49,7 +49,7 @@ function fetchupdate(url, Token, newduedate, newname, newpurpose, newtype) {
 function deleteentry(){
     let Token = localStorage.getItem('token');
     let id = sessionStorage.getItem('id');
-    let url = 'http://127.0.0.1:5000/api/v1/entries/' + id;
+    let url = baseurl + '/api/v1/entries/' + id;
 
     fetchdelete(url, Token)
         .then(function (data) {
