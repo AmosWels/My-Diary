@@ -199,8 +199,7 @@ function getfullprofile() {
         })
         .then(function (data) {
             if (data.Message != "No user found") {
-                console.log(data.user);
-                document.getElementById('editbutton').setAttribute('onsubmit', "updateprofile();");
+                // console.log(data.user);
                 document.getElementById('profileheader').innerHTML = 'Edit Profile Data';
                 let object = data.user;
                 var i = 0;
@@ -228,7 +227,7 @@ function getfullprofile() {
                 alert("Message : " + data.msg + "\n Please Login again");
                 window.location.href = "./index.html";
             } else if (data.Message === "No user found") {
-                document.getElementById('editbutton').setAttribute('onsubmit', "createprofile();");
+                // document.getElementById('editbutton').setAttribute('onsubmit', "createprofile();");
                 document.getElementById('profileheader').innerHTML = 'Add Profile Data'
             } else { }
         })

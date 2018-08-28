@@ -17,7 +17,8 @@
             <li><a href="viewdiaries.html">view Diaries</a></li>
             <li>User Profile</li>
             <a style="margin-left: 50%; font-size: 16px;" href="#profile" id='profileheader'></a> 
-            || <a style="font-size: 16px;" href="#popup1">View Notification Settings</a>
+            || <a style="font-size: 16px;" href="#popup1">View Notification Settings</a> ||
+            <a style="font-size: 16px;" href="index.html">Logout</a>
         </ul>
         
         <div class="card">
@@ -49,7 +50,7 @@
                 <h2>Profile Data</h2>
                 <a class="close" href="#">&times;</a>
                 <div class="content">
-                    <form id="addprofile">
+                    <form id="addprofile" method="POST">
                         <span style="color: red;" id="prof"></span><br>
                         <label for="sur">Surname:</label>
                         <input type="text" id="surname" name="sur" placeholder="enter surname" required><br><br>
@@ -62,8 +63,8 @@
         
                         <label for="phone">Phone Number:</label>
                         <input type="number" id="number" name="phone" placeholder="enter phone number" required><br><br>
-                        <input  style="margin-left: 70%;" type="submit" id="editbutton" value="Add">
-                        
+                        <input  style="margin-left: 50%;" onclick="createprofile();" type="button" id="addbutton" value="Add">
+                        <input  type="button" onclick="updateprofile();" id="editbutton" value="Edit">
                     </form>
                 </div>
             </div>

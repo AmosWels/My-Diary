@@ -222,7 +222,7 @@ class DiaryDatabase():
             return response
         else:
             response = jsonify(
-                {"Message": "You dont have an entry with that id!!"})
+                {"Message": "You can't edit, please first Add your profile!!"})
             response.status_code = 400
             return response
             

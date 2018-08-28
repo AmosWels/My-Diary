@@ -213,8 +213,8 @@ def get_user():
     db_connect.conn.commit()
     result = db_connect.cursor.rowcount
     if result > 0:
-        result = db_connect.get_user(user)
-        return result
+        userresult = db_connect.get_user(user)
+        return userresult
     else:
         response = jsonify(
             {"Message": "No user found"})
