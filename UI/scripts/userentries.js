@@ -101,7 +101,6 @@ function getuser() {
 }
 
 function createprofile() {
-    // e.preventDefault();
     let Token = localStorage.getItem('token');
     let url = 'http://127.0.0.1:5000/api/v1/authuser/profile';
 
@@ -109,16 +108,7 @@ function createprofile() {
     let givenname = document.getElementById("givenname").value;
     let email = document.getElementById("email").value;
     let number = document.getElementById("number").value;
-    fetch(url, {
-        method: 'POST',
-        headers: {
-            'Content-type': 'application/json',
-            'Authorization': `Bearer ${Token}`
-        },
-        body: JSON.stringify({
-            surname: surname, givenname: givenname, email: email, phonenumber: number
-        })
-    })
+    initcreateprof()
         .then(function (response) {
             return response.json();
         })
@@ -127,7 +117,6 @@ function createprofile() {
                 alert("Message : " + data.Message);
                 window.location.href = './userprofile.html';
             } else if (data.msg === "Token has expired") {
-                // document.getElementById("result").innerHTML = "Message : " + data.msg;
                 alert("Message : " + data.msg + "\n Please Login again");
                 window.location.href = './index.html';
             }
@@ -139,10 +128,22 @@ function createprofile() {
             console.log('Request failure: ', error);
         });
     return false;
+
+    function initcreateprof() {
+        return fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-type': 'application/json',
+                'Authorization': `Bearer ${Token}`
+            },
+            body: JSON.stringify({
+                surname: surname, givenname: givenname, email: email, phonenumber: number
+            })
+        });
+    }
 }
 // 
 function updateprofile() {
-    // e.preventDefault();
     let Token = localStorage.getItem('token');
     let url = 'http://127.0.0.1:5000/api/v1/authuser/profile';
 
@@ -169,7 +170,6 @@ function updateprofile() {
                 alert("Message : " + data.Message);
                 window.location.href = 'userprofile.html';
             } else if (data.msg === "Token has expired") {
-                // document.getElementById("result").innerHTML = "Message : " + data.msg;
                 alert("Message : " + data.msg + "\n Please Login again");
                 window.location.href = './index.html';
             } else {
@@ -184,7 +184,6 @@ function updateprofile() {
 
 getfullprofile()
 function getfullprofile() {
-    // e.preventDefault();
     var Token = localStorage.getItem('token');
     var url = 'http://127.0.0.1:5000/api/v1/authuser/profile';
     fetch(url, {
@@ -199,7 +198,6 @@ function getfullprofile() {
         })
         .then(function (data) {
             if (data.Message != "No user found") {
-                // console.log(data.user);
                 document.getElementById('profileheader').innerHTML = 'Edit Profile Data';
                 let object = data.user;
                 var i = 0;
@@ -227,7 +225,6 @@ function getfullprofile() {
                 alert("Message : " + data.msg + "\n Please Login again");
                 window.location.href = "./index.html";
             } else if (data.Message === "No user found") {
-                // document.getElementById('editbutton').setAttribute('onsubmit', "createprofile();");
                 document.getElementById('profileheader').innerHTML = 'Add Profile Data'
             } else { }
         })

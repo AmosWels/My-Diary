@@ -8,16 +8,7 @@ function create(e) {
     var eduedate = document.getElementById("eduedate").value;
     var etype = document.getElementById("etype").value;
     var epurpose = document.getElementById("epurpose").value;
-    fetch(url, {
-        method: 'POST',
-        headers: {
-            'Content-type': 'application/json',
-            'Authorization': `Bearer ${Token}`
-        },
-        body: JSON.stringify({
-            due_date: eduedate, name: ename, purpose: epurpose, type: etype
-        })
-    })
+    initcreatefetch()
         .then(function (response) {
             return response.json();
         })
@@ -26,7 +17,6 @@ function create(e) {
                 alert("Message : "+ data.Message);
                 window.location.href = './viewdiaries.html';
             } else if(data.msg === "Token has expired") {
-                // document.getElementById("result").innerHTML = "Message : " + data.msg;
                 alert("Message : "+ data.msg +"\n Please Login again");
                 window.location.href = './index.html';
             }
@@ -37,4 +27,17 @@ function create(e) {
         .catch(function (error) {
             console.log('Request failure: ', error);
         });
+
+    function initcreatefetch() {
+        return fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-type': 'application/json',
+                'Authorization': `Bearer ${Token}`
+            },
+            body: JSON.stringify({
+                due_date: eduedate, name: ename, purpose: epurpose, type: etype
+            })
+        });
+    }
 }

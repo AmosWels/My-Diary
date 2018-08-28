@@ -77,8 +77,7 @@ def create_user_entry():
     required_fields = {"due_date", "name", "purpose", "type"}
     checkfield = Validate.validate_field(entrydata, required_fields)
     if not checkfield:
-        authuser = get_jwt_identity()
-        entrydata["user_id"] = authuser["user_id"]
+        entrydata["user_id"] = extractuser()
         valid = Validate(entrydata["name"], entrydata["purpose"])
         try:
             date_format = "%Y-%m-%d"
@@ -107,8 +106,7 @@ def create_user_entry():
 @jwt_required
 def get_single_entries(entry_id):
     """get all user entries"""
-    authuser = get_jwt_identity()
-    entryUSER = authuser["user_id"]
+    entryUSER = extractuser()
     db_connect.cursor.execute(
         "SELECT * FROM tdiaryentries where user_id = %s and id = %s ", (entryUSER, entry_id))
     db_connect.conn.commit()
@@ -122,13 +120,17 @@ def get_single_entries(entry_id):
         response.status_code = 400
         return response
 
+def extractuser():
+    authuser = get_jwt_identity()
+    entryUSER = authuser["user_id"]
+    return entryUSER
+
 
 @app.route('/api/v1/entries', methods=['GET'])
 @jwt_required
 def get_user_entries():
     """get all user entries"""
-    authuser = get_jwt_identity()
-    entryUSER = authuser["user_id"]
+    entryUSER = extractuser()
     db_connect.cursor.execute(
         "SELECT * FROM tdiaryentries where user_id = %s", [entryUSER])
     db_connect.conn.commit()
@@ -150,8 +152,7 @@ def update_user_entry(entry_id):
     required_fields = {"due_date", "name", "purpose", "type"}
     checkfield = Validate.validate_field(entrydata, required_fields)
     if not checkfield:
-        authuser = get_jwt_identity()
-        entryUSER = authuser["user_id"]
+        entryUSER = extractuser()
         valid = Validate(entrydata["name"], entrydata["purpose"])
         check = valid.validate_entry()
         today_date = now.strftime("%Y-%m-%d")
@@ -190,8 +191,7 @@ def update_user_entry(entry_id):
 @app.route('/api/v1/entries/<entry_id>', methods=['DELETE'])
 @jwt_required
 def delete_user_entry(entry_id):
-    authuser = get_jwt_identity()
-    entryUSER = authuser["user_id"]
+    entryUSER = extractuser()
     db_connect.cursor.execute("SELECT * FROM tdiaryentries where user_id = %s and id = %s ", (entryUSER, entry_id))
     db_connect.conn.commit()
     result = db_connect.cursor.rowcount
@@ -207,8 +207,7 @@ def delete_user_entry(entry_id):
 @app.route('/api/v1/authuser', methods=['GET'])
 @jwt_required
 def get_user():
-    authuser = get_jwt_identity()
-    user = authuser["user_id"]
+    user = extractuser()
     db_connect.cursor.execute("SELECT * FROM tusers where id = %s ", (user,))
     db_connect.conn.commit()
     result = db_connect.cursor.rowcount
@@ -224,8 +223,7 @@ def get_user():
 @app.route('/api/v1/authuser/profile', methods=['GET'])
 @jwt_required
 def get_user_profile():
-    authuser = get_jwt_identity()
-    user = authuser["user_id"]
+    user = extractuser()
     db_connect.cursor.execute("SELECT * FROM tuserprofile where user_id = %s ", (user,))
     db_connect.conn.commit()
     result = db_connect.cursor.rowcount
@@ -241,8 +239,7 @@ def get_user_profile():
 @app.route('/api/v1/authuser/countentry', methods=['GET'])
 @jwt_required
 def get_user_count():
-    authuser = get_jwt_identity()
-    user = authuser["user_id"]
+    user = extractuser()
     db_connect.cursor.execute("SELECT * FROM tusers where id = %s ", (user,))
     db_connect.conn.commit()
     result = db_connect.cursor.rowcount
@@ -263,8 +260,7 @@ def create_user_profile():
     required_fields = {"surname", "givenname", "email", "phonenumber"}
     checkfield = Validate.validate_field(entrydata, required_fields)
     if not checkfield:
-        authuser = get_jwt_identity()
-        entrydata["user_id"] = authuser["user_id"]
+        entrydata["user_id"] = extractuser()
         valid = Validate(entrydata["surname"], entrydata["givenname"])
         info = valid.validate_entry()
         if info is True and entrydata["surname"].isalpha() and entrydata["givenname"].isalpha() and is_email(entrydata["email"]):
@@ -287,8 +283,7 @@ def update_user_profile():
     required_fields = {"surname", "givenname", "email", "phonenumber"}
     checkfield = Validate.validate_field(entrydata, required_fields)
     if not checkfield:
-        authuser = get_jwt_identity()
-        entrydata["user_id"] = authuser["user_id"]
+        entrydata["user_id"] = extractuser()
         valid = Validate(entrydata["surname"], entrydata["givenname"])
         info = valid.validate_entry()
         if info is True and entrydata["surname"].isalpha() and entrydata["givenname"].isalpha() and is_email(entrydata["email"]):
