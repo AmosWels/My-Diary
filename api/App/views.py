@@ -281,7 +281,6 @@ def getjsondata():
 @app.route('/api/v1/authuser/profile', methods=['PUT'])
 @jwt_required
 def update_user_profile():
-    """create user profile """
     entrydata = getjsondata()
     required_fields = {"surname", "givenname", "email", "phonenumber"}
     checkfield = Validate.validate_field(entrydata, required_fields)

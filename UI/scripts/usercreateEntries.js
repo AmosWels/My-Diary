@@ -4,10 +4,7 @@ function create(e) {
     let Token = localStorage.getItem('token');
     let url = 'http://127.0.0.1:5000/api/v1/entries';
     var { eduedate, ename, epurpose, etype } = getuserinput();
-    initcreatefetch()
-        .then(function (response) {
-            return response.json();
-        })
+    fetchcreateentry(url, Token, eduedate, ename, epurpose, etype)
         .then(function (data) {
             if (data.Message === "your entry has been succesfully created!") {
                 alert("Message : "+ data.Message);
@@ -23,19 +20,22 @@ function create(e) {
         .catch(function (error) {
             console.log('Request failure: ', error);
         });
+}
 
-    function initcreatefetch() {
-        return fetch(url, {
-            method: 'POST',
-            headers: {
-                'Content-type': 'application/json',
-                'Authorization': `Bearer ${Token}`
-            },
-            body: JSON.stringify({
-                due_date: eduedate, name: ename, purpose: epurpose, type: etype
-            })
+function fetchcreateentry(url, Token, eduedate, ename, epurpose, etype) {
+    return fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-type': 'application/json',
+            'Authorization': `Bearer ${Token}`
+        },
+        body: JSON.stringify({
+            due_date: eduedate, name: ename, purpose: epurpose, type: etype
+        })
+    })
+        .then(function (response) {
+            return response.json();
         });
-    }
 }
 
 function getuserinput() {
