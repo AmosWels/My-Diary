@@ -125,7 +125,6 @@ def extractuser():
     entryUSER = authuser["user_id"]
     return entryUSER
 
-
 @app.route('/api/v1/entries', methods=['GET'])
 @jwt_required
 def get_user_entries():

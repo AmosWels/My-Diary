@@ -1,7 +1,6 @@
 """importing regular expressions class"""
 import re
 
-
 class Validate():
     """valiation class for diary inputs"""
     def __init__(self, username,password,):
@@ -24,5 +23,7 @@ class Validate():
                 return {
                     "success":False,
                     "Message": '*' + field + '*' +' is required before operation' }
+    
+
             
             

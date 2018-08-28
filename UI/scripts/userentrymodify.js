@@ -4,25 +4,8 @@ function updateentry(e) {
     let Token = localStorage.getItem('token');
     let id = sessionStorage.getItem('id');
     let url = 'http://127.0.0.1:5000/api/v1/entries/' + id;
-
-    var newname = document.getElementById("nname").value;
-    var newduedate = document.getElementById("nduedate").value;
-    var newtype = document.getElementById("ntype").value;
-    var newpurpose = document.getElementById("npurpose").value;
-
-    fetch(url, {
-        method: 'PUT',
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${Token}`
-        },
-        body: JSON.stringify({
-            due_date: newduedate, name: newname, purpose: newpurpose, type: newtype
-        })
-    })
-        .then(function (response) {
-            return response.json();
-        })
+    var { newduedate, newname, newpurpose, newtype } = getupdateinput();
+    fetchupdate(url, Token, newduedate, newname, newpurpose, newtype)
         .then(function (data) {
             if (data.Message === "modified your entry succesfully!") {
                 alert("Message : " + data.Message);
@@ -39,21 +22,36 @@ function updateentry(e) {
         });
 }
 
+function getupdateinput() {
+    var newname = document.getElementById("nname").value;
+    var newduedate = document.getElementById("nduedate").value;
+    var newtype = document.getElementById("ntype").value;
+    var newpurpose = document.getElementById("npurpose").value;
+    return { newduedate, newname, newpurpose, newtype };
+}
+
+function fetchupdate(url, Token, newduedate, newname, newpurpose, newtype) {
+    return fetch(url, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${Token}`
+        },
+        body: JSON.stringify({
+            due_date: newduedate, name: newname, purpose: newpurpose, type: newtype
+        })
+    })
+        .then(function (response) {
+            return response.json();
+        });
+}
+
 function deleteentry(){
     let Token = localStorage.getItem('token');
     let id = sessionStorage.getItem('id');
     let url = 'http://127.0.0.1:5000/api/v1/entries/' + id;
 
-    fetch(url, {
-        method: 'DELETE',
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${Token}`
-        },
-    })
-        .then(function (response) {
-            return response.json();
-        })
+    fetchdelete(url, Token)
         .then(function (data) {
             if (data.Message === "Deleted your entry succesfully!") {
                 window.location.href = './viewdiaries.html';
@@ -66,5 +64,18 @@ function deleteentry(){
         })
         .catch(function (error) {
             console.log('Request failure: ', error)
+        });
+}
+
+function fetchdelete(url, Token) {
+    return fetch(url, {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${Token}`
+        },
+    })
+        .then(function (response) {
+            return response.json();
         });
 }

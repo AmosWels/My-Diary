@@ -1,13 +1,9 @@
 document.getElementById("createEntry").addEventListener("submit", create);
 function create(e) {
     e.preventDefault();
-    var Token = localStorage.getItem('token');
-    var url = 'http://127.0.0.1:5000/api/v1/entries';
-
-    var ename = document.getElementById("ename").value;
-    var eduedate = document.getElementById("eduedate").value;
-    var etype = document.getElementById("etype").value;
-    var epurpose = document.getElementById("epurpose").value;
+    let Token = localStorage.getItem('token');
+    let url = 'http://127.0.0.1:5000/api/v1/entries';
+    var { eduedate, ename, epurpose, etype } = getuserinput();
     initcreatefetch()
         .then(function (response) {
             return response.json();
@@ -40,4 +36,12 @@ function create(e) {
             })
         });
     }
+}
+
+function getuserinput() {
+    var ename = document.getElementById("ename").value;
+    var eduedate = document.getElementById("eduedate").value;
+    var etype = document.getElementById("etype").value;
+    var epurpose = document.getElementById("epurpose").value;
+    return { eduedate, ename, epurpose, etype };
 }

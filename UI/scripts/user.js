@@ -1,23 +1,10 @@
 document.getElementById('register').addEventListener('submit', signup);
 function signup(e) {
     e.preventDefault();
-    var url = 'http://127.0.0.1:5000/api/v1/auth/signup';
-    var Pusername = document.getElementById("username1").value;
-    var Ppassword = document.getElementById("password1").value;
-    var Ppassword2 = document.getElementById("password2").value;
+    let url = 'http://127.0.0.1:5000/api/v1/auth/signup';
+    let { Ppassword, Ppassword2, Pusername } = getuserinput();
     if (Ppassword == Ppassword2){
-        fetch(url, {
-            method: 'POST',
-            headers: {
-                'Content-type': 'application/json'
-            },
-            body: JSON.stringify({
-                username: Pusername, password: Ppassword
-            })
-        })
-        .then(function (response) {
-            return response.json();
-        })
+        fetchuserdata(url, Pusername, Ppassword)
         .then(function(data){
             if (data.Message === "Created Succesfully"){
                 document.getElementById("call").innerHTML = "Success :" + data.Message;
@@ -32,4 +19,26 @@ function signup(e) {
     } else {
         document.getElementById("call").innerHTML = "Fail : Your passwords Don't match";
     }
+}
+
+function getuserinput() {
+    let Pusername = document.getElementById("username1").value;
+    let Ppassword = document.getElementById("password1").value;
+    let Ppassword2 = document.getElementById("password2").value;
+    return { Ppassword, Ppassword2, Pusername };
+}
+
+function fetchuserdata(url, Pusername, Ppassword) {
+    return fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-type': 'application/json'
+        },
+        body: JSON.stringify({
+            username: Pusername, password: Ppassword
+        })
+    })
+        .then(function (response) {
+            return response.json();
+        });
 }
