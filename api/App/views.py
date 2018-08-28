@@ -21,7 +21,7 @@ db_connect = DiaryDatabase()
 @app.route('/api/v1/auth/signup', methods=['POST'])
 def register():
     """ registering user """
-    data = request.get_json()
+    data = getjsondata()
     required_fields = {"username", "password"}
     checkfield = Validate.validate_field(data, required_fields)
     if not checkfield:
@@ -55,7 +55,7 @@ def register():
 @app.route('/api/v1/auth/login', methods=['POST'])
 def signin():
     """user login"""
-    data = request.get_json()
+    data = getjsondata()
     required_fields = {"username", "password"}
     checkfield = Validate.validate_field(data, required_fields)
     if not checkfield:
@@ -73,7 +73,7 @@ def signin():
 @jwt_required
 def create_user_entry():
     """create user entries """
-    entrydata = request.get_json()
+    entrydata = getjsondata()
     required_fields = {"due_date", "name", "purpose", "type"}
     checkfield = Validate.validate_field(entrydata, required_fields)
     if not checkfield:
@@ -148,7 +148,7 @@ def get_user_entries():
 @app.route('/api/v1/entries/<entry_id>', methods=['PUT'])
 @jwt_required
 def update_user_entry(entry_id):
-    entrydata = request.get_json()
+    entrydata = getjsondata()
     required_fields = {"due_date", "name", "purpose", "type"}
     checkfield = Validate.validate_field(entrydata, required_fields)
     if not checkfield:
@@ -256,7 +256,7 @@ def get_user_count():
 @jwt_required
 def create_user_profile():
     """create user profile """
-    entrydata = request.get_json()
+    entrydata = getjsondata()
     required_fields = {"surname", "givenname", "email", "phonenumber"}
     checkfield = Validate.validate_field(entrydata, required_fields)
     if not checkfield:
@@ -274,12 +274,16 @@ def create_user_profile():
             return response
     else:
         return jsonify(checkfield), 400
+
+def getjsondata():
+    entrydata = request.get_json()
+    return entrydata
     
 @app.route('/api/v1/authuser/profile', methods=['PUT'])
 @jwt_required
 def update_user_profile():
     """create user profile """
-    entrydata = request.get_json()
+    entrydata = getjsondata()
     required_fields = {"surname", "givenname", "email", "phonenumber"}
     checkfield = Validate.validate_field(entrydata, required_fields)
     if not checkfield:

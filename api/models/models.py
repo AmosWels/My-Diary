@@ -103,9 +103,13 @@ class DiaryDatabase():
         self.cursor.execute(
             "SELECT * FROM tdiaryentries where user_id = %s and id = %s ", [user_id, entry_id])
         self.conn.commit()
-        all_entry = self.cursor.fetchall()
-        user_entry = []
-        for ent in all_entry:
+        all_entries = self.cursor.fetchall()
+        user_entry_list = []
+        self.entrylistloop(all_entries, user_entry_list)
+        return jsonify({"entry": user_entry_list})
+
+    def entrylistloop(self, all_entries, user_entry_list):
+        for ent in all_entries:
             result = {}
             result["id"] = ent[0]
             result["name"] = ent[1]
@@ -114,8 +118,7 @@ class DiaryDatabase():
             result["purpose"] = ent[4]
             result["date_created"] = ent[5]
             result["user_id"] = ent[6]
-            user_entry.append(result)
-        return jsonify({"entry": user_entry})
+            user_entry_list.append(result)
 
     def get_all_user_entries(self, user_id):
         # sql = "SELECT * FROM tdiaryentries where user_id = %s",(user_id)
@@ -126,16 +129,7 @@ class DiaryDatabase():
         if entries >= 1:
             all_entries = self.cursor.fetchall()
             user_entry_list = []
-            for ent in all_entries:
-                result = {}
-                result["id"] = ent[0]
-                result["name"] = ent[1]
-                result["due_date"] = ent[2]
-                result["type"] = ent[3]
-                result["purpose"] = ent[4]
-                result["date_created"] = ent[5]
-                result["user_id"] = ent[6]
-                user_entry_list.append(result)
+            self.entrylistloop(all_entries, user_entry_list)
             return jsonify({"entries": user_entry_list})
 
     def update_user_entryid(self, user_id, update_entry_id, name, due_date, type1, purpose):
