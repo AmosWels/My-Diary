@@ -190,7 +190,7 @@ class DiaryDatabase():
                 sql, (surname, given, email, phonenumber,today_date, user_id))
             self.conn.commit()
             response = jsonify(
-                {"Message": "your Profile has been succesfully Added!"})
+                {"Message": "succesfully changed your profile!"})
             response.status_code = 201
             return response
 
@@ -211,7 +211,7 @@ class DiaryDatabase():
                             surname, given, email, phonenumber,user_id])
             self.conn.commit()
             response = jsonify(
-                {"Message": "your Profile has been succesfully modified!"})
+                {"Message": "succesfully changed your profile!"})
             response.status_code = 201
             return response
         else:

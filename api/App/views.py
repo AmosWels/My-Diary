@@ -89,15 +89,9 @@ def create_user_entry():
                     entrydata["name"], entrydata["due_date"], entrydata["type"], entrydata["purpose"], entrydata["user_id"])
                 return info
             else:
-                response = jsonify(
-                    {"Message": "Please provide a *name* and *purpose* of entry and ensure that all entries are in their valid format!"})
-                response.status_code = 400
-                return response
+                return wrongname_purpose()
         except ValueError:
-            response = jsonify(
-                {"Message": "Please Check that your date format suits this format (YYYY-MM-DD)"})
-            response.status_code = 400
-            return response
+            return wrongdate_format()
     else:
         return jsonify(checkfield), 400
 
@@ -157,35 +151,34 @@ def update_user_entry(entry_id):
         today_date = now.strftime("%Y-%m-%d")
         try:
             date_format = "%Y-%m-%d"
-            date_obj = datetime.datetime.strptime(
-                entrydata["due_date"], date_format)
-            if check is True and entrydata["name"].isalpha() and entrydata["type"].isalpha():
-                db_connect.cursor.execute(
-                    "SELECT * FROM tdiaryentries where user_id = %s and id = %s ", (entryUSER, entry_id))
-                db_connect.conn.commit()
-                result = db_connect.cursor.rowcount
-                resultdata = db_connect.cursor.fetchone()
-                if result > 0 and resultdata[5] == today_date:
-                    entry = db_connect.update_user_entryid(
-                        entryUSER, entry_id, entrydata["name"], entrydata["due_date"], entrydata["type"], entrydata["purpose"])
-                    return entry
-                else:
-                    response = jsonify(
-                        {"Message": "You can only modify Today's entries! Otherwise, you dont have a specific entry with that id!"})
-                    response.status_code = 400
-                    return response
+            date_obj = datetime.datetime.strptime(entrydata["due_date"], date_format)
+            db_connect.cursor.execute(
+                "SELECT * FROM tdiaryentries where user_id = %s and id = %s ", (entryUSER, entry_id))
+            db_connect.conn.commit()
+            result = db_connect.cursor.rowcount
+            resultdata = db_connect.cursor.fetchone()
+            if check is True and entrydata["name"].isalpha() and entrydata["type"].isalpha() and result > 0 and resultdata[5] == today_date:
+                entry = db_connect.update_user_entryid(
+                    entryUSER, entry_id, entrydata["name"], entrydata["due_date"], entrydata["type"], entrydata["purpose"])
+                return entry
             else:
-                response = jsonify(
-                    {"Message": "Please provide a *name* || *type* of entry. Ensure that all entries are in their valid format with no Spaces[ ] !"})
-                response.status_code = 400
-                return response
+                return wrongname_purpose()
         except ValueError:
-            response = jsonify(
-                {"Message": "Please Check that your date format suits this format (YYYY-MM-DD)"})
-            response.status_code = 400
-            return response
+            return wrongdate_format()
     else:
         return jsonify(checkfield), 400
+
+def wrongdate_format():
+    response = jsonify(
+        {"Message": "Please Check that your date format suits this format (YYYY-MM-DD)"})
+    response.status_code = 400
+    return response
+
+def wrongname_purpose():
+    response = jsonify(
+        {"Message": "Please provide a *name* and *purpose* of entry. Note You can only modify Today's entries!!"})
+    response.status_code = 400
+    return response
 
 @app.route('/api/v1/entries/<entry_id>', methods=['DELETE'])
 @jwt_required
@@ -253,9 +246,7 @@ def get_user_count():
 @jwt_required
 def create_user_profile():
     """create user profile """
-    entrydata = getjsondata()
-    required_fields = {"surname", "givenname", "email", "phonenumber"}
-    checkfield = Validate.validate_field(entrydata, required_fields)
+    checkfield, entrydata = getuserprofile()
     if not checkfield:
         info = getuservalidateentry(entrydata)
         if info is True and entrydata["surname"].isalpha() and entrydata["givenname"].isalpha() and is_email(entrydata["email"]):
@@ -266,6 +257,12 @@ def create_user_profile():
             return usererrorinput()
     else:
         return jsonify(checkfield), 400
+
+def getuserprofile():
+    entrydata = getjsondata()
+    required_fields = {"surname", "givenname", "email", "phonenumber"}
+    checkfield = Validate.validate_field(entrydata, required_fields)
+    return checkfield, entrydata
 
 def getuservalidateentry(entrydata):
     entrydata["user_id"] = extractuser()
@@ -286,9 +283,7 @@ def getjsondata():
 @app.route('/api/v1/authuser/profile', methods=['PUT'])
 @jwt_required
 def update_user_profile():
-    entrydata = getjsondata()
-    required_fields = {"surname", "givenname", "email", "phonenumber"}
-    checkfield = Validate.validate_field(entrydata, required_fields)
+    checkfield, entrydata = getuserprofile()
     if not checkfield:
         info = getuservalidateentry(entrydata)
         if info is True and entrydata["surname"].isalpha() and entrydata["givenname"].isalpha() and is_email(entrydata["email"]):
