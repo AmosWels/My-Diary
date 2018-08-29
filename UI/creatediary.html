@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+        <meta charset="UTF-8">
+        <meta name="description" content="My Diary" />
+        <meta name="keywords" content="admin,dashboard" />
+        <meta name="author" content="amoswels" />
+        <link rel="shortcut icon" href="images/favicon.ico">
+        <title>My Diario</title>
+        <link rel="stylesheet" href="./css/style3.css">
+    </head>
+    <body>
+        <ul class="breadcrumb">
+            <li><a href="viewdiaries.html">View Diaries</a></li>
+            <li>Create New Diary Entry</li>
+            <a style="margin-left: 50%;" href="index.html">Logout</a>
+        </ul>
+        <div style="color: whitesmoke;" id="call"></div>
+        <div class="container">
+            <form id="createEntry" method="POST">
+                <label for="name">Name</label>
+                <input type="text" id="ename" name="name" placeholder="Diary Entry Name.." required>
+
+                <label for="duedate">Due Date</label>
+                <input type="text" id="eduedate" name="duedate" placeholder="YYYY-MM-DD" required>
+
+                <label for="type">Type</label>
+                <input type="text" id="etype" name="type" placeholder="Diary Entry Type.." required>
+
+                <label for="purpose">Purpose</label>
+                <input type="text" id="epurpose" name="purpose" placeholder="Diary Entry Type.." required>
+                <input  style="margin-left: 87%;" type="submit" id="createbutton" value="Create">
+                <script src="scripts/usercreateEntries.js"></script>
+            </form>
+        </div>
+        <div class="footer">
+            <ul>
+                <li>Copyrights resevered to my Diary</li>
+                <li><a>www.mydiary.com</a></li>
+            </ul>
+        </div>
+        <script src="scripts/main.js"></script>
+    </body>
+</html>

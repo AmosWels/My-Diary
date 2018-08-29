@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta charset="UTF-8">
+  <meta name="description" content="Responsive Admin Dashboard Template" />
+  <meta name="keywords" content="admin,dashboard" />
+  <meta name="author" content="Steelcoders" />
+  <title>my diary</title>
+  <link rel="stylesheet" href="./css/style.css" </head>
+
+  <body>
+    <header>
+      <h2>Meet Susan details</h2>
+    </header>
+    <div class="container">
+      <form id="createEntry" method="POST">
+        <label for="name">Name</label>
+        <input type="text" id="mname" name="name" placeholder="Diary Entry Name.." required>
+
+        <label for="duedate">Due Date</label>
+        <input type="text" id="mduedate" name="duedate" placeholder="YYYY-MM-DD" required>
+        <!-- <input type="text" id="eduedate" name="duedate" placeholder="YYYY-MM-DD" required pattern="(?:19|20)[0-9]{2}-(?:(?:0[1-9]|1[0-2])/(?:0[1-9]|1[0-9]|2[0-9])|(?:(?!02)(?:0[1-9]|1[0-2])/(?:30))|(?:(?:0[13578]|1[02])-31))" title="Enter a date in this format YYYY/MM/DD"/> -->
+
+        <label for="type">Type</label>
+        <input type="text" id="mtype" name="type" placeholder="Diary Entry Type.." required>
+
+        <label for="purpose">Purpose</label>
+        <input type="text" id="mpurpose" name="purpose" placeholder="Diary Entry Type.." required>
+
+        <label for="datecreated">Purpose</label>
+        <input type="text" id="mdatecreated" name="datecreated" placeholder="Diary Entry Type.." required>
+
+        <input style="margin-left: 87%;" type="submit" id="createbutton" value="Create">
+        <!-- <button style="margin-left: 87%;" type="submit" id="createbutton">Create</button> -->
+        <script src="scripts/userentries.js"></script>
+        <!-- <script src="scripts/userupdateentry.js"></script> -->
+      </form>
+    </div>
+    <div class="footer">
+      <ul>
+        <li>Copyrights resevered to my Diary</li>
+        <li>
+          <a>www.mydiary.com</a>
+        </li>
+      </ul>
+    </div>
+  </body>
+
+</html>

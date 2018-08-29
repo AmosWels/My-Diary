@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta charset="UTF-8">
+    <meta name="description" content="My Diary" />
+    <meta name="keywords" content="admin,dashboard" />
+    <meta name="author" content="amoswels" />
+    <link rel="shortcut icon" href="images/favicon.ico">
+    <title>My Diario</title>
+    <link rel="stylesheet" href="./css/style.css">
+</head>
+
+<body onload='getentries(), getuser();'>
+    <ul class="breadcrumb">
+        <li>Home</li>
+        <li>View Diary Entries</li>
+    </ul>
+    <div class="header">
+        <form id="getData" method="GET">
+            <button >Welcome, <span style="color: blue;" id="name"></span> , You are Logged In!</button>
+        </form>
+        <div class="header-right">
+            <a class="" href="userprofile.html">View My Profile</a> &nbsp;&nbsp;&sol;&nbsp;&nbsp;&nbsp;
+            <a class="" href="creatediary.html">Create Diary Entry</a>
+            <a href="index.html">Logout</a>
+        </div>
+    </div>
+    <div class="container">
+        <table id="customers">
+            <tr>
+                <th>No. </th>
+                <th>Name </th>
+                <th>Due Date</th>
+                <th>Type</th>
+                <th>Purpose</th>
+                <th>Date Created</th>
+                <th>Remaining Days</th>
+                <th>Entry Action</th>
+            </tr>
+            <tr style="color: red;" id="result"></tr>
+        </table>
+        
+        <br>
+        <div class="divider"></div>
+    </div>
+    <div class="page-footer">
+        <ul>
+            <li>Copyrights resevered to my Diary</li>
+            <li>
+                <a>www.mydiary.com</a>
+            </li>
+        </ul>
+    </div>
+    <script src="scripts/main.js"></script>
+    <script src="scripts/userentries.js"></script>
+</body>
+
+</html>

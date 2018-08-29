@@ -1,6 +1,7 @@
-# from api.models.models import DiaryDatabase
+import os
+
 from api.App.views import app
 
+os.environ['app_env'] = 'Prod'
 if __name__ == '__main__':
-    # DiaryDatabase()
     app.run(debug=True)
