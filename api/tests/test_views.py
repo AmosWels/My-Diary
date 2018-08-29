@@ -117,9 +117,16 @@ class TestDiaryEntries(TestStartAll):
         response = test.post('/api/v1/entries', headers=self.get_user_token(), content_type='application/json',data=json.dumps(entry7))
         self.assertEqual(response.status_code, 400)
    
+    def test_get_all_entries_when_empty(self):
+        """Test API can view all entries if empty"""
+        test = app.test_client(self)
+        response = test.get('/api/v1/entries', headers=self.get_user_token(), content_type='application/json')
+        self.assertEqual(response.status_code, 200)
+
     def test_get_all_entries(self):
         """Test API can view all entries."""
         test = app.test_client(self)
+        result = self.get_id(test)
         response = test.get('/api/v1/entries', headers=self.get_user_token(), content_type='application/json')
         self.assertEqual(response.status_code, 200)
 
@@ -158,6 +165,12 @@ class TestDiaryEntries(TestStartAll):
         response = test.delete(f'/api/v1/entries/{result[0]}', headers=self.get_user_token(), content_type='application/json')
         self.assertEqual(response.status_code,200)
     
+    def test_to_delete_entry_wrong_id(self):
+        """test to modify or update an entry"""
+        test = app.test_client(self)
+        response = test.delete(f'/api/v1/entries/1', headers=self.get_user_token(), content_type='application/json')
+        self.assertEqual(response.status_code,400)
+
     def test_to_update_wrong_date_format(self):
         """test to modify or update an entry"""
         test = app.test_client(self)

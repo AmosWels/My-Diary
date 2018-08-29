@@ -110,12 +110,12 @@ class DiaryDatabase():
         self.cursor.execute(
             "SELECT * FROM tdiaryentries where user_id = %s", [user_id])
         self.conn.commit()
-        entries = self.cursor.rowcount
-        if entries >= 1:
-            all_entries = self.cursor.fetchall()
-            user_entry_list = []
-            self.entrylistloop(all_entries, user_entry_list)
-            return jsonify({"entries": user_entry_list})
+        # entries = self.cursor.rowcount
+        # if entries >= 1:
+        all_entries = self.cursor.fetchall()
+        user_entry_list = []
+        self.entrylistloop(all_entries, user_entry_list)
+        return jsonify({"entries": user_entry_list})
 
     def update_user_entryid(self, user_id, update_entry_id, name, due_date, type1, purpose):
         self.cursor.execute("UPDATE tdiaryentries SET name = %s, due_date = %s, type = %s, purpose = %s WHERE id = %s", [
