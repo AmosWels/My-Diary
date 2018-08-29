@@ -28,12 +28,6 @@ class DiaryDatabase():
         else:
             self.conn_string = "host='localhost' dbname='mydiary' user='postgres' password='root'"
 
-        # if not views.app.config['TESTING']:
-        #     self.conn_string = "host='localhost' dbname='mydiary' user='postgres' password='root'"
-        
-        # else:
-        #     self.conn_string = "host='localhost' dbname='diarytestdb' user='postgres' password='root'"
-            
         self.conn = psycopg2.connect(self.conn_string)
         self.cursor = self.conn.cursor()
         try:
@@ -44,15 +38,6 @@ class DiaryDatabase():
         except:
             print("\n Tables Already Created!!\n")
             
-
-    # @classmethod
-    # def db_teardown(cls):
-    #     """method to delete tables after testing"""
-    #     conn_string = "host='localhost' dbname='diarytestdb' user='postgres' password='root'"
-    #     conn = psycopg2.connect(conn_string)
-    #     # cursor = conn.cursor()
-    #     return conn
-
     def signup(self, username, password):
         sql = "INSERT INTO tusers(username, password) VALUES (%s, %s)"
         self.cursor.execute(sql, (username, password))

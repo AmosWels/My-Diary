@@ -15,6 +15,7 @@
   "api/tests/test_views.py::TestDiaryEntries::test_missing_name_data",
   "api/tests/test_views.py::TestDiaryEntries::test_missing_purpose_data",
   "api/tests/test_views.py::TestDiaryEntries::test_short_userSignup",
+  "api/tests/test_views.py::TestDiaryEntries::test_to_delete_entry",
   "api/tests/test_views.py::TestDiaryEntries::test_to_get_single_entry",
   "api/tests/test_views.py::TestDiaryEntries::test_to_update_entry",
   "api/tests/test_views.py::TestDiaryEntries::test_to_update_wrong_data_format",

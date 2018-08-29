@@ -133,30 +133,40 @@ class TestDiaryEntries(TestStartAll):
     def test_to_update_entry(self):
         """test to modify or update an entry"""
         test = app.test_client(self)
-        response = test.put('/api/v1/entries/1', content_type='application/json', data=json.dumps(entry1))
-        self.assertEqual(response.status_code,401)
+        # test.post("/api/v1/entries", headers=self.access,
+        #                data=json.dumps(entry3), content_type="application/json")
+        response = test.put('/api/v1/entries/1', headers=self.access, content_type='application/json', data=json.dumps(entry1))
+        self.assertEqual(response.status_code,400)
+    
+    def test_to_delete_entry(self):
+        """test to modify or update an entry"""
+        test = app.test_client(self)
+        # test.post("/api/v1/entries", headers=self.access,
+        #                data=json.dumps(entry3), content_type="application/json")
+        response = test.delete('/api/v1/entries/1', headers=self.access, content_type='application/json', data=json.dumps(entry5))
+        self.assertEqual(response.status_code,400)
     
     def test_to_update_wrong_date_format(self):
         """test to modify or update an entry"""
         test = app.test_client(self)
-        response = test.put('/api/v1/entries/1', content_type='application/json', data=json.dumps(entry10))
-        self.assertEqual(response.status_code,401)
+        response = test.put('/api/v1/entries/1', headers=self.access, content_type='application/json', data=json.dumps(entry10))
+        self.assertEqual(response.status_code,400)
     
     def test_to_update_wrong_data_format(self):
         """test to modify or update an entry"""
         test = app.test_client(self)
-        response = test.put('/api/v1/entries/1', content_type='application/json', data=json.dumps(entry7))
-        self.assertEqual(response.status_code,401)
+        response = test.put('/api/v1/entries/1', headers=self.access, content_type='application/json', data=json.dumps(entry7))
+        self.assertEqual(response.status_code,400)
     
     def test_forwrongupdate_entry_endpoint(self):
         """test for wrong endpoint """
         test = app.test_client(self)
-        response = test.get('/api/v1/entries/1', content_type="application/json")
-        self.assertEqual(response.status_code, 401)
+        response = test.get('/api/v1/entries/1', headers=self.access, content_type="application/json")
+        self.assertEqual(response.status_code, 400)
 
     def test_unique_username(self):
         test = app.test_client(self)
-        response=test.post('/api/v1/auth/signup', data=json.dumps(user3),content_type="application/json") 
+        response=test.post('/api/v1/auth/signup', headers=self.access, data=json.dumps(user3),content_type="application/json") 
         self.assertEqual(response.status_code,201) 
 
     def test_entry_data(self):
@@ -166,35 +176,26 @@ class TestDiaryEntries(TestStartAll):
 
     def test_duplicate_username(self):
         test = app.test_client(self)
-        response=test.post('/api/v1/auth/signup',data=json.dumps(user3),content_type="application/json") 
+        response=test.post('/api/v1/auth/signup',headers=self.access,data=json.dumps(user3),content_type="application/json") 
         self.assertEqual(response.status_code,201)
     
     def test_empty_password(self):
         test = app.test_client(self)
-        response=test.post('/api/v1/auth/signup',data=json.dumps(user4),content_type="application/json") 
+        response=test.post('/api/v1/auth/signup', headers=self.access,data=json.dumps(user4),content_type="application/json") 
         self.assertEqual(response.status_code,400)
     
     def test_empty_username(self):
         test = app.test_client(self)
-        response=test.post('/api/v1/auth/signup',data=json.dumps(user5),content_type="application/json") 
+        response=test.post('/api/v1/auth/signup',headers=self.access, data=json.dumps(user5),content_type="application/json") 
         self.assertEqual(response.status_code,400)
     
     def test_creating_password_length(self):
         """test method for checking password length"""
         test = app.test_client(self)
-        response = test.post('/api/v1/auth/signup', data=json.dumps(user7), content_type="application/json")
+        response = test.post('/api/v1/auth/signup', headers=self.access, data=json.dumps(user7), content_type="application/json")
         self.assertEqual(response.status_code, 400)
     
     def tearDown(self):
-        # users_table="""DELETE FROM tusers"""
-        # entries_table="""DELETE FROM tdiaryentries"""
-        # conn = db_connect.db_teardown()
-        # cursor = conn.cursor()
-        # cursor.execute(users_table,)
-        # conn.commit()
-        # cursor.execute(entries_table,)
-        # conn.commit()
-        
         users_table="""DELETE FROM tusers"""
         entries_table="""DELETE FROM tdiaryentries"""
         db_connect.cursor.execute(users_table)

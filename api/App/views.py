@@ -51,7 +51,6 @@ def register():
     else:
         return jsonify(checkfield), 400
 
-
 @app.route('/api/v1/auth/login', methods=['POST'])
 def signin():
     """user login"""
@@ -94,7 +93,6 @@ def create_user_entry():
             return wrongdate_format()
     else:
         return jsonify(checkfield), 400
-
 
 @app.route('/api/v1/entries/<entry_id>', methods=['GET'])
 @jwt_required

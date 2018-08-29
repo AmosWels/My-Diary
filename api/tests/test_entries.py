@@ -45,7 +45,7 @@ user9 = {
 
 entry1= {
     "due_date": "02-sep-2001",
-    "name": "Meet Peter",
+    "name": "wash",
     "purpose": "Lorem Ipsum ",
     "type": "sports"
 }
@@ -59,7 +59,7 @@ entry2= {
 
 entry3= {
     "id" : "1",
-    "name": "cancel all flight plans",
+    "name": "cancel",
     "due_date": "02-sep-2018",
     "type": "office",
     "purpose": "Lorem Ipsum",
@@ -74,7 +74,7 @@ entry5= {
 }
 entry6= {
     "id" : "1",
-    "name": "cancel all flight plans",
+    "name": "cancel",
     "type": "",
     "purpose": "Lorem Ipsum",
     "user_id": "3"
@@ -97,7 +97,7 @@ entry8= {
 
 entry9= {
     "id" : "1",
-    "name": "meeting tom in town",
+    "name": "meeting",
     "type": "office",
     "purpose": "",
     "user_id": "3"
@@ -105,7 +105,7 @@ entry9= {
 
 entry10= {
     "due_date": "02-sep-2001",
-    "name": "Meet Peter",
+    "name": "Eat",
     "purpose": "Lorem Ipsum ",
     "type": "sports"
 }
