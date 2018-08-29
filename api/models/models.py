@@ -149,6 +149,7 @@ class DiaryDatabase():
             user_lst.append(details)
             response = jsonify({"user": user_lst})
             response.status_code = 200
+            
         return response
     
     def get_entry_count(self,userid):
