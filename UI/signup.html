@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta charset="UTF-8">
+    <meta name="description" content="My Diary" />
+    <meta name="keywords" content="admin,dashboard" />
+    <meta name="author" content="amoswels" />
+    <link rel="shortcut icon" href="images/favicon.ico">
+    <title>My Diario</title>
+    <link rel="stylesheet" href="./css/style1.css">
+</head>
+
+<body>
+    <h2 class="centered">Sign Up with My Diary</h2>
+    <div style="color: whitesmoke;" id="call"></div>
+    <div class="container">
+        <form id="register" method="POST">
+            <label for="username">
+                <b>Username</b>
+            </label>
+            <input type="text" placeholder="Enter Username" name="username" id="username1" required>
+            <label for="password">
+                <b>Password</b>
+            </label>
+            <input type="password" placeholder="Enter Password" name="password" id="password1" required>
+            <label for="psw_repeat">
+                <b>Repeat Password</b>
+            </label>
+            <input type="password" placeholder="Repeat Password" name="psw_repeat" id="password2" required>
+            <hr>
+            <button type="submit" id="registerbutton">signup</button>
+        </form>
+    </div>
+
+    <div class="container signin">
+        <p>Already have an account?
+            <a href="index.html">Sign in</a>.</p>
+    </div>
+    <script src="scripts/main.js"></script>
+    <script src="scripts/user.js"></script>
+</body>
+
+</html>

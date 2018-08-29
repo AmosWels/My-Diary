@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta charset="UTF-8">
+    <meta name="description" content="My Diary" />
+    <meta name="keywords" content="admin,dashboard" />
+    <meta name="author" content="amoswels" />
+    <link rel="shortcut icon" href="images/favicon.ico">
+    <title>My Diario</title>
+    <link rel="stylesheet" href="./css/style3.css">
+    <link rel="stylesheet" href="./css/style4.css">
+</head>
+
+<body>
+    <ul class="breadcrumb">
+        <li>
+            <a href="viewdiaries.html">view Diaries</a>
+        </li>
+        <li id="nname1"></li>
+        <a style="margin-left: 50%; font-size: 16px;" href="index.html">Logout</a>
+        <form id="getentryData" method="GET">
+        </form>
+    </ul>
+    <div style="color: whitesmoke;" id="call"></div>
+    <div class="container">
+        <form id="viewEntry" method="POST">
+            <label for="name">Name</label>
+            <input type="text" id="nname" name="name" required>
+
+            <label for="duedate">Due Date</label>
+            <input type="text" id="nduedate" name="duedate" placeholder="YYYY-MM-DD" required>
+
+            <label for="type">Type</label>
+            <input type="text" id="ntype" name="type" required>
+
+            <label for="purpose">Purpose</label>
+            <input type="text" id="npurpose" name="purpose" required>
+            <label for="datecreated">Date Created</label>
+            <input type="text" id="mdatecreated" name="datecreated" required readonly>
+
+            <input  style="color: red;" onclick="location.href='#popup1'" type="button" id="updatebutton" value="Delete Entry">
+            <input style="margin-left: 70%;"  type="submit" id="updatebutton" value="Update">
+        </form>
+    </div>
+    <div id="popup1" class="overlay">
+        <div class="popup">
+            <h2>Delete Entry</h2>
+            <a class="close" href="#">&times;</a>
+            <div class="content">
+                Are you sure you want to delete Entry with name
+                <a id="nname2"></a> ?
+                <br>
+                    <input type="submit"  style="margin-left: 80%; background-color: #f44336;" onclick="deleteentry();" id="deletebutton" value="Yes">
+            </div>
+        </div>
+    </div>
+    <div class="footer">
+        <ul>
+            <li>Copyrights resevered to my Diary</li>
+            <li>
+                <a>www.mydiary.com</a>
+            </li>
+        </ul>
+    </div>
+    <script src="scripts/main.js"></script>
+    <script src="scripts/userentryaction.js"></script>
+    <script src="scripts/userentrymodify.js"></script>
+</body>
+
+</html>
