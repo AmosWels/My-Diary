@@ -28,12 +28,6 @@ class DiaryDatabase():
         else:
             self.conn_string = "host='localhost' dbname='mydiary' user='postgres' password='root'"
 
-        # if not views.app.config['TESTING']:
-        #     self.conn_string = "host='localhost' dbname='mydiary' user='postgres' password='root'"
-        
-        # else:
-        #     self.conn_string = "host='localhost' dbname='diarytestdb' user='postgres' password='root'"
-            
         self.conn = psycopg2.connect(self.conn_string)
         self.cursor = self.conn.cursor()
         try:
@@ -44,15 +38,6 @@ class DiaryDatabase():
         except:
             print("\n Tables Already Created!!\n")
             
-
-    # @classmethod
-    # def db_teardown(cls):
-    #     """method to delete tables after testing"""
-    #     conn_string = "host='localhost' dbname='diarytestdb' user='postgres' password='root'"
-    #     conn = psycopg2.connect(conn_string)
-    #     # cursor = conn.cursor()
-    #     return conn
-
     def signup(self, username, password):
         sql = "INSERT INTO tusers(username, password) VALUES (%s, %s)"
         self.cursor.execute(sql, (username, password))
@@ -125,12 +110,12 @@ class DiaryDatabase():
         self.cursor.execute(
             "SELECT * FROM tdiaryentries where user_id = %s", [user_id])
         self.conn.commit()
-        entries = self.cursor.rowcount
-        if entries >= 1:
-            all_entries = self.cursor.fetchall()
-            user_entry_list = []
-            self.entrylistloop(all_entries, user_entry_list)
-            return jsonify({"entries": user_entry_list})
+        # entries = self.cursor.rowcount
+        # if entries >= 1:
+        all_entries = self.cursor.fetchall()
+        user_entry_list = []
+        self.entrylistloop(all_entries, user_entry_list)
+        return jsonify({"entries": user_entry_list})
 
     def update_user_entryid(self, user_id, update_entry_id, name, due_date, type1, purpose):
         self.cursor.execute("UPDATE tdiaryentries SET name = %s, due_date = %s, type = %s, purpose = %s WHERE id = %s", [
@@ -164,6 +149,7 @@ class DiaryDatabase():
             user_lst.append(details)
             response = jsonify({"user": user_lst})
             response.status_code = 200
+            
         return response
     
     def get_entry_count(self,userid):

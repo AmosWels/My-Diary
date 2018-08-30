@@ -3,11 +3,9 @@ MyDiary is an online journal where users can pen down their thoughts and feeling
 
 [![Build Status](https://travis-ci.org/AmosWels/My-Diary.svg?branch=database)](https://travis-ci.org/AmosWels/My-Diary)
 
+[![Coverage Status](https://coveralls.io/repos/github/AmosWels/My-Diary/badge.svg?branch=chal4)](https://coveralls.io/github/AmosWels/My-Diary?branch=chal4)
 
 <a href="https://codeclimate.com/github/AmosWels/My-Diary/maintainability"><img src="https://api.codeclimate.com/v1/badges/911827d24f11c39cdf13/maintainability" /></a>
-
-#### [View coveralls Badge](https://coveralls.io/repos/github/AmosWels/My-Diary/badge.svg?branch=database)
-
 
 #### [Visit my diario Documentation](https://mydiario.docs.apiary.io/#introduction/mydiario-requests-collection/get-all-users-entries-[get/entries])
 
@@ -22,30 +20,41 @@ MyDiary is an online journal where users can pen down their thoughts and feeling
 
 #### Endpoints
 
-POST /auth/signup
+POST /api/v1/auth/signup
 Register a user
 
-POST /auth/login
+POST /api/v1/auth/login
 Login a user
 
-GET /entries 
+GET /api/v1/entries 
 Fetch all the entries for a user.
 
-GET /entries/<entryId>
+GET /api/v1/entries/<entryId>
 Fetch the details of an entry for a user
 
-POST /entries
+POST /api/v1/entries
 Add an entry
 
-PUT /entries/<entryId>
+PUT /api/v1/entries/<entryId>
 Modify a diary entry
 An entry can only be modified on the same day it was created.
 
+GET /api/v1/authuser
+Fetch details of signed in user
 
-##### Requirements
+POST /api/v1/authuser/profile
+Add profile of signed in user to enable notifications
+
+GET /api/v1/authuser/profile
+Fetch full profile details of user
+
+PUT /api/v1/authuser/profile
+Modify the profile of a user
+
+##### Prerequisites
 Requiremets to run this My Diary
+1. Server side Framework: ​Flask Python Framework
+2. Testing Framework: PyTest
 
-1. Flask <framework>
-2. git
-3. python3
-4. pip
+##### You can clone with [git clone -url-]
+url = https://github.com/AmosWels/My-Diary.git

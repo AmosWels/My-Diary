@@ -14,15 +14,16 @@ user2 = {
     "password": "kagutahindu"
 }
 user3 = {
-    "user_id":3,   
-    "username": "Kaguta",
+    "username": "Kagutaj",
     "password": "janethindu"
 }
 user4 = {
     "username": "Kaguta",
+    "password": ""
 }
 
 user5 = {
+    "username": "",
     "password": "kagutahindu",
 }
 user6 = {
@@ -45,25 +46,23 @@ user9 = {
 
 entry1= {
     "due_date": "02-sep-2001",
-    "name": "Meet Peter",
+    "name": "wash",
     "purpose": "Lorem Ipsum ",
     "type": "sports"
 }
 
 entry2= {
-    "due_date": "02/sep/2001",
+    "due_date": "",
     "name": "",
     "purpose": "",
     "type": ""
 }
 
 entry3= {
-    "id" : "1",
-    "name": "cancel all flight plans",
-    "due_date": "02-sep-2018",
+    "name": "cancel",
+    "due_date": "2018-05-05",
     "type": "office",
     "purpose": "Lorem Ipsum",
-    "user_id": "3"
 }
 entry4= {
     "user_id": 1
@@ -73,18 +72,16 @@ entry5= {
     "id": 5
 }
 entry6= {
-    "id" : "1",
-    "name": "cancel all flight plans",
+    "name": "cancel",
+    "due_date": "201",
     "type": "",
     "purpose": "Lorem Ipsum",
-    "user_id": "3"
 }
 entry7= {
-    "id" : "1",
-    "name": "00000000",
-    "type": "00000000",
+    "due_date": "2018-05-05",
+    "name": "eat sugar",
+    "type": "offce home",
     "purpose": "0000000000",
-    "user_id": "3"
 }
 
 entry8= {
@@ -96,16 +93,28 @@ entry8= {
 }
 
 entry9= {
-    "id" : "1",
-    "name": "meeting tom in town",
+    "due_date": "2018-05-05",    
+    "name": "meeting",
     "type": "office",
     "purpose": "",
-    "user_id": "3"
 }
 
 entry10= {
     "due_date": "02-sep-2001",
-    "name": "Meet Peter",
+    "name": "Eat",
     "purpose": "Lorem Ipsum ",
     "type": "sports"
+}
+
+userprofile={
+    "surname": "kaguta",
+    "givenname": "yoweri",
+    "email": "kaguta@gmail.com",
+    "phonenumber": "0720202022"
+}
+userprofile1={
+    "surname": "",
+    "givenname": "yoweri",
+    "email": "kagutgmailcom",
+    "phonenumber": "0720202022"
 }
