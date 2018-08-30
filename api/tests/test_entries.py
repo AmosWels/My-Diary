@@ -105,3 +105,16 @@ entry10= {
     "purpose": "Lorem Ipsum ",
     "type": "sports"
 }
+
+userprofile={
+    "surname": "kaguta",
+    "givenname": "yoweri",
+    "email": "kaguta@gmail.com",
+    "phonenumber": "0720202022"
+}
+userprofile1={
+    "surname": "",
+    "givenname": "yoweri",
+    "email": "kagutgmailcom",
+    "phonenumber": "0720202022"
+}
