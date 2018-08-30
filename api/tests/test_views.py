@@ -8,11 +8,8 @@ from flask_jwt_extended import create_access_token
 
 from api.App.views import app, db_connect
 from api.tests.test_app import TestStartAll
-from api.tests.test_entries import (entry1, entry2, entry3, entry4, entry5,
-                                    entry6, entry7, entry8, entry9, entry10,
-                                    user1, user2, user3, user4, user5, user6,
-                                    user7, user8, user9, userlogin)
-
+from api.tests.test_entries import (entry1, entry2, entry3, entry4, entry5,entry6, entry7, entry8, entry9, entry10,
+                                    user1, user2, user3, user4, user5, user6,user7, user8, user9, userlogin,userprofile,userprofile1)
 
 class TestDiaryEntries(TestStartAll):
     def setUp(self):
@@ -234,6 +231,62 @@ class TestDiaryEntries(TestStartAll):
         response = test.post('/api/v1/auth/signup', data=json.dumps(user7), content_type="application/json")
         self.assertEqual(response.status_code, 400)
     
+    def test_get_user_details(self):
+        test = app.test_client(self)
+        self.get_user_token()
+        response=test.get('/api/v1/authuser', headers=self.get_user_token(), content_type="application/json") 
+        self.assertEqual(response.status_code,200)
+    
+    def test_create_user_profile(self):
+        test = app.test_client(self)
+        response = test.post('/api/v1/authuser/profile', headers=self.get_user_token(),content_type="application/json",data=json.dumps(userprofile))
+        self.assertEqual(response.status_code,201)
+    
+    def test_create_duplicate_user_profile(self):
+        test = app.test_client(self)
+        test.post('/api/v1/authuser/profile', headers=self.get_user_token(),content_type="application/json",data=json.dumps(userprofile))
+        response = test.post('/api/v1/authuser/profile', headers=self.get_user_token(),content_type="application/json",data=json.dumps(userprofile))
+        self.assertEqual(response.status_code,409)
+    
+    def test_create_wrong_user_profile(self):
+        test = app.test_client(self)
+        response = test.post('/api/v1/authuser/profile', headers=self.get_user_token(),content_type="application/json",data=json.dumps(userprofile1))
+        self.assertEqual(response.status_code,400)
+
+    def test_get_user_profile(self):
+        test = app.test_client(self)
+        test.post('/api/v1/authuser/profile', headers=self.get_user_token(),content_type="application/json",data=json.dumps(userprofile))
+        response=test.get('/api/v1/authuser/profile',headers=self.get_user_token(),content_type="application/json") 
+        self.assertEqual(response.status_code,200)
+        
+    def test_get_no_user_profile(self):
+        test = app.test_client(self)
+        test.post('/api/v1/authuser/profile', headers=self.get_user_token(),content_type="application/json",data=json.dumps(userprofile1))
+        response=test.get('/api/v1/authuser/profile',headers=self.get_user_token(),content_type="application/json") 
+        self.assertEqual(response.status_code,400) 
+    
+    def test_get_user_entry_count(self):
+        test = app.test_client(self)
+        test.post('/api/v1/entries', headers=self.get_user_token(), content_type='application/json', data=json.dumps(entry3))
+        response=test.get('/api/v1/authuser/countentry',headers=self.get_user_token(),content_type="application/json") 
+        self.assertEqual(response.status_code,200) 
+    
+    def test_get_no_user_entry_count(self):
+        test = app.test_client(self)
+        response=test.get('/api/v1/authuser/countentry',headers=self.get_user_token(),content_type="application/json") 
+        self.assertEqual(response.status_code,200) 
+    
+    def test_update_user_profile(self):
+        test = app.test_client(self)
+        test.post('/api/v1/authuser/profile', headers=self.get_user_token(),content_type="application/json",data=json.dumps(userprofile))
+        response = test.put('/api/v1/authuser/profile', headers=self.get_user_token(), content_type='application/json', data=json.dumps(userprofile))
+        self.assertEqual(response.status_code,201)
+    
+    def test_update_no_user_profile(self):
+        test = app.test_client(self)
+        response = test.put('/api/v1/authuser/profile', headers=self.get_user_token(), content_type='application/json', data=json.dumps(userprofile))
+        self.assertEqual(response.status_code,400)
+
     def tearDown(self):
         users_table="""DELETE FROM tusers"""
         entries_table="""DELETE FROM tdiaryentries"""
