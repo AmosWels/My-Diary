@@ -77,7 +77,14 @@ class TestDiaryEntries(TestStartAll):
         test = app.test_client(self)
         response = test.post('/api/v1/entries', headers=self.get_user_token(), content_type='application/json', data=json.dumps(entry3))
         self.assertEqual(response.status_code, 201)
-    
+
+    def test_create_duplicate_user_entry(self):
+        '''Test API to create user entry'''
+        test = app.test_client(self)
+        test.post('/api/v1/entries', headers=self.get_user_token(), content_type='application/json', data=json.dumps(entry3))
+        response = test.post('/api/v1/entries', headers=self.get_user_token(), content_type='application/json', data=json.dumps(entry3))
+        self.assertEqual(response.status_code, 409)
+
     def test_wrong_create_user_entry(self):
         '''Test API to create user entry'''
         test = app.test_client(self)
@@ -281,7 +288,13 @@ class TestDiaryEntries(TestStartAll):
         test.post('/api/v1/authuser/profile', headers=self.get_user_token(),content_type="application/json",data=json.dumps(userprofile))
         response = test.put('/api/v1/authuser/profile', headers=self.get_user_token(), content_type='application/json', data=json.dumps(userprofile))
         self.assertEqual(response.status_code,201)
-    
+
+    def test_update_wrong_user_profile(self):
+        test = app.test_client(self)
+        test.post('/api/v1/authuser/profile', headers=self.get_user_token(),content_type="application/json",data=json.dumps(userprofile))
+        response = test.put('/api/v1/authuser/profile', headers=self.get_user_token(), content_type='application/json', data=json.dumps(userprofile1))
+        self.assertEqual(response.status_code,400)
+
     def test_update_no_user_profile(self):
         test = app.test_client(self)
         response = test.put('/api/v1/authuser/profile', headers=self.get_user_token(), content_type='application/json', data=json.dumps(userprofile))

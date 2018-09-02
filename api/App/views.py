@@ -81,10 +81,10 @@ def create_user_entry():
             date_obj = datetime.datetime.strptime(
                 entrydata["due_date"], date_format)
             info = valid.validate_entry()
-            if info is True and entrydata["name"].isalpha() and entrydata["type"].isalpha():
-                info = db_connect.create_user_entries(
+            if info is True and entrydata["name"].strip() != '' and entrydata["type"].isalpha():
+                entryinfo = db_connect.create_user_entries(
                     entrydata["name"], entrydata["due_date"], entrydata["type"], entrydata["purpose"], entrydata["user_id"])
-                return info
+                return entryinfo
             else:
                 return wrongname_purpose()
         except ValueError:
@@ -146,7 +146,7 @@ def update_user_entry(entry_id):
             db_connect.conn.commit()
             result = db_connect.cursor.rowcount
             resultdata = db_connect.cursor.fetchone()
-            if check is True and entrydata["name"].isalpha() and entrydata["type"].isalpha() and result > 0 and resultdata[5] == today_date:
+            if check is True and entrydata["name"].strip() != '' and entrydata["type"].isalpha() and result > 0 and resultdata[5] == today_date:
                 entry = db_connect.update_user_entryid(
                     entryUSER, entry_id, entrydata["name"], entrydata["due_date"], entrydata["type"], entrydata["purpose"])
                 return entry
@@ -280,7 +280,7 @@ def wrongdate_format():
 
 def wrongname_purpose():
     response = jsonify(
-        {"Message": "Please provide a *name* and *purpose* of entry. Note You can only modify Today's entries!!"})
+        {"Message": "Please ensure that *type* is without any Spaces[ ] and [( ) ` ~ ! @ # $ % ^ & * - + = | \ { } [ ] : ;  < > , . ? /]. Ensure that all others are in valid format. Also Note that You can only modify Today's entries!!"})
     return badrequeststatus(response)
 
 def extractuser():

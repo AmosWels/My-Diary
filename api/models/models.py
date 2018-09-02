@@ -30,13 +30,13 @@ class DiaryDatabase():
 
         self.conn = psycopg2.connect(self.conn_string)
         self.cursor = self.conn.cursor()
-        try:
-            self.cursor.execute(Users,)
-            self.cursor.execute(Entries,)
-            self.cursor.execute(Userprofile,)
-            self.conn.commit()
-        except:
-            print("\n Tables Already Created!!\n")
+        # try:
+        self.cursor.execute(Users,)
+        self.cursor.execute(Entries,)
+        self.cursor.execute(Userprofile,)
+        self.conn.commit()
+        # except:
+        #     print("\n Tables Already Created!!\n")
             
     def signup(self, username, password):
         sql = "INSERT INTO tusers(username, password) VALUES (%s, %s)"
@@ -106,12 +106,9 @@ class DiaryDatabase():
             user_entry_list.append(result)
 
     def get_all_user_entries(self, user_id):
-        # sql = "SELECT * FROM tdiaryentries where user_id = %s",(user_id)
         self.cursor.execute(
             "SELECT * FROM tdiaryentries where user_id = %s", [user_id])
         self.conn.commit()
-        # entries = self.cursor.rowcount
-        # if entries >= 1:
         all_entries = self.cursor.fetchall()
         user_entry_list = []
         self.entrylistloop(all_entries, user_entry_list)
